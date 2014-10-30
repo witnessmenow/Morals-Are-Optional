@@ -1,6 +1,9 @@
 package com.ladinc.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +19,12 @@ public class McpCah extends Game
 {
 	public MCP mcp;
 	public MCPListenerClient mcpListener;
+	
+	public static Map<String, String> ALL_WHITE_CARDS = new HashMap<String, String>();
+	public static Map<String, String> ALL_BLACK_CARDS = new HashMap<String, String>();
+	
+	public static List<String> AVAILABLE_WHITE_CARDS = new ArrayList<String>();
+	public static List<String> AVAILABLE_BLACK_CARDS = new ArrayList<String>();
 	
 	@Override
 	public void create() 
