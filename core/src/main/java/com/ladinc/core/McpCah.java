@@ -12,6 +12,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.ladinc.core.listeners.MCPListenerClient;
+import com.ladinc.core.screens.GameScreen;
 import com.ladinc.mcp.MCP;
 import com.ladinc.mcp.RedirectOption;
 
@@ -19,6 +20,8 @@ public class McpCah extends Game
 {
 	public MCP mcp;
 	public MCPListenerClient mcpListener;
+	
+	public String ipAddr;
 	
 	public static Map<String, String> ALL_WHITE_CARDS = new HashMap<String, String>();
 	public static Map<String, String> ALL_BLACK_CARDS = new HashMap<String, String>();
@@ -32,7 +35,7 @@ public class McpCah extends Game
 		//Assets.load();
 		
 		//Create MCP, try use port 8888
-		this.mcp = new MCP(8888);
+		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);
 		
 		//Add a listener so the game can recieve events
 		mcpListener = new MCPListenerClient();
@@ -41,14 +44,24 @@ public class McpCah extends Game
 		//Set Debug logging to false
 		MCP.SHOW_DEBUG_LOGGING = false;
 		
+        ipAddr = mcp.getAddressForClients();
+        if(ipAddr.equals(":8888"))
+        {
+        	ipAddr = "No Network";
+        }
+        
+        Gdx.app.error("Main-MCP", "Connection Address: " + ipAddr);
+		
 		
 		//All files that are added to the resources folder must be added to this Array List
 		this.mcp.customLinks = new ArrayList<String>();
-		this.mcp.customLinks.add("playerClient.html");
+		this.mcp.customLinks.add("mergedCahPage.html");
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
-		this.mcp.redirectOptions.add(new RedirectOption("playerClient.html", "MCP CAH"));
+		this.mcp.redirectOptions.add(new RedirectOption("mergedCahPage.html", "MCP CAH"));
+		
+		this.setScreen(new GameScreen(this));
 		
 	}
 }
