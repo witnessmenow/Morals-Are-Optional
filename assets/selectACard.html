@@ -1,0 +1,127 @@
+<html>
+	<head>
+		<script>
+			function choose(){
+				var cards = document.getElementsByName("whiteCard");
+				var selectedCard = "";
+				for(var i = 0; i < cards.length; i++) {
+				   if(cards[i].checked == true) {
+					   selectedCard = cards[i].value;
+				   }
+				 }
+				 
+				 alert(selectedCard);
+			}
+		</script>
+		<style>
+			.hide {
+				display:none;
+			}
+			.show {
+				display:block;
+			}
+			.buttonDisable {
+				pointer-events:none;
+			}
+			.buttonEnable {
+				pointer-events:all;
+			}
+			.button {
+			   border-top: 1px solid #96d1f8;
+			   background: #65a9d7;
+			   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+			   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+			   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+			   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+			   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+			   padding: 5px 10px;
+			   -webkit-border-radius: 8px;
+			   -moz-border-radius: 8px;
+			   border-radius: 8px;
+			   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+			   color: white;
+			   font-size: 14px;
+			   font-family: Georgia, serif;
+			   text-decoration: none;
+			   vertical-align: middle;
+			}
+			.button:hover {
+			   border-top-color: #28597a;
+			   background: #28597a;
+			   color: #ccc;
+			}
+			.button:active {
+			   border-top-color: #1b435e;
+			   background: #1b435e;
+			}
+			
+			
+			
+			.buttonDisabledLook {
+			   border-top: 1px solid #9e9e9e;
+			   background: #9e9e9e;
+			   background: -webkit-gradient(linear, left top, left bottom, from(#adabad), to(#9e9e9e));
+			   background: -webkit-linear-gradient(top, #adabad, #9e9e9e);
+			   background: -moz-linear-gradient(top, #adabad, #9e9e9e);
+			   background: -ms-linear-gradient(top, #adabad, #9e9e9e);
+			   background: -o-linear-gradient(top, #adabad, #9e9e9e);
+			   padding: 5px 10px;
+			   -webkit-border-radius: 8px;
+			   -moz-border-radius: 8px;
+			   border-radius: 8px;
+			   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+			   color: #fafafa;
+			   font-size: 14px;
+			   font-family: Georgia, serif;
+			   text-decoration: none;
+			   vertical-align: middle;
+			   }
+			.buttonDisabledLook:hover {
+			   border-top-color: #9e9e9e;
+			   background: #9e9e9e;
+			   color: #ffffff;
+			   }
+			.buttonDisabledLook:active {
+			   border-top-color: #9e9e9e;
+			   background: #9e9e9e;
+			   }
+			
+		</style>
+	</head>
+	<body>
+		<form>
+			<br/>
+			<div id="whiteCard0">
+				<input name="whiteCard" type="radio" value="0"/><span>Card 1</span>
+			</div>
+			<br/>
+			<div id="whiteCard1">
+				<input name="whiteCard" type="radio" value="1"/><span>Card 1</span>
+			</div>
+			<br/>
+			<div id="whiteCard2">
+				<input name="whiteCard" type="radio" value="2"/><span>Card 1</span>
+			</div>
+			<br/>
+			<div id="whiteCard3">
+				<input name="whiteCard" type="radio" value="3"/><span>Card 1</span>
+			</div>
+			<br/>
+			<div id="whiteCard4">
+				<input name="whiteCard" type="radio" value="4"/><span>Card 1</span>
+			</div>
+			<br/>
+		</form>
+		<div id="startButton" class="button">
+			<a href="javascript:choose()">
+				Choose!
+			</a>
+		</div>
+	</body>
+</html>
