@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.json.simple.JSONArray;
+
 import com.ladinc.core.McpCah;
 
 public class Player 
@@ -19,9 +21,21 @@ public class Player
 	
 	public String selectedCard = null;
 	
+<<<<<<< HEAD
 	public Player(String name, String id){
 		this.name = name;
 		this.id = id;
+=======
+	public JSONArray cardsToJsonArray()
+	{
+		JSONArray cards = new JSONArray();
+		for(String s: hand)
+		{
+			cards.add(s);
+		}
+		
+		return cards;
+>>>>>>> origin/master
 	}
 	
 	public void populateHand()

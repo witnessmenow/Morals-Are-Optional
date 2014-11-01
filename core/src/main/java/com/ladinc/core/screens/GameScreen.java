@@ -1,5 +1,10 @@
 package com.ladinc.core.screens;
 
+
+import java.util.Random;
+
+import org.json.simple.JSONObject;
+
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +17,7 @@ public class GameScreen implements Screen
 		endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
 	};
 	
+	private String blackCard;
 	
 	public McpCah game;
 	private final OrthographicCamera camera;
@@ -58,6 +64,7 @@ public class GameScreen implements Screen
 	{
 		if(currentState == State.endOfRound)
 		{
+			getNewBlackCard();
 			moveToNextJudge();
 			repopulateHands();
 			clearSelectedCards();
@@ -72,6 +79,8 @@ public class GameScreen implements Screen
 				currentState = State.judgeChoosesAnswer;
 			}
 		}
+		
+		populateHearbeats();
 		
 	}
 
@@ -124,7 +133,17 @@ public class GameScreen implements Screen
 			{
 				p.isJudge = true;
 			}
+			i++;
 		}
+	}
+	
+	private void getNewBlackCard()
+	{
+		Random r = new Random();
+		int index = r.nextInt(McpCah.AVAILABLE_BLACK_CARDS.size());
+		
+		blackCard = McpCah.AVAILABLE_BLACK_CARDS.get(index);
+		McpCah.AVAILABLE_BLACK_CARDS.remove(index);
 	}
 	
 	public void repopulateHands()
@@ -161,12 +180,33 @@ public class GameScreen implements Screen
 		return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void populateHearbeats()
 	{
 		this.game.mcp.hearbeatResponses.clear();
 		for(Player p : this.game.players.values())
 		{
+			JSONObject obj = new JSONObject();
+		
+			if(!p.isJudge)
+			{
+				obj.put("cards", p.cardsToJsonArray());
+			}
+			else
+			{
+				if(currentState == State.playersChooseCard)
+				{
+					obj.put("judge", "wait");
+				}
+				else if(currentState == State.judgeChoosesAnswer)
+				{
+					//Populate answers from players
+				}
+			}
 			
+			obj.put("blackCard", this.blackCard);
+
+			this.game.mcp.hearbeatResponses.put(p.id, obj);
 		}
 	}
 
