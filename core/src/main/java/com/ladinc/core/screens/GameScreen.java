@@ -18,6 +18,8 @@ public class GameScreen implements Screen
 		endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
 	};
 	
+	public static String lastWiningWhiteCard = null;
+	
 	private String blackCard;
 	
 	public McpCah game;

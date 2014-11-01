@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
+import com.ladinc.core.screens.GameScreen;
 import com.ladinc.mcp.interfaces.MCPContorllersListener;
 
 public class MCPListenerClient implements  MCPContorllersListener
@@ -63,7 +64,7 @@ public class MCPListenerClient implements  MCPContorllersListener
 				}
 				else if(params.get("event").contains("winnerSelect"))
 				{
-					cardSelected(params.get("id"), params.get("card"));
+					winnerSelected(params.get("winnerId"), params.get("card"));
 				}
 			}
 		}
@@ -75,7 +76,9 @@ public class MCPListenerClient implements  MCPContorllersListener
 		if(this.game.players.containsKey(winnerId))
 		{
 			Player p = this.game.players.get(winnerId);
-			p.selectCardAction(card);
+			p.score++;
+			
+			GameScreen.lastWiningWhiteCard = card;
 		}
 	}
 	
