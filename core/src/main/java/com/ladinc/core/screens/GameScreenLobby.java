@@ -120,8 +120,8 @@ public class GameScreenLobby implements Screen
 	private void sendPlayerHeartbeats()
 	{
 		JSONObject obj = new JSONObject();
+		obj.put("numberOfPlayers", this.game.players.size());
 		for(Player p : this.game.players.values()){
-			obj.put("numberOfPlayers", this.game.players.size());
 			this.game.mcp.hearbeatResponses.put(p.id,obj);
 		}
 	}
