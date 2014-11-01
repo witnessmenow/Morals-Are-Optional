@@ -14,12 +14,15 @@ public class Player
 	
 	public String name;
 	public String id;
+	public int score = 0;
 	
 	public boolean isJudge = false;
 	
 	public List<String> hand = new ArrayList<String>();
 	
 	public String selectedCard = null;
+	
+	public static Boolean OUT_OF_WHITE_CARDS = false;
 	
 	public Player(String name, String id){
 		this.name = name;
@@ -54,7 +57,7 @@ public class Player
 			}
 			else
 			{
-				//Out of cards, game over
+				OUT_OF_WHITE_CARDS = true;
 			}
 		}
 	}

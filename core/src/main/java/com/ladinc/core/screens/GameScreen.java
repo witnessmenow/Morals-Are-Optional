@@ -28,6 +28,10 @@ public class GameScreen implements Screen
 	
 	public State currentState = State.endOfRound;
 	
+	private int roundNumber = 0;
+	
+	private Boolean gameOver = false;
+	
 	public GameScreen(McpCah g)
 	{
 		this.game = g;
@@ -65,11 +69,26 @@ public class GameScreen implements Screen
 	{
 		if(currentState == State.endOfRound)
 		{
+			roundNumber ++;
+			
 			getNewBlackCard();
 			moveToNextJudge();
 			repopulateHands();
 			clearSelectedCards();
-			currentState = State.playersChooseCard;
+			
+			if(Player.OUT_OF_WHITE_CARDS)
+			{
+				this.gameOver = true;
+			}
+			
+			if(this.gameOver)
+			{
+				currentState = State.gameOver;
+			}
+			else
+			{
+				currentState = State.playersChooseCard;
+			}
 			
 		}
 		
@@ -140,11 +159,18 @@ public class GameScreen implements Screen
 	
 	private void getNewBlackCard()
 	{
-		Random r = new Random();
-		int index = r.nextInt(McpCah.AVAILABLE_BLACK_CARDS.size());
+		if(McpCah.AVAILABLE_BLACK_CARDS.size() == 0)
+		{
+			
+		}
+		else
+		{
+			Random r = new Random();
+			int index = r.nextInt(McpCah.AVAILABLE_BLACK_CARDS.size());
 		
-		blackCard = McpCah.AVAILABLE_BLACK_CARDS.get(index);
-		McpCah.AVAILABLE_BLACK_CARDS.remove(index);
+			blackCard = McpCah.AVAILABLE_BLACK_CARDS.get(index);
+			McpCah.AVAILABLE_BLACK_CARDS.remove(index);
+		}
 	}
 	
 	public void repopulateHands()
