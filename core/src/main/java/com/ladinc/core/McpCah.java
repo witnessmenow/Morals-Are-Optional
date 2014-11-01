@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.listeners.MCPListenerClient;
 import com.ladinc.core.screens.GameScreen;
 import com.ladinc.mcp.MCP;
@@ -33,6 +34,7 @@ public class McpCah extends Game
 	public void create() 
 	{
 		//Assets.load();
+		CardParser.loadCards();
 		
 		//Create MCP, try use port 8888
 		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);
