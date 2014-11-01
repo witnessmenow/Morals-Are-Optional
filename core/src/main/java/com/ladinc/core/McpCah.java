@@ -13,6 +13,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.listeners.MCPListenerClient;
+import com.ladinc.core.objects.Player;
 import com.ladinc.core.screens.GameScreen;
 import com.ladinc.mcp.MCP;
 import com.ladinc.mcp.RedirectOption;
@@ -29,6 +30,8 @@ public class McpCah extends Game
 	
 	public static List<String> AVAILABLE_WHITE_CARDS = new ArrayList<String>();
 	public static List<String> AVAILABLE_BLACK_CARDS = new ArrayList<String>();
+	
+	public List<Player> PlayersList = new ArrayList<Player>();
 	
 	@Override
 	public void create() 
@@ -65,5 +68,28 @@ public class McpCah extends Game
 		
 		this.setScreen(new GameScreen(this));
 		
+	}
+	
+	private void mockPlayers()
+	{
+		PlayersList.clear();
+		
+		Player p = new Player();
+		p.name = "Brian";
+		p.id = "1";
+		
+		PlayersList.add(p);
+		
+		p = new Player();
+		p.name = "Gary";
+		p.id = "2";
+		
+		PlayersList.add(p);
+		
+		p = new Player();
+		p.name = "Kieran";
+		p.id = "3";
+		
+		PlayersList.add(p);
 	}
 }

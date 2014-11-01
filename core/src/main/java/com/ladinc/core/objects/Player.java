@@ -10,6 +10,9 @@ public class Player
 {
 	public static final int CARDS_IN_FULL_HAND = 7;
 	
+	public String name;
+	public String id;
+	
 	public boolean isJudge = false;
 	
 	public List<String> hand = new ArrayList<String>();
