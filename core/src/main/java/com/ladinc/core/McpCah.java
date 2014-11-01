@@ -31,7 +31,7 @@ public class McpCah extends Game
 	public static List<String> AVAILABLE_WHITE_CARDS = new ArrayList<String>();
 	public static List<String> AVAILABLE_BLACK_CARDS = new ArrayList<String>();
 	
-	public List<Player> PlayersList = new ArrayList<Player>();
+	public Map<String, Player> PlayersList = new HashMap<String, Player>();
 	
 	@Override
 	public void create() 
@@ -66,6 +66,8 @@ public class McpCah extends Game
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
 		this.mcp.redirectOptions.add(new RedirectOption("mergedCahPage.html", "MCP CAH"));
 		
+		mockPlayers();
+		
 		this.setScreen(new GameScreen(this));
 		
 	}
@@ -78,18 +80,18 @@ public class McpCah extends Game
 		p.name = "Brian";
 		p.id = "1";
 		
-		PlayersList.add(p);
+		PlayersList.put(p.id, p);
 		
 		p = new Player();
 		p.name = "Gary";
 		p.id = "2";
 		
-		PlayersList.add(p);
+		PlayersList.put(p.id, p);
 		
 		p = new Player();
 		p.name = "Kieran";
 		p.id = "3";
 		
-		PlayersList.add(p);
+		PlayersList.put(p.id, p);
 	}
 }

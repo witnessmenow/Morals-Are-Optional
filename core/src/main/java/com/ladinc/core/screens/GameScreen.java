@@ -96,14 +96,17 @@ public class GameScreen implements Screen
 	public void moveToNextJudge()
 	{
 		int indexOfCurrentJudge = -1;
-		for(int i = 0; i < game.PlayersList.size(); i++)
+		int i = 0;
+		for(Player p : this.game.PlayersList.values())
 		{
-			if(game.PlayersList.get(i).isJudge)
+			if(p.isJudge)
 			{
-				game.PlayersList.get(i).isJudge = false;
+				p.isJudge = false;
 				indexOfCurrentJudge = i;
 				break;
 			}
+			
+			i++;
 		}
 		
 		int indexOfNextJudge = indexOfCurrentJudge + 1;
@@ -113,12 +116,20 @@ public class GameScreen implements Screen
 			indexOfNextJudge = 0;
 		}
 		
-		game.PlayersList.get(indexOfNextJudge).isJudge = true;
+		i = 0;
+		for(Player p : this.game.PlayersList.values())
+		{
+			
+			if(i == indexOfNextJudge)
+			{
+				p.isJudge = true;
+			}
+		}
 	}
 	
 	public void repopulateHands()
 	{
-		for(Player p : this.game.PlayersList)
+		for(Player p : this.game.PlayersList.values())
 		{
 			p.populateHand();
 		}
@@ -126,7 +137,7 @@ public class GameScreen implements Screen
 	
 	public void clearSelectedCards()
 	{
-		for(Player p : this.game.PlayersList)
+		for(Player p : this.game.PlayersList.values())
 		{
 			p.selectedCard = null;
 		}
@@ -135,7 +146,7 @@ public class GameScreen implements Screen
 	private boolean haveAllNonJudgesSelectedACard()
 	{
 		
-		for(Player p : this.game.PlayersList)
+		for(Player p : this.game.PlayersList.values())
 		{
 			if(!p.isJudge)
 			{
@@ -148,6 +159,15 @@ public class GameScreen implements Screen
 		
 		//If we got here all players have selected cards
 		return true;
+	}
+	
+	private void populateHearbeats()
+	{
+		this.game.mcp.hearbeatResponses.clear();
+		for(Player p : this.game.PlayersList.values())
+		{
+			
+		}
 	}
 
 }
