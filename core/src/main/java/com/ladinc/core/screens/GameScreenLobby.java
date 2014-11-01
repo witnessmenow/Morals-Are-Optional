@@ -50,11 +50,9 @@ public class GameScreenLobby implements Screen
 	private void initializeFont()
 	{		
 		
-    	font = new BitmapFont();
+    	font = new BitmapFont(Gdx.files.internal("fonts/Swis-721-50.fnt"), Gdx.files.internal("fonts/Swis-721-50.png"), false);
     	//Make text black
     	font.setColor(Color.WHITE);
-    	
-    	
 	}
     
 	@Override
@@ -90,7 +88,7 @@ public class GameScreenLobby implements Screen
 	{
 		String text = "Connect To: " + this.game.mcp.getAddressForClients();
 		
-		float xPos = (this.screenWidth/2) -  font.getBounds(text).width/2;
+		float xPos = (this.screenWidth/2) - font.getBounds(text).width/2;
 		float yPos = (this.screenHeight) -  (this.screenHeight/7)*2;
 		
 		font.draw(sb, text, xPos, yPos);
@@ -98,7 +96,7 @@ public class GameScreenLobby implements Screen
 	
 	private void displayPlayers(SpriteBatch sb)
 	{
-		float yPos = (this.screenHeight) -  (this.screenHeight/7)*3;
+		float yPos = (this.screenHeight) - (this.screenHeight/7)*3;
 		
 		String playerName = "";
 		
