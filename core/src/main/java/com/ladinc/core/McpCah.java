@@ -63,7 +63,7 @@ public class McpCah extends Game
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
 		this.mcp.redirectOptions.add(new RedirectOption("mergedCahPage.html", "MCP CAH"));
 		
-		mockPlayers();
+		//mockPlayers();
 		
 		this.setScreen(new GameScreenLobby(this));
 		

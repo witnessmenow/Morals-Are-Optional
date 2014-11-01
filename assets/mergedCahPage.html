@@ -60,10 +60,10 @@
 			}
 			function registerPlayer()
 			{
-				registerNameWithServer();
+				registerNameWithServer(document.getElementById("name").value);
 					
 			}
-			function registerNameWithServer()
+			function registerNameWithServer(name)
 			{
 				var myRand=parseInt(Math.random()*99999999);
 				
@@ -87,6 +87,44 @@
 				}
 				
 				xmlhttp.send();
+			}
+			function sendHeartbeat()
+			{
+				var url = "heartbeat?id=" + getId();
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
+						handleHeartbeat(xmlhttp.responseText);
+					}
+				}
+				
+				xmlhttp.send();
+			}
+			
+			function handleHeartbeat(respText)
+			{
+				var obj = JSON.parse(respText);
+				
+				if(obj.hasOwnProperty('numberOfPlayers'))
+				{
+					if(obj.numberOfPlayers > 2){
+						enableStartButton();
+					}
+				}
+			}
+			function initMCP()
+			{
+				setInterval(sendHeartbeat, 1000);
 			}
 		</script>
 		<style>
@@ -170,17 +208,16 @@
 			
 		</style>
 	</head>
-	<body>
+	<body onLoad="initMCP();">
 		<div id="page1">
+			<div>
+				Enter Your Name: <input id="name" type="text" name="name" value="">
+			</div>
+			<br/>
 			<div class="button">
-				<!--  <a href="javascript:enableStartButton();"> -->
 				<a href="javascript:registerPlayer();">
 					Ready?
 				</a>
-			</div>
-			<br/>
-			<div>
-				Enter Your Name: <input id="name" type="text" name="name" value="">
 			</div>
 		</div>
 		<div id="page1Dot5" class="hide">
