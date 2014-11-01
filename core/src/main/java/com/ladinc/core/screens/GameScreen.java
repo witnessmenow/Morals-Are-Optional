@@ -3,6 +3,7 @@ package com.ladinc.core.screens;
 
 import java.util.Random;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.badlogic.gdx.Screen;
@@ -200,7 +201,7 @@ public class GameScreen implements Screen
 				}
 				else if(currentState == State.judgeChoosesAnswer)
 				{
-					//Populate answers from players
+					obj.put("selected", selectedWhiteCards());
 				}
 			}
 			
@@ -209,6 +210,26 @@ public class GameScreen implements Screen
 			this.game.mcp.hearbeatResponses.put(p.id, obj);
 		}
 	}
+	
+	public JSONArray selectedWhiteCards()
+	{
+		JSONArray array = new JSONArray();
+		
+		//Populate answers from players
+		for(Player NewP : this.game.players.values())
+		{			
+			if(!NewP.isJudge)
+			{
+				JSONObject innerObj = new JSONObject();
+				innerObj.put("playerID", NewP.id);
+				innerObj.put("selectedCard", NewP.selectedCard);
+				array.add(innerObj);
+			}	
+		}
+		
+		return array;
+	}
+	
 
 }
 
