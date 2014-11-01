@@ -29,6 +29,7 @@ public class McpCah extends Game
 	
 	public Map<String, Player> players = new HashMap<String, Player>();
 	
+	public boolean startGame = false; 
 	@Override
 	public void create() 
 	{

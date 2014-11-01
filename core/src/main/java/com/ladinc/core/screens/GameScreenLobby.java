@@ -2,6 +2,8 @@ package com.ladinc.core.screens;
 
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
+import com.ladinc.core.screens.GameScreen.State;
 
 public class GameScreenLobby implements Screen
 {	
@@ -60,7 +63,7 @@ public class GameScreenLobby implements Screen
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.combined);
 		drawSprites();
-		
+		sendPlayerHeartbeats();
 		
 	}
 	private void drawSprites()
@@ -111,6 +114,15 @@ public class GameScreenLobby implements Screen
 			font.draw(sb, playerName, xPos, yPosAdjusted);
 			i--;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void sendPlayerHeartbeats()
+	{
+		JSONObject obj = new JSONObject();
+		obj.put("numberOfPlayers", this.game.players.size());
+		this.game.mcp.hearbeatResponses.put("setup",obj);
+
 	}
 
 	@Override

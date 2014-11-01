@@ -21,11 +21,10 @@ public class Player
 	
 	public String selectedCard = null;
 	
-<<<<<<< HEAD
 	public Player(String name, String id){
 		this.name = name;
 		this.id = id;
-=======
+	}
 	public JSONArray cardsToJsonArray()
 	{
 		JSONArray cards = new JSONArray();
@@ -35,7 +34,6 @@ public class Player
 		}
 		
 		return cards;
->>>>>>> origin/master
 	}
 	
 	public void populateHand()
