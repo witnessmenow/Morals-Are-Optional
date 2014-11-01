@@ -53,10 +53,41 @@ public class MCPListenerClient implements  MCPContorllersListener
 				{
 					registerPlayer(params.get("id"), params.get("name"));
 				}
+				else if(params.get("event").contains("start"))
+				{
+					this.game.startGame = true;
+				}
+				else if(params.get("event").contains("cardSelect"))
+				{
+					cardSelected(params.get("id"), params.get("card"));
+				}
+				else if(params.get("event").contains("winnerSelect"))
+				{
+					cardSelected(params.get("id"), params.get("card"));
+				}
 			}
 		}
 		
 	}
+	
+	private void winnerSelected(String winnerId, String card)
+	{
+		if(this.game.players.containsKey(winnerId))
+		{
+			Player p = this.game.players.get(winnerId);
+			p.selectCardAction(card);
+		}
+	}
+	
+	private void cardSelected(String id, String card)
+	{
+		if(this.game.players.containsKey(id))
+		{
+			Player p = this.game.players.get(id);
+			p.selectCardAction(card);
+		}
+	}
+	
 	
 	private void registerPlayer(String controllerId, String name)
 	{

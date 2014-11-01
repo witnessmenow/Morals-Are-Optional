@@ -28,6 +28,21 @@ public class Player
 		this.name = name;
 		this.id = id;
 	}
+	
+	public void selectCardAction(String card)
+	{
+		if(hand.contains(card))
+		{
+			hand.remove(card);
+		}
+		else
+		{
+			//user selected a card they dont have?!	
+		}
+		
+		this.selectedCard = card;
+	}
+	
 	public JSONArray cardsToJsonArray()
 	{
 		JSONArray cards = new JSONArray();
