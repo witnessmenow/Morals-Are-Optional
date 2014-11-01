@@ -80,10 +80,14 @@ public class CardParser
 			    cardText = cardText.replace("[", "");
 			    cardText = cardText.replace("]", "");
 			    
-			    if(!McpCah.AVAILABLE_BLACK_CARDS.contains(cardText))
+			    if(!containsTwoUnderlines(cardText))
 			    {
-			    	McpCah.AVAILABLE_BLACK_CARDS.add(cardText);
+			    	if(!McpCah.AVAILABLE_BLACK_CARDS.contains(cardText))
+				    {
+				    	McpCah.AVAILABLE_BLACK_CARDS.add(cardText);
+				    }
 			    }
+			    
 			    
 			}
 			
@@ -94,4 +98,13 @@ public class CardParser
 			e.printStackTrace();
 		}
 	}
+	
+	public static boolean containsTwoUnderlines(String cardText)
+	{
+		int count = cardText.length();
+		String updatedText = cardText.replace("___", "");
+		
+		return (count > updatedText.length() + 3);
+	}
+	
 }
