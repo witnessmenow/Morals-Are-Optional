@@ -6,8 +6,11 @@ import java.util.Random;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
@@ -34,10 +37,12 @@ public class GameScreen implements Screen
 	
 	private Boolean gameOver = false;
 	
+	public BitmapFont font;
+	
 	public GameScreen(McpCah g)
 	{
 		this.game = g;
-		
+		initializeFont();
 		this.screenWidth = 1920;
 		this.screenHeight = 1080;
 		
@@ -45,6 +50,13 @@ public class GameScreen implements Screen
 		this.camera.setToOrtho(false, this.screenWidth, screenHeight);
 
 		this.spriteBatch = new SpriteBatch();
+	}
+	
+	private void initializeFont()
+	{		
+    	font = new BitmapFont(Gdx.files.internal("fonts/Swis-721-50.fnt"), Gdx.files.internal("fonts/Swis-721-50.png"), false);
+    	//Make text black
+    	font.setColor(Color.WHITE);
 	}
 
 	@Override
