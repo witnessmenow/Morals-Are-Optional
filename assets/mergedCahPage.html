@@ -1,5 +1,14 @@
 <html>
 	<head>
+		<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" />
+		<script src="jquery-1.9.1.min.js"></script>
+		<script src="jquery.mobile-1.3.2.min.js"></script>
+		
+		
+		<script type="text/javascript" src="defaultController.js"></script>
+		<script type="text/javascript" src="KeyboardButton.js"></script>
+		<script type="text/javascript" src="PageHelper.js"></script>
+		
 		<script>
 			var nextToShow = 0;
 			var numPlayers = 3
@@ -37,13 +46,47 @@
 				 
 				 alert(selectedCard);
 			}
-			function goToPage2(){
+			function goToPage1Dot5(){
 				document.getElementById("page1").className = "hide";
+				document.getElementById("page1Dot5").className = "show";
+			}
+			function goToPage2(){
+				document.getElementById("page1Dot5").className = "hide";
 				document.getElementById("page2").className = "show";
 			}
 			function goToPage3(){
 				document.getElementById("page2").className = "hide";
 				document.getElementById("page3").className = "show";
+			}
+			function registerPlayer()
+			{
+				registerNameWithServer();
+					
+			}
+			function registerNameWithServer()
+			{
+				var myRand=parseInt(Math.random()*99999999);
+				
+				var url = "passEvent?id=" + getId()  +  "&event=register&name="	+ name;
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
+						//When name is registered. redirect to wait screen
+						goToPage1Dot5();						
+					}
+				}
+				
+				xmlhttp.send();
 			}
 		</script>
 		<style>
@@ -130,11 +173,17 @@
 	<body>
 		<div id="page1">
 			<div class="button">
-				<a href="javascript:enableStartButton();">
+				<!--  <a href="javascript:enableStartButton();"> -->
+				<a href="javascript:registerPlayer();">
 					Ready?
 				</a>
 			</div>
 			<br/>
+			<div>
+				Enter Your Name: <input id="name" type="text" name="name" value="">
+			</div>
+		</div>
+		<div id="page1Dot5" class="hide">
 			<div id="beginButton" class="buttonDisabledLook buttonDisable">
 				<a href="javascript:goToPage2();">
 					Begin!

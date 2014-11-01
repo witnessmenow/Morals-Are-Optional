@@ -1,16 +1,19 @@
 package com.ladinc.core.listeners;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import com.ladinc.core.McpCah;
+import com.ladinc.core.objects.Player;
 import com.ladinc.mcp.interfaces.MCPContorllersListener;
 
 public class MCPListenerClient implements  MCPContorllersListener
 {
-
-	public static List<String> ids = new ArrayList<String>();
+	public McpCah game;
+	
+	public MCPListenerClient(McpCah game)
+	{
+		this.game = game;
+	}
 	
 	@Override
 	public void analogMove(int arg0, String arg1, float x, float y) 
@@ -42,19 +45,24 @@ public class MCPListenerClient implements  MCPContorllersListener
 	{
 		
 		//We will be using the pass event
-		
-		String id;
-		
 		if(params != null)
 		{
-			id = params.get("id");
-			
-			if(!ids.contains(id))
+			if(params.containsKey("event"))
 			{
-				ids.add(id);
+				if(params.get("event").contains("register"))
+				{
+					registerPlayer(params.get("id"), params.get("name"));
+				}
 			}
-			
-			//HackEventManager.recievedHackEvent(rating, id);
+		}
+		
+	}
+	
+	private void registerPlayer(String controllerId, String name)
+	{
+		if(!this.game.players.containsKey(controllerId))
+		{
+			this.game.players.put(controllerId, new Player(name, controllerId));
 		}
 		
 	}

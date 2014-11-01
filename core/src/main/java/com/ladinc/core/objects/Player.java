@@ -19,6 +19,11 @@ public class Player
 	
 	public String selectedCard = null;
 	
+	public Player(String name, String id){
+		this.name = name;
+		this.id = id;
+	}
+	
 	public void populateHand()
 	{
 		while(hand.size() < CARDS_IN_FULL_HAND)

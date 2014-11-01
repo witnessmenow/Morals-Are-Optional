@@ -5,16 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.listeners.MCPListenerClient;
 import com.ladinc.core.objects.Player;
-import com.ladinc.core.screens.GameScreen;
 import com.ladinc.core.screens.GameScreenLobby;
 import com.ladinc.mcp.MCP;
 import com.ladinc.mcp.RedirectOption;
@@ -44,7 +39,7 @@ public class McpCah extends Game
 		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);
 		
 		//Add a listener so the game can recieve events
-		mcpListener = new MCPListenerClient();
+		mcpListener = new MCPListenerClient(this);
 		this.mcp.addMCPListener(mcpListener);
 		
 		//Set Debug logging to false
@@ -77,22 +72,13 @@ public class McpCah extends Game
 	{
 		players.clear();
 		
-		Player p = new Player();
-		p.name = "Brian";
-		p.id = "1";
-		
+		Player p = new Player("Brian", "1");
 		players.put(p.id, p);
 		
-		p = new Player();
-		p.name = "Gary";
-		p.id = "2";
-		
+		p = new Player("Gary", "2");
 		players.put(p.id, p);
 		
-		p = new Player();
-		p.name = "Kieran";
-		p.id = "3";
-		
+		p = new Player("Kieran", "3");
 		players.put(p.id, p);
 	}
 }
