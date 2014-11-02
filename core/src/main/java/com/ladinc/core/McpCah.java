@@ -58,6 +58,7 @@ public class McpCah extends Game
 		//All files that are added to the resources folder must be added to this Array List
 		this.mcp.customLinks = new ArrayList<String>();
 		this.mcp.customLinks.add("mergedCahPage.html");
+		this.mcp.customLinks.add("jquery-1.11.1.min.js");
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
