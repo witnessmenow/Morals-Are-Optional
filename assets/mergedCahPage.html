@@ -29,7 +29,7 @@
 			}
 			function next(){
 				if(nextToShow < numPlayers){
-					document.getElementById("winningWhiteCard" + nextToShow).className = "show";
+					document.getElementById("winningWhiteCard" + nextToShow).className = "show whiteCard";
 					nextToShow++;
 				} else {
 					document.getElementById("startButton").className = "button show";
@@ -246,7 +246,7 @@
 						display: none;
 				}
 				
-				.whiteCard p {
+				.whiteCard p, .blackCard p {
 				    width: 135px;
 				    word-wrap: break-word;
 				    margin-top: 5px;
@@ -284,6 +284,9 @@
 		<div id="page2" class="hide">
 			<form>
 				<span class="displayInlineBlock">
+					<div class="blackCard" >
+						<p>CURRENT BLACK CARD</p>
+					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard0')">
 						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p>This is a long string to see how the wrapping works</p>
 					</div>
@@ -314,19 +317,20 @@
 						Next
 					</a>
 				</div>
-				<br/>
-				<div id="winningWhiteCard0" class="hide whiteCard">
-					<input type="radio" name="chosenCard" value="0"/><span>Chosen Card 1</span>
-				</div>
-				<br/>
-				<div id="winningWhiteCard1" class="hide whiteCard">
-					<input type="radio" name="chosenCard" value="1"/><span>Chosen Card 2</span>
-				</div>
-				<br/>
-				<div id="winningWhiteCard2" class="hide whiteCard">
-					<input type="radio" name="chosenCard" value="2"/><span>Chosen Card 3</span>
-				</div>
-				<br/>
+				<span class="displayInlineBlock">
+					<div class="blackCard" >
+						<p>CURRENT BLACK CARD</p>
+					</div>
+					<div id="winningWhiteCard0" class="hide" onclick="clicker('winningWhiteCardInput0')">
+						<input id="winningWhiteCardInput0" type="radio" name="chosenCard" value="0" onclick="winningWhiteCardPicker(this.value)"/><p>Chosen Card 1</p>
+					</div>
+					<div id="winningWhiteCard1" class="hide" onclick="clicker('winningWhiteCardInput1')">
+						<input id="winningWhiteCardInput1" type="radio" name="chosenCard" value="1" onclick="winningWhiteCardPicker(this.value)"/><p>Chosen Card 2</p>
+					</div>
+					<div id="winningWhiteCard2" class="hide" onclick="clicker('winningWhiteCardInput2')">
+						<input id="winningWhiteCardInput2" type="radio" name="chosenCard" value="2" onclick="winningWhiteCardPicker(this.value)"/><p>Chosen Card 3</p>
+					</div>
+				</span>
 			</form>
 			<div id="startButton" class="button hide">
 				<a href="javascript:castVote()">
@@ -345,6 +349,16 @@
 					$("#whiteCard" + i).parent().parent().addClass("redBorder").removeClass("noBorder");
 				} else {
 					$("#whiteCard" + i).parent().parent().addClass("noBorder").removeClass("redBorder");
+				}
+			}
+		}
+		
+		function winningWhiteCardPicker(index){
+			for(var i = 0; i < numPlayers; i++){
+				if (i == index) {
+					$("#winningWhiteCard" + i ).addClass("redBorder").removeClass("noBorder");
+				} else {
+					$("#winningWhiteCard" + i ).addClass("noBorder").removeClass("redBorder");
 				}
 			}
 		}
