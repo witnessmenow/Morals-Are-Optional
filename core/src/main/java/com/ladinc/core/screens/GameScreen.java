@@ -1,17 +1,26 @@
 package com.ladinc.core.screens;
 
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
 
@@ -21,7 +30,8 @@ public class GameScreen implements Screen
 		endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
 	};
 	
-	public static String lastWiningWhiteCard = null;
+	public static String lastWiningWhiteCard = "PacMan Uncontrollably guzzling Cum";
+	public static String lastRevealedWhiteCard = "PacMan Uncontrollably guzzling Cum";
 	
 	private String blackCard;
 	
@@ -38,6 +48,18 @@ public class GameScreen implements Screen
 	private Boolean gameOver = false;
 	
 	public BitmapFont font;
+	public BitmapFont labelFont;
+	
+	public Label blackCardLabel;
+	
+	public Sprite blackCardSprite;
+	
+	public Label whiteCardLabel;
+	
+	public Sprite whiteCardSprite;
+	
+	public Sprite tickSprite;
+	public Sprite judgeSprite;
 	
 	public GameScreen(McpCah g)
 	{
@@ -50,13 +72,34 @@ public class GameScreen implements Screen
 		this.camera.setToOrtho(false, this.screenWidth, screenHeight);
 
 		this.spriteBatch = new SpriteBatch();
+		
+		tickSprite = new Sprite(new Texture(Gdx.files.internal("tick.png")));
+		tickSprite.setColor(Color.BLACK);
+		
+		judgeSprite = new Sprite(new Texture(Gdx.files.internal("judge.png")));
+		judgeSprite.setColor(Color.BLACK);
+		
+		
+		blackCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
+		blackCardSprite.setColor(Color.BLACK);
+		
+		whiteCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
+		whiteCardSprite.setColor(Color.WHITE);
+		
+		blackCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.WHITE));
+		
+		whiteCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.BLACK));
 	}
 	
 	private void initializeFont()
 	{		
     	font = new BitmapFont(Gdx.files.internal("fonts/Swis-721-50.fnt"), Gdx.files.internal("fonts/Swis-721-50.png"), false);
     	//Make text black
-    	font.setColor(Color.WHITE);
+    	font.setColor(Color.BLACK);
+    	
+    	labelFont = new BitmapFont(Gdx.files.internal("fonts/Swis-721-32.fnt"), Gdx.files.internal("fonts/Swis-721-32.png"), false);
+    	//Make text black
+    	labelFont.setColor(Color.WHITE);
 	}
 
 	@Override
@@ -78,13 +121,41 @@ public class GameScreen implements Screen
 		
 	}
 
+	private boolean buttonJustPressCoolDown = false;
+	
 	@Override
 	public void render(float arg0) 
+	{
+		handleGameState();
+		
+		camera.update();
+		spriteBatch.setProjectionMatrix(camera.combined);
+		
+		populateHearbeats();
+		
+		drawSprites();
+		
+		if(Gdx.input.isKeyPressed(Input.Keys.N))
+		{
+			if(!buttonJustPressCoolDown)
+			{
+				getNewBlackCard();
+			}
+			buttonJustPressCoolDown = true;
+		}
+		else if(buttonJustPressCoolDown)
+		{
+			buttonJustPressCoolDown = false;
+		}
+	}
+	
+	private void handleGameState()
 	{
 		if(currentState == State.endOfRound)
 		{
 			roundNumber ++;
 			
+			selectedWhiteCards = null;
 			getNewBlackCard();
 			moveToNextJudge();
 			repopulateHands();
@@ -113,9 +184,107 @@ public class GameScreen implements Screen
 				currentState = State.judgeChoosesAnswer;
 			}
 		}
+	}
+	
+	private void drawSprites()
+	{
+    	Gdx.gl.glClearColor(0f, 0f, 1f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		populateHearbeats();
+		this.spriteBatch.begin();
+		displayPlayers(spriteBatch);
+		DisplayMCPAddressText(spriteBatch);
+		drawBlackCard(spriteBatch);
+		drawWhiteCard(spriteBatch);
+		this.spriteBatch.end();
+	}
+	
+	private void drawBlackCard(SpriteBatch sb)
+	{
+		float blackCardYBase = screenHeight/2 + 100f;
 		
+		blackCardSprite.setPosition(screenWidth/2, blackCardYBase - 100f);
+		blackCardSprite.draw(sb);
+
+		this.blackCardLabel.setAlignment(Align.left | Align.top);
+		this.blackCardLabel.setText(blackCard);
+		this.blackCardLabel.setColor(Color.WHITE);
+		this.blackCardLabel.setWrap(true);
+		this.blackCardLabel.setWidth(320f);
+		this.blackCardLabel.setPosition(screenWidth/2 + 15f, blackCardYBase + 300f);
+		this.blackCardLabel.draw(sb, 1);
+	}
+	
+	private void drawWhiteCard(SpriteBatch sb)
+	{
+		float whiteCardYBase = screenHeight/2 - 400f;
+		
+		whiteCardSprite.setPosition(screenWidth/2, whiteCardYBase - 100f);
+		whiteCardSprite.draw(sb);
+
+		this.whiteCardLabel.setAlignment(Align.left | Align.top);
+		if(this.currentState == State.judgeChoosesAnswer)
+		{
+			this.whiteCardLabel.setText(lastRevealedWhiteCard);
+		}
+		else
+		{
+			this.whiteCardLabel.setText(lastWiningWhiteCard);
+		}
+		this.whiteCardLabel.setColor(Color.BLACK);
+		this.whiteCardLabel.setWrap(true);
+		this.whiteCardLabel.setWidth(320f);
+		this.whiteCardLabel.setPosition(screenWidth/2 + 15f, whiteCardYBase + 300f);
+		this.whiteCardLabel.draw(sb, 1);
+	}
+	
+	private void displayPlayers(SpriteBatch sb)
+	{
+		
+		float yPos = (this.screenHeight) - (this.screenHeight/7);
+		
+		String playerText = "";
+		
+		int i = this.game.players.size();
+		
+		for(Map.Entry<String, Player> entry : this.game.players.entrySet())
+		{		
+			playerText = entry.getValue().getName() + ": " + entry.getValue().score;
+			
+			float xPos = (this.screenWidth/14);
+			float yPosAdjusted = (float) (yPos -  (i-1)*font.getBounds(playerText).height*(1.8));
+			
+			font.draw(sb, playerText, xPos, yPosAdjusted);
+			
+			xPos = xPos - tickSprite.getWidth() - 10f;
+			
+			//entry.getValue().selectedCard = "card";
+			
+			if(entry.getValue().isJudge)
+			{
+				yPosAdjusted = yPosAdjusted - tickSprite.getHeight() + 3f;
+				judgeSprite.setPosition(xPos, yPosAdjusted);
+				judgeSprite.draw(sb);
+			}
+			else if(entry.getValue().selectedCard != null)
+			{
+				yPosAdjusted = yPosAdjusted - tickSprite.getHeight() + 10f;
+				tickSprite.setPosition(xPos, yPosAdjusted);
+				tickSprite.draw(sb);
+			}
+			
+			i--;
+		}
+	}
+	
+	private void DisplayMCPAddressText(SpriteBatch sb)
+	{
+		String text = this.game.mcp.getAddressForClients();
+		
+		float xPos = (this.screenWidth) - font.getBounds(text).width - 50f;
+		float yPos = (this.screenHeight) - 20f;
+		
+		font.draw(sb, text, xPos, yPos);
 	}
 
 	@Override
@@ -175,7 +344,7 @@ public class GameScreen implements Screen
 	{
 		if(McpCah.AVAILABLE_BLACK_CARDS.size() == 0)
 		{
-			
+			this.gameOver = true;
 		}
 		else
 		{
@@ -241,7 +410,12 @@ public class GameScreen implements Screen
 				}
 				else if(currentState == State.judgeChoosesAnswer)
 				{
-					obj.put("selected", selectedWhiteCards());
+					if(selectedWhiteCards == null)
+					{
+						selectedWhiteCards = generateSelectedWhiteCards();
+					}
+					
+					obj.put("selected", selectedWhiteCards);
 				}
 			}
 			
@@ -251,7 +425,9 @@ public class GameScreen implements Screen
 		}
 	}
 	
-	public JSONArray selectedWhiteCards()
+	private JSONArray selectedWhiteCards = null;
+	
+	public JSONArray generateSelectedWhiteCards()
 	{
 		JSONArray array = new JSONArray();
 		
@@ -266,6 +442,8 @@ public class GameScreen implements Screen
 				array.add(innerObj);
 			}	
 		}
+		
+		Collections.shuffle(array);
 		
 		return array;
 	}
