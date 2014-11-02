@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.listeners.MCPListenerClient;
 import com.ladinc.core.objects.Player;
+import com.ladinc.core.screens.GameScreen;
 import com.ladinc.core.screens.GameScreenLobby;
 import com.ladinc.mcp.MCP;
 import com.ladinc.mcp.RedirectOption;
@@ -67,6 +68,7 @@ public class McpCah extends Game
 		//mockPlayers();
 		
 		this.setScreen(new GameScreenLobby(this));
+		//this.setScreen(new GameScreen(this));
 		
 	}
 	

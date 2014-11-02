@@ -50,6 +50,9 @@
 				document.getElementById("page1").className = "hide";
 				document.getElementById("page1Dot5").className = "show";
 			}
+			function startButtonPressed(){
+				sendStartToServer();
+			}
 			function goToPage2(){
 				document.getElementById("page1Dot5").className = "hide";
 				document.getElementById("page2").className = "show";
@@ -62,6 +65,30 @@
 			{
 				registerNameWithServer(document.getElementById("name").value);
 					
+			}
+			function sendStartToServer()
+			{
+				var myRand=parseInt(Math.random()*99999999);
+				
+				var url = "passEvent?&event=start";
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
+						//Don't Care :)					
+					}
+				}
+				
+				xmlhttp.send();
 			}
 			function registerNameWithServer(name)
 			{
@@ -119,6 +146,30 @@
 				{
 					if(obj.numberOfPlayers > 2){
 						enableStartButton();
+					}
+				}
+				
+				if(obj.hasOwnProperty('cards'))
+				{
+					if (document.getElementById("page2").className != "show")
+					{
+						goToPage2();
+					}
+					
+					var arrayLength = obj.cards.length;
+					for (var i = 0; i < arrayLength; i++) {
+						if (document.getElementById("whiteCardText" + i).innerHTML != obj.cards[i])
+						{
+							document.getElementById("whiteCardText" + i).innerHTML = obj.cards[i];
+						}
+					}
+				}
+				
+				if(obj.hasOwnProperty('blackCard'))
+				{
+					if (document.getElementById("blackCardText").innerHTML != obj.blackCard)
+					{
+						document.getElementById("blackCardText").innerHTML = obj.blackCard;
 					}
 				}
 			}
@@ -276,7 +327,7 @@
 		</div>
 		<div id="page1Dot5" class="hide">
 			<div id="beginButton" class="buttonDisabledLook buttonDisable" onclick="clicker('beginButtonA')">
-				<a id="beginButtonA" href="javascript:goToPage2();">
+				<a id="beginButtonA" href="javascript:startButtonPressed();">
 					Begin!
 				</a>
 			</div>
@@ -285,22 +336,22 @@
 			<form>
 				<span class="displayInlineBlock">
 					<div class="blackCard" >
-						<p>CURRENT BLACK CARD</p>
+						<p id="blackCardText">CURRENT BLACK CARD</p>
 					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard0')">
-						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p>This is a long string to see how the wrapping works</p>
+						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">This is a long string to see how the wrapping works</p>
 					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard1')">
-						<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p>Card 1</p>
+						<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
 					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard2')">
-						<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p>Card 1</p>
+						<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText2">Card 1</p>
 					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard3')">
-						<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p>Card 1</p>
+						<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText3">Card 1</p>
 					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard4')">
-						<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p>Card 1</p>
+						<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
 					</div>
 				</span>
 			</form>

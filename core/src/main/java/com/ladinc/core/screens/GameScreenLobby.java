@@ -63,6 +63,11 @@ public class GameScreenLobby implements Screen
 		drawSprites();
 		sendPlayerHeartbeats();
 		
+		if(this.game.startGame)
+		{
+			this.game.setScreen(new GameScreen(this.game));
+		}
+		
 	}
 	private void drawSprites()
 	{

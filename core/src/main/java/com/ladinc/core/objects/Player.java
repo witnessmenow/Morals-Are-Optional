@@ -10,7 +10,7 @@ import com.ladinc.core.McpCah;
 
 public class Player 
 {
-	public static final int CARDS_IN_FULL_HAND = 7;
+	public static final int CARDS_IN_FULL_HAND = 5;
 	
 	public String name;
 	public String id;
