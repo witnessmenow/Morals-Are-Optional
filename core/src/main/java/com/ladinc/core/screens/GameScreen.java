@@ -414,7 +414,7 @@ public class GameScreen implements Screen
 					{
 						selectedWhiteCards = generateSelectedWhiteCards();
 					}
-					
+					obj.put("judge", "vote");
 					obj.put("selected", selectedWhiteCards);
 				}
 			}

@@ -61,6 +61,17 @@
 				document.getElementById("page2").className = "hide";
 				document.getElementById("page3").className = "show";
 			}
+			function goToJudgeWait(){
+				hideAllPages();
+				document.getElementById("judgeWait").className = "show";
+			}
+			function hideAllPages(){
+				document.getElementById("page1").className = "hide";
+				document.getElementById("page1Dot5").className = "hide";
+				document.getElementById("page2").className = "hide";
+				document.getElementById("page3").className = "hide";
+				document.getElementById("judgeWait").className = "hide";
+			}
 			function registerPlayer()
 			{
 				registerNameWithServer(document.getElementById("name").value);
@@ -165,11 +176,28 @@
 					}
 				}
 				
+				if(obj.hasOwnProperty('judge'))
+				{
+					if(obj.judge == "wait")
+					{
+						if (document.getElementById("judgeWait").className != "show")
+						{
+							goToJudgeWait();
+						}
+					}
+
+				}
+				
 				if(obj.hasOwnProperty('blackCard'))
 				{
-					if (document.getElementById("blackCardText").innerHTML != obj.blackCard)
+					if (document.getElementById("blackCardTextJudgeWait").innerHTML != obj.blackCard)
 					{
-						document.getElementById("blackCardText").innerHTML = obj.blackCard;
+						document.getElementById("blackCardTextJudgeWait").innerHTML = obj.blackCard;
+					}
+					
+					if (document.getElementById("blackCardTextPlayer").innerHTML != obj.blackCard)
+					{
+						document.getElementById("blackCardTextPlayer").innerHTML = obj.blackCard;
 					}
 				}
 			}
@@ -336,7 +364,7 @@
 			<form>
 				<span class="displayInlineBlock">
 					<div class="blackCard" >
-						<p id="blackCardText">CURRENT BLACK CARD</p>
+						<p id="blackCardTextPlayer"></p>
 					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard0')">
 						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">This is a long string to see how the wrapping works</p>
@@ -359,6 +387,14 @@
 				<a href="javascript:choose()">
 					Choose!
 				</a>
+			</div>
+		</div>
+		<div id="judgeWait" class="hide">
+			<div class="blackCard" >
+				<p id="blackCardTextJudgeWait"></p>
+			</div>
+			<div>
+				Waiting for players Votes
 			</div>
 		</div>
 		<div id="page3" class="hide">
