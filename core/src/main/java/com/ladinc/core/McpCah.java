@@ -40,6 +40,9 @@ public class McpCah extends Game
 		//Create MCP, try use port 8888
 		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);
 		
+		//Users IP addresses used as IDS
+		MCP.USE_IP_ADDRESS_AS_ID = true;
+		
 		//Add a listener so the game can recieve events
 		mcpListener = new MCPListenerClient(this);
 		this.mcp.addMCPListener(mcpListener);
