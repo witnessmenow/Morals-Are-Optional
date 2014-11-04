@@ -33,7 +33,7 @@ public class Player
 	{
 		if(hand.contains(card))
 		{
-			hand.remove(card);
+			//hand.remove(card);
 		}
 		else
 		{
@@ -56,6 +56,11 @@ public class Player
 	
 	public void populateHand()
 	{
+		if(selectedCard != null && hand.contains(selectedCard))
+		{
+			hand.remove(selectedCard);
+		}
+		
 		while(hand.size() < CARDS_IN_FULL_HAND)
 		{
 			if(McpCah.AVAILABLE_WHITE_CARDS.size() > 0)

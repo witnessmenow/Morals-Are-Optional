@@ -23,9 +23,12 @@
 					   selectedCard = cards[i].value;
 				   }
 				 }
+				
+				var cardText = document.getElementById("whiteCardText" + selectedCard).innerHTML;
+				playCard(cardText);
 				 
-				 alert(selectedCard);
-				 goToPage3();
+				 //alert(selectedCard);
+				 //goToPage3();
 			}
 			function next(){
 				if(nextToShow < numPlayers){
@@ -44,22 +47,23 @@
 				   }
 				 }
 				 
+				
 				 alert(selectedCard);
 			}
 			function goToPage1Dot5(){
-				document.getElementById("page1").className = "hide";
+				hideAllPages();
 				document.getElementById("page1Dot5").className = "show";
 			}
 			function startButtonPressed(){
 				sendStartToServer();
 			}
 			function goToPage2(){
-				document.getElementById("page1Dot5").className = "hide";
+				hideAllPages();
 				document.getElementById("page2").className = "show";
 			}
-			function goToPage3(){
-				document.getElementById("page2").className = "hide";
-				document.getElementById("page3").className = "show";
+			function goToJudgeVote(){
+				hideAllPages();
+				document.getElementById("judgeVote").className = "show";
 			}
 			function goToJudgeWait(){
 				hideAllPages();
@@ -69,13 +73,36 @@
 				document.getElementById("page1").className = "hide";
 				document.getElementById("page1Dot5").className = "hide";
 				document.getElementById("page2").className = "hide";
-				document.getElementById("page3").className = "hide";
+				document.getElementById("judgeVote").className = "hide";
 				document.getElementById("judgeWait").className = "hide";
 			}
 			function registerPlayer()
 			{
-				registerNameWithServer(document.getElementById("name").value);
+				registerNameWithServer(document.getElementById("name").value);	
+			}
+			function playCard(cardText)
+			{
+				var myRand=parseInt(Math.random()*99999999);
+				
+				var url = "passEvent?id=" + getId()  +  "&event=cardSelect&card="	+ cardText;
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
 					
+					}
+				}
+				
+				xmlhttp.send();
 			}
 			function sendStartToServer()
 			{
@@ -176,6 +203,12 @@
 					}
 				}
 				
+				if(obj.hasOwnProperty('selectedCard'))
+				{
+					//TODO:
+					//Disable card selection, they have already submitted their card
+				}
+				
 				if(obj.hasOwnProperty('judge'))
 				{
 					if(obj.judge == "wait")
@@ -183,6 +216,14 @@
 						if (document.getElementById("judgeWait").className != "show")
 						{
 							goToJudgeWait();
+						}
+					}
+					
+					if(obj.judge == "vote")
+					{
+						if (document.getElementById("judgeVote").className != "show")
+						{
+							goToJudgeVote();
 						}
 					}
 
@@ -397,7 +438,7 @@
 				Waiting for players Votes
 			</div>
 		</div>
-		<div id="page3" class="hide">
+		<div id="judgeVote" class="hide">
 			<form>
 				<div class="button">
 					<a href="javascript:next();">

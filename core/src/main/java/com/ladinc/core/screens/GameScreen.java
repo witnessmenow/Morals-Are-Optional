@@ -30,8 +30,8 @@ public class GameScreen implements Screen
 		endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
 	};
 	
-	public static String lastWiningWhiteCard = "PacMan Uncontrollably guzzling Cum";
-	public static String lastRevealedWhiteCard = "PacMan Uncontrollably guzzling Cum";
+	public static String lastWiningWhiteCard = "";
+	public static String lastRevealedWhiteCard = "";
 	
 	private String blackCard;
 	
@@ -159,7 +159,7 @@ public class GameScreen implements Screen
 			getNewBlackCard();
 			moveToNextJudge();
 			repopulateHands();
-			clearSelectedCards();
+			//clearSelectedCards();
 			
 			if(Player.OUT_OF_WHITE_CARDS)
 			{
@@ -195,7 +195,10 @@ public class GameScreen implements Screen
 		displayPlayers(spriteBatch);
 		DisplayMCPAddressText(spriteBatch);
 		drawBlackCard(spriteBatch);
-		drawWhiteCard(spriteBatch);
+		if(lastRevealedWhiteCard != null || lastWiningWhiteCard != null);
+		{
+			drawWhiteCard(spriteBatch);
+		}
 		this.spriteBatch.end();
 	}
 	
@@ -364,13 +367,13 @@ public class GameScreen implements Screen
 		}
 	}
 	
-	public void clearSelectedCards()
-	{
-		for(Player p : this.game.players.values())
-		{
-			p.selectedCard = null;
-		}
-	}
+//	public void clearSelectedCards()
+//	{
+//		for(Player p : this.game.players.values())
+//		{
+//			p.selectedCard = null;
+//		}
+//	}
 	
 	private boolean haveAllNonJudgesSelectedACard()
 	{
@@ -401,6 +404,11 @@ public class GameScreen implements Screen
 			if(!p.isJudge)
 			{
 				obj.put("cards", p.cardsToJsonArray());
+				
+				if(p.selectedCard != null)
+				{
+					obj.put("selectedCard", p.selectedCard);
+				}
 			}
 			else
 			{
