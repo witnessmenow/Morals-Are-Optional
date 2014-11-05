@@ -30,8 +30,8 @@ public class GameScreen implements Screen
 		endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
 	};
 	
-	public static String lastWiningWhiteCard = "";
-	public static String lastRevealedWhiteCard = "";
+	public static String lastWiningWhiteCard = null;
+	public static String lastRevealedWhiteCard = null;
 	
 	private String blackCard;
 	

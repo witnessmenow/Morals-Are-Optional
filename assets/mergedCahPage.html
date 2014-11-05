@@ -12,6 +12,9 @@
 		<script>
 			var nextToShow = 0;
 			var numPlayers = 3
+			
+			var currentBlackCardText = "";
+			
 			function enableStartButton(){
 				document.getElementById("beginButton").className = "button buttonEnable";
 			}
@@ -31,12 +34,25 @@
 				 //goToPage3();
 			}
 			function next(){
-				if(nextToShow < numPlayers){
-					document.getElementById("winningWhiteCard" + nextToShow).className = "show whiteCard";
-					nextToShow++;
-				} else {
-					document.getElementById("startButton").className = "button show";
+				
+				var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
+				
+				for(var i = 0; i < whiteCardDivs.length; i++) 
+				{
+					if(whiteCardDivs[i].className == "hide")
+					{
+						whiteCardDivs[i].className = "whiteCard";
+						
+						//If this is the last card enable the button
+						if(i == whiteCardDivs.length - 1)
+						{
+							document.getElementById("startButton").className = "button show";
+						}
+						//We only want to show one at a time;
+						return;
+					}
 				}
+				
 			}
 			function castVote(){
 				var cards = document.getElementsByName("chosenCard");
@@ -46,9 +62,9 @@
 					   selectedCard = cards[i].value;
 				   }
 				 }
-				 
 				
-				 alert(selectedCard);
+				var cardText = document.getElementById("whiteCardText" + selectedCard).innerHTML;
+				voteCard(selectedCard, cardText);
 			}
 			function goToPage1Dot5(){
 				hideAllPages();
@@ -85,6 +101,29 @@
 				var myRand=parseInt(Math.random()*99999999);
 				
 				var url = "passEvent?id=" + getId()  +  "&event=cardSelect&card="	+ cardText;
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
+					
+					}
+				}
+				
+				xmlhttp.send();
+			}
+			function voteCard(selectedCard, cardText)
+			{
+				
+				var url = "passEvent?id=" + getId()  +  "&event=winnerSelect&winnerId=" + selectedCard + "card="	+ cardText;
 				
 				var xmlhttp
 				if (window.XMLHttpRequest)
@@ -224,6 +263,10 @@
 						if (document.getElementById("judgeVote").className != "show")
 						{
 							goToJudgeVote();
+							if(obj.hasOwnProperty('selected'))
+							{
+								generateJudgeWhiteCards(obj.selected);	
+							}
 						}
 					}
 
@@ -231,16 +274,64 @@
 				
 				if(obj.hasOwnProperty('blackCard'))
 				{
-					if (document.getElementById("blackCardTextJudgeWait").innerHTML != obj.blackCard)
+					if(currentBlackCardText != obj.blackCard)
 					{
-						document.getElementById("blackCardTextJudgeWait").innerHTML = obj.blackCard;
+						currentBlackCardText = obj.blackCard; 
+						
+						var blackCards = document.getElementsByName("blackCardText");
+						
+						var arrayLength = blackCards.length;
+						for (var i = 0; i < arrayLength; i++) {
+							blackCards[i].innerHTML = currentBlackCardText;
+						}
+						
 					}
 					
-					if (document.getElementById("blackCardTextPlayer").innerHTML != obj.blackCard)
-					{
-						document.getElementById("blackCardTextPlayer").innerHTML = obj.blackCard;
-					}
 				}
+			}
+			function generateJudgeWhiteCards(cards)
+			{
+				var arrayLength = cards.length;
+				
+				for (var i = 0; i < arrayLength; i++) 
+				{
+					var id = cards[i].playerID;
+					
+					var div = document.createElement("div");
+					//div.name = "judgesWhiteCard";
+					div.id = "winningWhiteCard" + id;
+					div.setAttribute("name", "judgesWhiteCard");
+					div.setAttribute('class', 'hide');
+					
+					var input = document.createElement("input");
+					input.id = "winningWhiteCardInput" + id;
+					input.type = "radio";
+					input.name = "chosenCard";
+					input.value = id;
+					
+					input.onclick = function () {
+						winningWhiteCardPicker(id);
+					};
+					
+					winningWhiteCardPicker
+					
+					var para = document.createElement("p");
+					para.innerHTML = cards[i].selectedCard;
+					
+					div.appendChild(input);
+					div.appendChild(para);
+					
+					div.onclick = function () {
+						document.getElementById("winningWhiteCardInput"+id).click();
+					};
+					
+					document.getElementById("judgeVoteCards").appendChild(div);
+					
+// 					$("#winningWhiteCard" + id).attr("onClick", "clicker('winningWhiteCardInput" + id +"')");
+// 					$("#winningWhiteCardInput" + id).attr("onClick", "clicker('winningWhiteCardPicker("+ id +")')");
+
+				}
+
 			}
 			function initMCP()
 			{
@@ -405,7 +496,7 @@
 			<form>
 				<span class="displayInlineBlock">
 					<div class="blackCard" >
-						<p id="blackCardTextPlayer"></p>
+						<p name="blackCardText" id="blackCardTextPlayer"></p>
 					</div>
 					<div class="whiteCard" onclick="clicker('whiteCard0')">
 						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">This is a long string to see how the wrapping works</p>
@@ -432,7 +523,7 @@
 		</div>
 		<div id="judgeWait" class="hide">
 			<div class="blackCard" >
-				<p id="blackCardTextJudgeWait"></p>
+				<p name="blackCardText" id="blackCardTextJudgeWait"></p>
 			</div>
 			<div>
 				Waiting for players Votes
@@ -445,18 +536,9 @@
 						Next
 					</a>
 				</div>
-				<span class="displayInlineBlock">
+				<span id="judgeVoteCards" class="displayInlineBlock">
 					<div class="blackCard" >
-						<p>CURRENT BLACK CARD</p>
-					</div>
-					<div id="winningWhiteCard0" class="hide" onclick="clicker('winningWhiteCardInput0')">
-						<input id="winningWhiteCardInput0" type="radio" name="chosenCard" value="0" onclick="winningWhiteCardPicker(this.value)"/><p>Chosen Card 1</p>
-					</div>
-					<div id="winningWhiteCard1" class="hide" onclick="clicker('winningWhiteCardInput1')">
-						<input id="winningWhiteCardInput1" type="radio" name="chosenCard" value="1" onclick="winningWhiteCardPicker(this.value)"/><p>Chosen Card 2</p>
-					</div>
-					<div id="winningWhiteCard2" class="hide" onclick="clicker('winningWhiteCardInput2')">
-						<input id="winningWhiteCardInput2" type="radio" name="chosenCard" value="2" onclick="winningWhiteCardPicker(this.value)"/><p>Chosen Card 3</p>
+						<p name="blackCardText"></p>
 					</div>
 				</span>
 			</form>
