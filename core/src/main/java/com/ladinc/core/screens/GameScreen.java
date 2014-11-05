@@ -27,7 +27,7 @@ import com.ladinc.core.objects.Player;
 public class GameScreen implements Screen
 {	
 	public static enum State {
-		endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
+		startOfRound, endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
 	};
 	
 	public static String lastWiningWhiteCard = null;
@@ -41,7 +41,7 @@ public class GameScreen implements Screen
 	private final int screenWidth;
 	private final SpriteBatch spriteBatch;
 	
-	public State currentState = State.endOfRound;
+	public State currentState = State.startOfRound;
 	
 	private int roundNumber = 0;
 	
@@ -143,15 +143,24 @@ public class GameScreen implements Screen
 			}
 			buttonJustPressCoolDown = true;
 		}
+		else if(Gdx.input.isKeyPressed(Input.Keys.ENTER))
+		{
+			if(!buttonJustPressCoolDown)
+			{
+				this.currentState = State.startOfRound;
+			}
+			buttonJustPressCoolDown = true;
+		}
 		else if(buttonJustPressCoolDown)
 		{
 			buttonJustPressCoolDown = false;
 		}
+		
 	}
 	
 	private void handleGameState()
 	{
-		if(currentState == State.endOfRound)
+		if(currentState == State.startOfRound)
 		{
 			roundNumber ++;
 			
@@ -182,6 +191,14 @@ public class GameScreen implements Screen
 			if(haveAllNonJudgesSelectedACard())
 			{
 				currentState = State.judgeChoosesAnswer;
+			}
+		}
+		
+		if(currentState == State.judgeChoosesAnswer)
+		{
+			if(lastWiningWhiteCard != null)
+			{
+				currentState = State.endOfRound;
 			}
 		}
 	}

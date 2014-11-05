@@ -59,6 +59,7 @@ public class Player
 		if(selectedCard != null && hand.contains(selectedCard))
 		{
 			hand.remove(selectedCard);
+			this.selectedCard = null;
 		}
 		
 		while(hand.size() < CARDS_IN_FULL_HAND)
