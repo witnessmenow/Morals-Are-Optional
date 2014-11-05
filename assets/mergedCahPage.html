@@ -41,7 +41,7 @@
 				{
 					if(whiteCardDivs[i].className == "hide")
 					{
-						whiteCardDivs[i].className = "whiteCard";
+						whiteCardDivs[i].className = "whiteCard noBorder";
 						
 						//If this is the last card enable the button
 						if(i == whiteCardDivs.length - 1)
@@ -63,7 +63,7 @@
 				   }
 				 }
 				
-				var cardText = document.getElementById("whiteCardText" + selectedCard).innerHTML;
+				var cardText = document.getElementById("winningWhiteCardPara" + selectedCard).innerHTML;
 				voteCard(selectedCard, cardText);
 			}
 			function goToPage1Dot5(){
@@ -123,7 +123,7 @@
 			function voteCard(selectedCard, cardText)
 			{
 				
-				var url = "passEvent?id=" + getId()  +  "&event=winnerSelect&winnerId=" + selectedCard + "card="	+ cardText;
+				var url = "passEvent?id=" + getId()  +  "&event=winnerSelect&winnerId=" + selectedCard + "&card="	+ cardText;
 				
 				var xmlhttp
 				if (window.XMLHttpRequest)
@@ -303,27 +303,37 @@
 					div.setAttribute("name", "judgesWhiteCard");
 					div.setAttribute('class', 'hide');
 					
+					var div2 = document.createElement("div");
+					div2.setAttribute('class', 'ui-radio');
+					
 					var input = document.createElement("input");
 					input.id = "winningWhiteCardInput" + id;
 					input.type = "radio";
 					input.name = "chosenCard";
 					input.value = id;
+					//input.setAttribute('class', 'noBorder');
 					
-					input.onclick = function () {
-						winningWhiteCardPicker(id);
-					};
+					input.setAttribute('onclick','winningWhiteCardPicker("'+ id + '")');
+					
+// 					input.onclick = function () {
+// 						winningWhiteCardPicker(id);
+// 					};
 					
 					winningWhiteCardPicker
 					
 					var para = document.createElement("p");
 					para.innerHTML = cards[i].selectedCard;
+					para.id = "winningWhiteCardPara" + id;
 					
-					div.appendChild(input);
+					div2.appendChild(input);
+					div.appendChild(div2);
 					div.appendChild(para);
 					
-					div.onclick = function () {
-						document.getElementById("winningWhiteCardInput"+id).click();
-					};
+					div.setAttribute('onclick','clicker("winningWhiteCardInput'+ id + '")');
+					
+// 					div.onclick = function () {
+// 						document.getElementById("winningWhiteCardInput"+id).click();
+// 					};
 					
 					document.getElementById("judgeVoteCards").appendChild(div);
 					
@@ -564,13 +574,28 @@
 		}
 		
 		function winningWhiteCardPicker(index){
-			for(var i = 0; i < numPlayers; i++){
-				if (i == index) {
-					$("#winningWhiteCard" + i ).addClass("redBorder").removeClass("noBorder");
-				} else {
-					$("#winningWhiteCard" + i ).addClass("noBorder").removeClass("redBorder");
+			
+			var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
+			
+			for(var i = 0; i < whiteCardDivs.length; i++) 
+			{
+				if(whiteCardDivs[i].id == "winningWhiteCard" + index)
+				{
+					whiteCardDivs[i].className = "whitecard redBorder";
+				}
+				else
+				{
+					whiteCardDivs[i].className = "whitecard noBorder";
 				}
 			}
+			
+// 			for(var i = 0; i < numPlayers; i++){
+// 				if (i == index) {
+// 					$("#winningWhiteCard" + i ).addClass("redBorder").removeClass("noBorder");
+// 				} else {
+// 					$("#winningWhiteCard" + i ).addClass("noBorder").removeClass("redBorder");
+// 				}
+// 			}
 		}
 		
 		</script>
