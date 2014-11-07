@@ -62,9 +62,17 @@ public class MCPListenerClient implements  MCPContorllersListener
 				{
 					cardSelected(params.get("id"), params.get("card"));
 				}
+				else if(params.get("event").contains("revealCard"))
+				{
+					revealCard(params.get("card"));
+				}
 				else if(params.get("event").contains("winnerSelect"))
 				{
 					winnerSelected(params.get("winnerId"), params.get("card"));
+				}
+				else if(params.get("event").contains("nextRound"))
+				{
+					GameScreen.startNextFlag = true;
 				}
 			}
 		}
@@ -80,6 +88,11 @@ public class MCPListenerClient implements  MCPContorllersListener
 			
 			GameScreen.lastWiningWhiteCard = card;
 		}
+	}
+	
+	private void revealCard(String card)
+	{
+		GameScreen.lastRevealedWhiteCard = card;
 	}
 	
 	private void cardSelected(String id, String card)

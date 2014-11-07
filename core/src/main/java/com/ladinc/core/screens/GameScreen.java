@@ -33,6 +33,8 @@ public class GameScreen implements Screen
 	public static String lastWiningWhiteCard = null;
 	public static String lastRevealedWhiteCard = null;
 	
+	public static Boolean startNextFlag = false;
+	
 	private String blackCard;
 	
 	public McpCah game;
@@ -199,6 +201,15 @@ public class GameScreen implements Screen
 			if(lastWiningWhiteCard != null)
 			{
 				currentState = State.endOfRound;
+			}
+		}
+		
+		if(currentState == State.endOfRound)
+		{
+			if(GameScreen.startNextFlag)
+			{
+				this.currentState = State.startOfRound;
+				GameScreen.startNextFlag = false;
 			}
 		}
 	}
@@ -445,6 +456,11 @@ public class GameScreen implements Screen
 			}
 			
 			obj.put("blackCard", this.blackCard);
+			
+			if(currentState == State.endOfRound)
+			{
+				obj.put("winningCard", GameScreen.lastWiningWhiteCard);
+			}
 
 			this.game.mcp.hearbeatResponses.put(p.id, obj);
 		}

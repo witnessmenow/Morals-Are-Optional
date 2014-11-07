@@ -43,6 +43,15 @@
 					{
 						whiteCardDivs[i].className = "whiteCard noBorder";
 						
+						var children = whiteCardDivs[i].childNodes;
+						for(var j = 0; j < whiteCardDivs.length; j++)
+						{
+							if(children[j].nodeName == "P")
+							{
+								revealCard(children[j].innerHTML);
+							}
+						}
+						
 						//If this is the last card enable the button
 						if(i == whiteCardDivs.length - 1)
 						{
@@ -66,6 +75,10 @@
 				var cardText = document.getElementById("winningWhiteCardPara" + selectedCard).innerHTML;
 				voteCard(selectedCard, cardText);
 			}
+			function goToPage1(){
+				hideAllPages();
+				document.getElementById("page1").className = "show";
+			}
 			function goToPage1Dot5(){
 				hideAllPages();
 				document.getElementById("page1Dot5").className = "show";
@@ -85,12 +98,17 @@
 				hideAllPages();
 				document.getElementById("judgeWait").className = "show";
 			}
+			function goToEndOfRoundScreen(){
+				hideAllPages();
+				document.getElementById("endOfRoundScreen").className = "show";
+			}
 			function hideAllPages(){
 				document.getElementById("page1").className = "hide";
 				document.getElementById("page1Dot5").className = "hide";
 				document.getElementById("page2").className = "hide";
 				document.getElementById("judgeVote").className = "hide";
 				document.getElementById("judgeWait").className = "hide";
+				document.getElementById("endOfRoundScreen").className = "hide";
 			}
 			function registerPlayer()
 			{
@@ -124,6 +142,52 @@
 			{
 				
 				var url = "passEvent?id=" + getId()  +  "&event=winnerSelect&winnerId=" + selectedCard + "&card="	+ cardText;
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
+					
+					}
+				}
+				
+				xmlhttp.send();
+			}
+			function revealCard(cardText)
+			{
+				
+				var url = "passEvent?&event=revealCard&card=" + cardText;
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
+					
+					}
+				}
+				
+				xmlhttp.send();
+			}
+			function startNext()
+			{
+				
+				var url = "passEvent?&event=nextRound";
 				
 				var xmlhttp
 				if (window.XMLHttpRequest)
@@ -219,6 +283,12 @@
 			{
 				var obj = JSON.parse(respText);
 				
+				if ($.isEmptyObject(obj))
+				{
+					//Currently doesnt work right as state of pages is not reset
+					//goToPage1();
+				}
+				
 				if(obj.hasOwnProperty('numberOfPlayers'))
 				{
 					if(obj.numberOfPlayers > 2){
@@ -226,50 +296,66 @@
 					}
 				}
 				
-				if(obj.hasOwnProperty('cards'))
+				
+				if(obj.hasOwnProperty('winningCard'))
 				{
-					if (document.getElementById("page2").className != "show")
+					if (document.getElementById("endOfRoundScreen").className != "show")
 					{
-						goToPage2();
+						goToEndOfRoundScreen();
 					}
-					
-					var arrayLength = obj.cards.length;
-					for (var i = 0; i < arrayLength; i++) {
-						if (document.getElementById("whiteCardText" + i).innerHTML != obj.cards[i])
-						{
-							document.getElementById("whiteCardText" + i).innerHTML = obj.cards[i];
-						}
+
+					if(document.getElementById("whiteCardEndOfRoundText").innerHTML != obj.winningCard)
+					{
+						document.getElementById("whiteCardEndOfRoundText").innerHTML = obj.winningCard;
 					}
 				}
-				
-				if(obj.hasOwnProperty('selectedCard'))
+				else
 				{
-					//TODO:
-					//Disable card selection, they have already submitted their card
-				}
-				
-				if(obj.hasOwnProperty('judge'))
-				{
-					if(obj.judge == "wait")
+					if(obj.hasOwnProperty('cards'))
 					{
-						if (document.getElementById("judgeWait").className != "show")
+						if (document.getElementById("page2").className != "show")
 						{
-							goToJudgeWait();
+							goToPage2();
 						}
-					}
-					
-					if(obj.judge == "vote")
-					{
-						if (document.getElementById("judgeVote").className != "show")
-						{
-							goToJudgeVote();
-							if(obj.hasOwnProperty('selected'))
+						
+						var arrayLength = obj.cards.length;
+						for (var i = 0; i < arrayLength; i++) {
+							if (document.getElementById("whiteCardText" + i).innerHTML != obj.cards[i])
 							{
-								generateJudgeWhiteCards(obj.selected);	
+								document.getElementById("whiteCardText" + i).innerHTML = obj.cards[i];
 							}
 						}
 					}
-
+					
+					if(obj.hasOwnProperty('selectedCard'))
+					{
+						//TODO:
+						//Disable card selection, they have already submitted their card
+					}
+					
+					if(obj.hasOwnProperty('judge'))
+					{
+						if(obj.judge == "wait")
+						{
+							if (document.getElementById("judgeWait").className != "show")
+							{
+								goToJudgeWait();
+							}
+						}
+						
+						if(obj.judge == "vote")
+						{
+							if (document.getElementById("judgeVote").className != "show")
+							{
+								goToJudgeVote();
+								if(obj.hasOwnProperty('selected'))
+								{
+									generateJudgeWhiteCards(obj.selected);	
+								}
+							}
+						}
+	
+					}
 				}
 				
 				if(obj.hasOwnProperty('blackCard'))
@@ -528,6 +614,23 @@
 			<div id="chooseButton" class="button">
 				<a href="javascript:choose()">
 					Choose!
+				</a>
+			</div>
+		</div>
+		<div id="endOfRoundScreen" class="hide">
+			<form>
+				<span class="displayInlineBlock">
+					<div class="blackCard" >
+						<p name="blackCardText" id="blackCardTextEndOfRound"></p>
+					</div>
+					<div class="whiteCard">
+						<input id="whiteCardEndOfRound" name="whiteCard" type="radio" value="0" /><p id="whiteCardEndOfRoundText"></p>
+					</div>
+				</span>
+			</form>
+			<div id="chooseButton" class="button">
+				<a href="javascript:startNext()">
+					Start Next Round!
 				</a>
 			</div>
 		</div>
