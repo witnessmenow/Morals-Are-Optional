@@ -375,8 +375,34 @@
 					
 				}
 			}
+			function removeJudgeWhiteCards()
+			{
+				var parentElement = document.getElementById("judgeVoteCards");
+// 				var judgesWhiteCards = parentElement.childNodes;
+				
+				var judgesWhiteCards = document.getElementsByName("judgesWhiteCard");
+// 				var targetSize = parentElement.childNode.length - numberOfWhiteCards;
+				
+// 				for(var i = 0, len = judgesWhiteCards.length; i < len; i++) 
+// 				{
+// 			        if(judgesWhiteCards[i] && judgesWhiteCards[i].parentElement) 
+// 			        {
+// 			        	parentElement.removeChild(judgesWhiteCards[i]);
+// 			        }
+// 			    }
+				
+				while( 0 < judgesWhiteCards.length) 
+				{
+			        if(judgesWhiteCards[0] && judgesWhiteCards[0].parentElement) 
+			        {
+			        	parentElement.removeChild(judgesWhiteCards[0]);
+			        }
+			    }
+			}
 			function generateJudgeWhiteCards(cards)
 			{
+				removeJudgeWhiteCards();
+				
 				var arrayLength = cards.length;
 				
 				for (var i = 0; i < arrayLength; i++) 

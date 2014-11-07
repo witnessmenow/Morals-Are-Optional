@@ -166,6 +166,8 @@ public class GameScreen implements Screen
 		{
 			roundNumber ++;
 			
+			lastWiningWhiteCard = null;
+			lastRevealedWhiteCard = null;
 			selectedWhiteCards = null;
 			getNewBlackCard();
 			moveToNextJudge();
