@@ -34,13 +34,12 @@ public class Player
 		if(hand.contains(card))
 		{
 			//hand.remove(card);
+			this.selectedCard = card;
 		}
 		else
 		{
 			//user selected a card they dont have?!	
 		}
-		
-		this.selectedCard = card;
 	}
 	
 	public JSONArray cardsToJsonArray()
