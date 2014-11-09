@@ -31,6 +31,7 @@ public class GameScreen implements Screen
 	};
 	
 	public static String lastWiningWhiteCard = null;
+	public static String lastWiningId = null;
 	public static String lastRevealedWhiteCard = null;
 	
 	public static Boolean startNextFlag = false;
@@ -63,6 +64,8 @@ public class GameScreen implements Screen
 	public Sprite tickSprite;
 	public Sprite judgeSprite;
 	
+	private Sprite bg;
+	
 	public GameScreen(McpCah g)
 	{
 		this.game = g;
@@ -76,10 +79,10 @@ public class GameScreen implements Screen
 		this.spriteBatch = new SpriteBatch();
 		
 		tickSprite = new Sprite(new Texture(Gdx.files.internal("tick.png")));
-		tickSprite.setColor(Color.BLACK);
+		tickSprite.setColor(Color.WHITE);
 		
 		judgeSprite = new Sprite(new Texture(Gdx.files.internal("judge.png")));
-		judgeSprite.setColor(Color.BLACK);
+		judgeSprite.setColor(Color.WHITE);
 		
 		
 		blackCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
@@ -91,6 +94,8 @@ public class GameScreen implements Screen
 		blackCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.WHITE));
 		
 		whiteCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.BLACK));
+		
+		this.bg = this.game.backgorund;
 	}
 	
 	private void initializeFont()
@@ -222,13 +227,15 @@ public class GameScreen implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		this.spriteBatch.begin();
+		this.bg.draw(spriteBatch);
 		displayPlayers(spriteBatch);
 		DisplayMCPAddressText(spriteBatch);
 		drawBlackCard(spriteBatch);
-		if(lastRevealedWhiteCard != null || lastWiningWhiteCard != null);
+		if(lastRevealedWhiteCard != null || lastWiningWhiteCard != null)
 		{
 			drawWhiteCard(spriteBatch);
 		}
+		
 		this.spriteBatch.end();
 	}
 	
@@ -263,7 +270,20 @@ public class GameScreen implements Screen
 		else
 		{
 			this.whiteCardLabel.setText(lastWiningWhiteCard);
+			
+			String name = this.game.players.get(lastWiningId).name;
+			
+			float xPos = 1625f - font.getBounds("Winner:").width/2;
+			float yPos = 450f;
+			
+			font.draw(spriteBatch, "Winner:", xPos, yPos);
+			
+			xPos = 1625f - font.getBounds(name).width/2;
+			yPos = 350f;
+			
+			font.draw(spriteBatch, name, xPos, yPos);
 		}
+		
 		this.whiteCardLabel.setColor(Color.BLACK);
 		this.whiteCardLabel.setWrap(true);
 		this.whiteCardLabel.setWidth(320f);
@@ -279,6 +299,8 @@ public class GameScreen implements Screen
 		String playerText = "";
 		
 		int i = this.game.players.size();
+		
+		font.setColor(Color.WHITE);
 		
 		for(Map.Entry<String, Player> entry : this.game.players.entrySet())
 		{		
@@ -317,7 +339,9 @@ public class GameScreen implements Screen
 		float xPos = (this.screenWidth) - font.getBounds(text).width - 50f;
 		float yPos = (this.screenHeight) - 20f;
 		
+		font.setColor(Color.YELLOW);
 		font.draw(sb, text, xPos, yPos);
+		font.setColor(Color.WHITE);
 	}
 
 	@Override

@@ -87,6 +87,7 @@ public class MCPListenerClient implements  MCPContorllersListener
 			p.score++;
 			
 			GameScreen.lastWiningWhiteCard = card;
+			GameScreen.lastWiningId = winnerId;
 		}
 	}
 	
