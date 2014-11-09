@@ -67,6 +67,9 @@ public class McpCah extends Game
 		this.mcp.customLinks = new ArrayList<String>();
 		this.mcp.customLinks.add("mergedCahPage.html");
 		this.mcp.customLinks.add("jquery-1.11.1.min.js");
+		this.mcp.customLinks.add("bootstrap.min.js");
+		this.mcp.customLinks.add("bootstrap.min.css");
+		this.mcp.customLinks.add("bootstrap-theme.min.css");
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults

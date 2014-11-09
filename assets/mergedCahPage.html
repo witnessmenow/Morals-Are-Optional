@@ -1,13 +1,18 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" />
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<link rel="stylesheet" href="bootstrap-theme.min.css">
 		<script src="jquery-1.11.1.min.js"></script>
 		<script src="jquery.mobile-1.3.2.min.js"></script>
+		<script src="bootstrap.min.js"></script>
 		
-		
+		<title>Morals Are Optional</title>
 		<script type="text/javascript" src="defaultController.js"></script>
 		<script type="text/javascript" src="KeyboardButton.js"></script>
 		<script type="text/javascript" src="PageHelper.js"></script>
+
+ 		
 		
 		<script>
 			var nextToShow = 0;
@@ -18,7 +23,7 @@
 			var cardVotingDisabled = true;
 			
 			function enableStartButton(){
-				document.getElementById("beginButton").className = "button buttonEnable";
+				document.getElementById("beginButton").className = "btn btn-success btn-lg";
 			}
 			function clearSelectedCard(){
 				var cards = document.getElementsByName("whiteCard");
@@ -81,7 +86,7 @@
 						//If this is the last card enable the button
 						if(i == whiteCardDivs.length - 1)
 						{
-							document.getElementById("startButton").className = "button show";
+							document.getElementById("startButton").className = "btn btn-success btn-lg";
 							cardVotingDisabled = false;
 						}
 						
@@ -89,7 +94,7 @@
 						return;
 					}
 					
-					document.getElementById("startButton").className = "button show";
+					document.getElementById("startButton").className = "btn btn-success btn-lg";
 					cardVotingDisabled = false;
 				}
 				
@@ -323,7 +328,7 @@
 				
 				if(obj.hasOwnProperty('numberOfPlayers'))
 				{
-					if(obj.numberOfPlayers > 2){
+					if(obj.numberOfPlayers > 1){
 						enableStartButton();
 					}
 				}
@@ -471,6 +476,10 @@
 			}
 		</script>
 		<style>
+			.btn, .btn a{
+                color:#ffffff;
+            }
+            
 			.hide {
 				display:none;
 			}
@@ -611,18 +620,14 @@
 				Enter Your Name: <input id="name" type="text" name="name" value="">
 			</div>
 			<br/>
-			<div class="button" onclick="clicker('readyButtonA')">
-				<a id="readyButtonA" href="javascript:registerPlayer();">
+			<button type="button" class="btn btn-success btn-lg" onclick="javascript:registerPlayer();">
 					Ready?
-				</a>
-			</div>
+			</button>
 		</div>
 		<div id="page1Dot5" class="hide">
-			<div id="beginButton" class="buttonDisabledLook buttonDisable" onclick="clicker('beginButtonA')">
-				<a id="beginButtonA" href="javascript:startButtonPressed();">
+			<button type="button" id="beginButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startButtonPressed();">
 					Begin!
-				</a>
-			</div>
+			</button>
 		</div>
 		<div id="page2" class="hide">
 			<form>
@@ -647,11 +652,9 @@
 					</div>
 				</span>
 			</form>
-			<div id="chooseButton" class="button">
-				<a href="javascript:choose()">
+			<button type="button" id="chooseButton" class="btn btn-success btn-lg" onclick="javascript:choose();">
 					Choose!
-				</a>
-			</div>
+			</button>
 		</div>
 		<div id="endOfRoundScreen" class="hide">
 			<form>
@@ -664,11 +667,9 @@
 					</div>
 				</span>
 			</form>
-			<div id="chooseButton" class="button">
-				<a href="javascript:startNext()">
+			<button type="button" id="chooseButton" class="btn btn-success btn-lg" onclick="javascript:startNext();">
 					Start Next Round!
-				</a>
-			</div>
+			</button>
 		</div>
 		<div id="judgeWait" class="hide">
 			<div class="blackCard" >
@@ -680,22 +681,19 @@
 		</div>
 		<div id="judgeVote" class="hide">
 			<form>
-				<div class="button">
-					<a href="javascript:next();">
-						Next
-					</a>
-				</div>
+				
 				<span id="judgeVoteCards" class="displayInlineBlock">
 					<div class="blackCard" >
 						<p name="blackCardText"></p>
 					</div>
 				</span>
 			</form>
-			<div id="startButton" class="button hide">
-				<a href="javascript:castVote()">
+			<button type="button" id="chooseButton" class="btn btn-success btn-lg" onclick="javascript:next();">
+					Next
+			</button>
+			<button type="button" id="startButton" class="hide" onclick="javascript:castVote();">
 					Vote!
-				</a>
-			</div>
+			</button>
 		</div>
 		<script type="text/javascript">
 		function clicker(clickString){
