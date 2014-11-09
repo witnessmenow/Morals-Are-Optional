@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.listeners.MCPListenerClient;
 import com.ladinc.core.objects.Player;
@@ -29,6 +31,8 @@ public class McpCah extends Game
 	public static List<String> AVAILABLE_BLACK_CARDS = new ArrayList<String>();
 	
 	public Map<String, Player> players = new HashMap<String, Player>();
+	
+	public Sprite backgorund;
 	
 	public boolean startGame = false; 
 	@Override
@@ -69,6 +73,8 @@ public class McpCah extends Game
 		this.mcp.redirectOptions.add(new RedirectOption("mergedCahPage.html", "MCP CAH"));
 		
 		//mockPlayers();
+		
+		this.backgorund = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
 		
 		this.setScreen(new GameScreenLobby(this));
 		//this.setScreen(new GameScreen(this));
