@@ -334,7 +334,7 @@
 				
 				if(obj.hasOwnProperty('numberOfPlayers'))
 				{
-					if(obj.numberOfPlayers > 2){
+					if(obj.numberOfPlayers > 1){
 						enableStartButton();
 					}
 				}
@@ -618,6 +618,12 @@
 				.noBorder{
 					boarder: none;
 				}
+				
+				.buttonDivider{
+					clear: both;
+					padding-top: 1em;
+					padding-left: 0.75em;
+				}
 		</style>
 	</head>
 	<body onLoad="initMCP();">
@@ -641,24 +647,27 @@
 					<div class="blackCard" >
 						<p name="blackCardText" id="blackCardTextPlayer"></p>
 					</div>
-					<div class="whiteCard" onclick="clicker('whiteCard0')">
+				</span>
+				<br/>
+				<div class="ui-grid-e">
+					<div class="whiteCard ui-block-a" onclick="clicker('whiteCard0')">
 						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">This is a long string to see how the wrapping works</p>
 					</div>
-					<div class="whiteCard" onclick="clicker('whiteCard1')">
+					<div class="whiteCard ui-block-b" onclick="clicker('whiteCard1')">
 						<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
 					</div>
-					<div class="whiteCard" onclick="clicker('whiteCard2')">
+					<div class="whiteCard ui-block-c" onclick="clicker('whiteCard2')">
 						<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText2">Card 1</p>
 					</div>
-					<div class="whiteCard" onclick="clicker('whiteCard3')">
+					<div class="whiteCard ui-block-d" onclick="clicker('whiteCard3')">
 						<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText3">Card 1</p>
 					</div>
-					<div class="whiteCard" onclick="clicker('whiteCard4')">
+					<div class="whiteCard ui-block-e" onclick="clicker('whiteCard4')">
 						<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
 					</div>
-				</span>
+				</div>
 			</form>
-			<div style="clear: both">
+			<div class="buttonDivider">
 			<button type="button" id="whiteCardChooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:choose();">
 					Choose!
 			</button>
