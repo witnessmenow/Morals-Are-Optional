@@ -60,6 +60,8 @@
 				
 				var cardText = document.getElementById("whiteCardText" + selectedCard).innerHTML;
 				playCard(cardText);
+				document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
 				 
 				 //alert(selectedCard);
 				 //goToPage3();
@@ -86,7 +88,7 @@
 						//If this is the last card enable the button
 						if(i == whiteCardDivs.length - 1)
 						{
-							document.getElementById("startButton").className = "btn btn-success btn-lg";
+							document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
 							cardVotingDisabled = false;
 						}
 						
@@ -125,10 +127,14 @@
 			function goToPage2(){
 				hideAllPages();
 				document.getElementById("page2").className = "show";
+				document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				document.getElementById("madeVoteWaitingForJudgement").className = "hide";
 				clearSelectedCard();
 			}
 			function goToJudgeVote(){
 				hideAllPages();
+				document.getElementById("judgeChooseButton").className = "btn btn-success btn-lg";
+				document.getElementById("startButton").className = "btn btn-default btn-lg disabled buttonDisable";
 				document.getElementById("judgeVote").className = "show";
 			}
 			function goToJudgeWait(){
@@ -223,7 +229,7 @@
 			}
 			function startNext()
 			{
-				
+				noBorderFunction();
 				var url = "passEvent?&event=nextRound";
 				
 				var xmlhttp
@@ -652,9 +658,14 @@
 					</div>
 				</span>
 			</form>
-			<button type="button" id="chooseButton" class="btn btn-success btn-lg" onclick="javascript:choose();">
+			<div style="clear: both">
+			<button type="button" id="whiteCardChooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:choose();">
 					Choose!
 			</button>
+			<h3 id="madeVoteWaitingForJudgement" class="hide">
+				Card submitted, waiting for other cards to be played and judgement.
+			</h3>
+			</div>
 		</div>
 		<div id="endOfRoundScreen" class="hide">
 			<form>
@@ -672,26 +683,28 @@
 			</button>
 		</div>
 		<div id="judgeWait" class="hide">
-			<div class="blackCard" >
-				<p name="blackCardText" id="blackCardTextJudgeWait"></p>
-			</div>
-			<div>
+			<span class="displayInlineBlock">
+				<div class="blackCard" >
+					<p name="blackCardText" id="blackCardTextJudgeWait"></p>
+				</div>
+			</span>
+			<br/>
+			<h3 class="bg-success">
 				Waiting for players Votes
-			</div>
+			</h3>
 		</div>
 		<div id="judgeVote" class="hide">
 			<form>
-				
 				<span id="judgeVoteCards" class="displayInlineBlock">
 					<div class="blackCard" >
 						<p name="blackCardText"></p>
 					</div>
 				</span>
 			</form>
-			<button type="button" id="chooseButton" class="btn btn-success btn-lg" onclick="javascript:next();">
+			<button type="button" id="judgeChooseButton" class="btn btn-success btn-lg" onclick="javascript:next();">
 					Next
 			</button>
-			<button type="button" id="startButton" class="hide" onclick="javascript:castVote();">
+			<button type="button" id="startButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:castVote();">
 					Vote!
 			</button>
 		</div>
@@ -706,11 +719,18 @@
 				for(var i =0; i< 5; i++){
 					if (i == index) {
 						$("#whiteCard" + i).parent().parent().addClass("redBorder").removeClass("noBorder");
+						document.getElementById("whiteCardChooseButton").className = "btn btn-success btn-lg";
 					} else {
 						$("#whiteCard" + i).parent().parent().addClass("noBorder").removeClass("redBorder");
 					}
 				}
 			}
+		}
+		
+		function noBorderFunction(){
+				for(var i =0; i< 5; i++){
+					$("#whiteCard" + i).parent().parent().addClass("noBorder").removeClass("redBorder");
+				}
 		}
 		
 		function winningWhiteCardPicker(index){
@@ -724,6 +744,7 @@
 					if(whiteCardDivs[i].id == "winningWhiteCard" + index)
 					{
 						whiteCardDivs[i].className = "whitecard redBorder";
+						document.getElementById("startButton").className = "btn btn-success btn-lg";
 					}
 					else
 					{
@@ -736,7 +757,7 @@
 // 				if (i == index) {
 // 					$("#winningWhiteCard" + i ).addClass("redBorder").removeClass("noBorder");
 // 				} else {
-// 					$("#winningWhiteCard" + i ).addClass("noBorder").removeClass("redBorder");
+//				$("#winningWhiteCard" + i ).addClass("noBorder").removeClass("redBorder");
 // 				}
 // 			}
 		}
