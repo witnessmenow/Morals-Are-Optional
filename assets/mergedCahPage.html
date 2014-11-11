@@ -79,7 +79,7 @@
 						var children = whiteCardDivs[i].childNodes;
 						for(var j = 0; j < whiteCardDivs.length; j++)
 						{
-							if(children[j].nodeName == "P")
+							if(children[j] != undefined && children[j].nodeName == "P")
 							{
 								revealCard(children[j].innerHTML);
 							}
@@ -89,6 +89,7 @@
 						if(i == whiteCardDivs.length - 1)
 						{
 							document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+							document.getElementById("startButton").className = "btn btn-success btn-lg";
 							cardVotingDisabled = false;
 						}
 						
@@ -96,7 +97,6 @@
 						return;
 					}
 					
-					document.getElementById("startButton").className = "btn btn-success btn-lg";
 					cardVotingDisabled = false;
 				}
 				
@@ -333,7 +333,7 @@
 				
 				if(obj.hasOwnProperty('numberOfPlayers'))
 				{
-					if(obj.numberOfPlayers > 1){
+					if(obj.numberOfPlayers > 2){
 						enableStartButton();
 					}
 				}
