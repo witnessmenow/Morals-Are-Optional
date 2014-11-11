@@ -229,7 +229,6 @@
 			}
 			function startNext()
 			{
-				noBorderFunction();
 				var url = "passEvent?&event=nextRound";
 				
 				var xmlhttp
@@ -358,6 +357,8 @@
 					{
 						if (document.getElementById("page2").className != "show")
 						{
+							//fix border
+							noBorderFunction();
 							goToPage2();
 						}
 						
@@ -650,19 +651,19 @@
 				</span>
 				<br/>
 				<div class="ui-grid-e">
-					<div class="whiteCard ui-block-a" onclick="clicker('whiteCard0')">
+					<div id="parentWhiteCard0" class="whiteCard ui-block-a" onclick="clicker('whiteCard0')">
 						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">This is a long string to see how the wrapping works</p>
 					</div>
-					<div class="whiteCard ui-block-b" onclick="clicker('whiteCard1')">
+					<div id="parentWhiteCard1" class="whiteCard ui-block-b" onclick="clicker('whiteCard1')">
 						<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
 					</div>
-					<div class="whiteCard ui-block-c" onclick="clicker('whiteCard2')">
+					<div id="parentWhiteCard2" class="whiteCard ui-block-c" onclick="clicker('whiteCard2')">
 						<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText2">Card 1</p>
 					</div>
-					<div class="whiteCard ui-block-d" onclick="clicker('whiteCard3')">
+					<div id="parentWhiteCard3" class="whiteCard ui-block-d" onclick="clicker('whiteCard3')">
 						<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText3">Card 1</p>
 					</div>
-					<div class="whiteCard ui-block-e" onclick="clicker('whiteCard4')">
+					<div id="parentWhiteCard4" class="whiteCard ui-block-e" onclick="clicker('whiteCard4')">
 						<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
 					</div>
 				</div>
@@ -727,19 +728,19 @@
 			{
 				for(var i =0; i< 5; i++){
 					if (i == index) {
-						$("#whiteCard" + i).parent().parent().addClass("redBorder").removeClass("noBorder");
+						$("#parentWhiteCard" + i).addClass("redBorder").removeClass("noBorder");
 						document.getElementById("whiteCardChooseButton").className = "btn btn-success btn-lg";
 					} else {
-						$("#whiteCard" + i).parent().parent().addClass("noBorder").removeClass("redBorder");
+						$("#parentWhiteCard" + i).addClass("noBorder").removeClass("redBorder");
 					}
 				}
 			}
 		}
 		
 		function noBorderFunction(){
-				for(var i =0; i< 5; i++){
-					$("#whiteCard" + i).parent().parent().addClass("noBorder").removeClass("redBorder");
-				}
+			for(var i =0; i< 5; i++){
+				$("#parentWhiteCard" + i).addClass("noBorder").removeClass("redBorder");
+			}
 		}
 		
 		function winningWhiteCardPicker(index){
