@@ -67,20 +67,21 @@
 				 //goToPage3();
 			}
 			function next(){
-				
 				var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
 				
 				for(var i = 0; i < whiteCardDivs.length; i++) 
 				{
 					if(whiteCardDivs[i].className == "hide")
 					{
-						whiteCardDivs[i].className = "whiteCard noBorder";
+						document.getElementById("singleShowCard").className = "whiteCard noBorder";
+						whiteCardDivs[i].className = "hide2";
 						
 						var children = whiteCardDivs[i].childNodes;
 						for(var j = 0; j < whiteCardDivs.length; j++)
 						{
 							if(children[j] != undefined && children[j].nodeName == "P")
 							{
+								$("#singleCardText").html(children[j].innerHTML);
 								revealCard(children[j].innerHTML);
 							}
 						}
@@ -90,6 +91,13 @@
 						{
 							document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
 							document.getElementById("startButton").className = "btn btn-success btn-lg";
+							$("#singleShowCard").remove();
+							$("#dummyWhiteCard").remove();
+							for(var i = 0; i < whiteCardDivs.length; i++) {
+								if(whiteCardDivs[i].className == "hide2"){
+									whiteCardDivs[i].className = "whiteCard noBorder";
+								}
+							}
 							cardVotingDisabled = false;
 						}
 						
@@ -441,6 +449,12 @@
 				
 				var arrayLength = cards.length;
 				
+				var divtest = document.createElement("div");
+				var ptest = document.createElement("p");
+				divtest.setAttribute("id","singleShowCard");
+				ptest.setAttribute("id","singleCardText");
+				divtest.appendChild(ptest);
+				document.getElementById("judgeVoteCards").appendChild(divtest);
 				for (var i = 0; i < arrayLength; i++) 
 				{
 					var id = cards[i].playerID;
@@ -475,6 +489,12 @@
 					
 					document.getElementById("judgeVoteCards").appendChild(div);
 				}
+				
+				var dummyWhiteCard = document.createElement("div");
+				dummyWhiteCard.id = "dummyWhiteCard"; 
+				dummyWhiteCard.setAttribute("name", "judgesWhiteCard");
+				dummyWhiteCard.setAttribute("class", "hide");
+				document.getElementById("judgeVoteCards").appendChild(dummyWhiteCard);
 
 			}
 			function initMCP()
@@ -487,7 +507,7 @@
                 color:#ffffff;
             }
             
-			.hide {
+			.hide, .hide2 {
 				display:none;
 			}
 			.show {
