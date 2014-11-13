@@ -65,7 +65,7 @@ public class McpCah extends Game
 		
 		//All files that are added to the resources folder must be added to this Array List
 		this.mcp.customLinks = new ArrayList<String>();
-		this.mcp.customLinks.add("mergedCahPage.html");
+		this.mcp.customLinks.add("moralsAreOptional.html");
 		this.mcp.customLinks.add("jquery-1.11.1.min.js");
 		this.mcp.customLinks.add("bootstrap.min.js");
 		this.mcp.customLinks.add("bootstrap.min.css");
@@ -73,7 +73,7 @@ public class McpCah extends Game
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
-		this.mcp.redirectOptions.add(new RedirectOption("mergedCahPage.html", "MCP CAH"));
+		this.mcp.redirectOptions.add(new RedirectOption("moralsAreOptional.html", "MCP CAH"));
 		
 		//mockPlayers();
 		
