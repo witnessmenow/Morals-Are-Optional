@@ -15,7 +15,8 @@
 	<properties>
 		<keystore.path>game.keystore</keystore.path>
 		<keystore.alias>game</keystore.alias>
-		<!-- you can pass these on the command line as -Dkeystore.password=foo etc. -->
+		<!-- you can pass these on the command line as -Dkeystore.password=foo 
+			etc. -->
 		<keystore.password></keystore.password>
 		<key.password>${keystore.password}</key.password>
 	</properties>
@@ -87,7 +88,7 @@
 					<assetsDirectory>${project.basedir}/../assets</assetsDirectory>
 					<resourceDirectory>${project.basedir}/res</resourceDirectory>
 					<sdk>
-						<platform>19</platform>
+						<platform>15</platform>
 					</sdk>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 					<dex>
@@ -110,7 +111,8 @@
 		</plugins>
 	</build>
 
-	<!-- run 'mvn package -Pandroid -Psign -Dkeystore.password=foo' to sign and align -->
+	<!-- run 'mvn package -Pandroid -Psign -Dkeystore.password=foo' to sign 
+		and align -->
 	<profiles>
 		<profile>
 			<id>sign</id>
@@ -123,7 +125,9 @@
 						<executions>
 							<execution>
 								<id>signing</id>
-								<goals><goal>sign</goal></goals>
+								<goals>
+									<goal>sign</goal>
+								</goals>
 								<phase>package</phase>
 								<inherited>true</inherited>
 								<configuration>
@@ -136,8 +140,10 @@
 									<keypass>${key.password}</keypass>
 									<alias>${keystore.alias}</alias>
 									<arguments>
-										<argument>-sigalg</argument><argument>MD5withRSA</argument>
-										<argument>-digestalg</argument><argument>SHA1</argument>
+										<argument>-sigalg</argument>
+										<argument>MD5withRSA</argument>
+										<argument>-digestalg</argument>
+										<argument>SHA1</argument>
 									</arguments>
 								</configuration>
 							</execution>
@@ -148,14 +154,20 @@
 						<artifactId>android-maven-plugin</artifactId>
 						<inherited>true</inherited>
 						<configuration>
-							<zipalign><skip>false</skip></zipalign>
-							<sign><debug>false</debug></sign>
+							<zipalign>
+								<skip>false</skip>
+							</zipalign>
+							<sign>
+								<debug>false</debug>
+							</sign>
 						</configuration>
 						<executions>
 							<execution>
 								<id>alignApk</id>
 								<phase>package</phase>
-								<goals><goal>zipalign</goal></goals>
+								<goals>
+									<goal>zipalign</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>

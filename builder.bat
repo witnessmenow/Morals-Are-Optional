@@ -7,6 +7,9 @@ ECHO ============MAIN MENU============
 ECHO -------------------------------------
 echo 1. Build Desktop Application
 echo 2. Run Desktop Application
+echo 5. Build Android
+echo 6. Build and Deploy Android
+echo 7. Build Signed APK Android
 echo 8. Maven Clean
 ECHO -------------------------------------
 set INPUT=
@@ -14,7 +17,9 @@ set /P INPUT=Please select an option:
 
 IF /I '%INPUT%'=='1' GOTO BuildDesktop
 IF /I '%INPUT%'=='2' GOTO runDesktop
-
+IF /I '%INPUT%'=='5' GOTO BuildAndroid
+IF /I '%INPUT%'=='6' GOTO Android
+IF /I '%INPUT%'=='7' GOTO AndroidSigned
 IF /I '%INPUT%'=='8' GOTO MavenClean
 
 ECHO ============INVALID INPUT============
