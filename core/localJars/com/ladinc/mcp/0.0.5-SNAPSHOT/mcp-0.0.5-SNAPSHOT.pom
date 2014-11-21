@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ladinc</groupId>
+	<artifactId>mcp</artifactId>
+	<version>0.0.5-SNAPSHOT</version>
+	<name>More Controllers Please</name>
+	<description>A mini webserver that connected devices work as a controller for a game</description>
+
+	<repositories>
+		<repository>
+			<id>in-project</id>
+			<name>In Project Repo</name>
+			<url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- <dependency> -->
+		<!-- <groupId>nano</groupId> -->
+		<!-- <artifactId>nanohttpd</artifactId> -->
+		<!-- <version>1.0.0</version> -->
+		<!-- </dependency> -->
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.5</version>
+		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>fi.iki.elonen</groupId> -->
+<!-- 			<artifactId>nanohttpd</artifactId> -->
+<!-- 			<version>2.1.0</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>fi.iki.elonen</groupId>
+			<artifactId>nanohttpd-webServer</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

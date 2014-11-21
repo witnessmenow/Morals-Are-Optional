@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +15,7 @@ import com.ladinc.core.listeners.MCPListenerClient;
 import com.ladinc.core.objects.Player;
 import com.ladinc.core.screens.GameScreen;
 import com.ladinc.core.screens.GameScreenLobby;
+import com.ladinc.mcp.CustomResource;
 import com.ladinc.mcp.MCP;
 import com.ladinc.mcp.RedirectOption;
 
@@ -62,14 +64,25 @@ public class McpCah extends Game
         
         Gdx.app.error("Main-MCP", "Connection Address: " + ipAddr);
 		
+        if(Gdx.app.getType() == ApplicationType.Android)
+        {
+        	MCP.FILE_LOCATION_PREFIX = "/assets/";
+        }
 		
 		//All files that are added to the resources folder must be added to this Array List
-		this.mcp.customLinks = new ArrayList<String>();
-		this.mcp.customLinks.add("moralsAreOptional.html");
-		this.mcp.customLinks.add("jquery-1.11.1.min.js");
-		this.mcp.customLinks.add("bootstrap.min.js");
-		this.mcp.customLinks.add("bootstrap.min.css");
-		this.mcp.customLinks.add("bootstrap-theme.min.css");
+//		this.mcp.customLinks = new ArrayList<String>();
+//		this.mcp.customLinks.add("moralsAreOptional.html");
+//		this.mcp.customLinks.add("jquery-1.11.1.min.js");
+//		this.mcp.customLinks.add("bootstrap.min.js");
+//		this.mcp.customLinks.add("bootstrap.min.css");
+//		this.mcp.customLinks.add("bootstrap-theme.min.css");
+//		
+        this.mcp.customLinkDirect = new ArrayList<CustomResource>();
+		this.mcp.customLinkDirect.add(new CustomResource("moralsAreOptional.html", Gdx.files.internal("moralsAreOptional.html").read()));
+		this.mcp.customLinkDirect.add(new CustomResource("jquery-1.11.1.min.js", Gdx.files.internal("jquery-1.11.1.min.js").read()));
+		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.js", Gdx.files.internal("bootstrap.min.js").read()));
+		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.css", Gdx.files.internal("bootstrap.min.css").read()));
+		this.mcp.customLinkDirect.add(new CustomResource("bootstrap-theme.min.css", Gdx.files.internal("bootstrap-theme.min.css").read()));
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults

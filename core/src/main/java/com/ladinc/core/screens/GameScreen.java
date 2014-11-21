@@ -79,11 +79,11 @@ public class GameScreen implements Screen
 		this.spriteBatch = new SpriteBatch();
 		
 		tickSprite = new Sprite(new Texture(Gdx.files.internal("tick.png")));
+		
 		tickSprite.setColor(Color.WHITE);
 		
 		judgeSprite = new Sprite(new Texture(Gdx.files.internal("judge.png")));
 		judgeSprite.setColor(Color.WHITE);
-		
 		
 		blackCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
 		blackCardSprite.setColor(Color.BLACK);
