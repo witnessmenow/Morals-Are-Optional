@@ -13,6 +13,7 @@ public class McpCahActivity extends AndroidApplication {
 	public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+			config.useWakelock = true;
 			initialize(new McpCah(), config);
 	}
 }

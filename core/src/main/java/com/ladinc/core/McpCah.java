@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -45,8 +46,16 @@ public class McpCah extends Game
 	{
 		Gdx.input.setCatchBackKey(true);
 		
+		Gdx.app.setLogLevel(Application.LOG_ERROR);
+		
 		//Assets.load();
 		CardParser.loadCards();
+		
+		if(AVAILABLE_WHITE_CARDS.size() == 0 || AVAILABLE_BLACK_CARDS.size() == 0)
+		{
+			Gdx.app.error("Main-MCP", "Failed to load cards");
+			Gdx.app.exit();
+		}
 		
 		//Create MCP, try use port 8888
 		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);

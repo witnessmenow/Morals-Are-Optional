@@ -12,8 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import org.apache.commons.io.IOUtils;
 
 
+
+import com.badlogic.gdx.Gdx;
 import com.ladinc.core.McpCah;
 
 public class CardParser 
@@ -34,9 +37,15 @@ public class CardParser
 		
 		try 
 		{
-			InputStream is = CardParser.class.getResourceAsStream("/cards/white/base.json");
-			JSONTokener tokener = new JSONTokener(new InputStreamReader(is));
-			JSONObject obj = new JSONObject(tokener);
+			InputStream is = Gdx.files.internal("cards/white/base.json").read();
+			
+			 String jsonTxt = IOUtils.toString(is); 
+			
+			 //Not working with Android for some reason
+//			JSONTokener tokener = new JSONTokener(new InputStreamReader(is));
+//			JSONObject obj = new JSONObject(tokener);
+			
+			JSONObject obj = new JSONObject(jsonTxt);
 			
 			JSONArray arr = obj.getJSONArray("cards");
 			for (int i = 0; i < arr.length(); i++)
@@ -69,9 +78,14 @@ public class CardParser
 		
 		try 
 		{
-			InputStream is = CardParser.class.getResourceAsStream("/cards/black/base.json");
-			JSONTokener tokener = new JSONTokener(new InputStreamReader(is));
-			JSONObject obj = new JSONObject(tokener);
+			InputStream is = Gdx.files.internal("cards/black/base.json").read();
+			
+			String jsonTxt = IOUtils.toString(is); 
+			
+//			JSONTokener tokener = new JSONTokener(new InputStreamReader(is));
+//			JSONObject obj = new JSONObject(tokener);
+			
+			JSONObject obj = new JSONObject(jsonTxt);
 			
 			JSONArray arr = obj.getJSONArray("cards");
 			for (int i = 0; i < arr.length(); i++)

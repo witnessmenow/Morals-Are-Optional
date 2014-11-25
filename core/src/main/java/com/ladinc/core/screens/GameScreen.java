@@ -69,6 +69,8 @@ public class GameScreen implements Screen
 	
 	public GameScreen(McpCah g)
 	{
+		Gdx.app.debug("GameScreen", "Start of constructor");
+		
 		this.game = g;
 		initializeFont();
 		this.screenWidth = 1920;
@@ -97,6 +99,8 @@ public class GameScreen implements Screen
 		whiteCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.BLACK));
 		
 		this.bg = this.game.backgorund;
+		
+		Gdx.app.debug("GameScreen", "End of constructor");
 	}
 	
 	public boolean checkForSystemBackButton()
@@ -144,6 +148,8 @@ public class GameScreen implements Screen
 	@Override
 	public void render(float arg0) 
 	{
+		Gdx.app.debug("GameScreen", "game loop");
+		
 		handleGameState();
 		
 		camera.update();
@@ -178,8 +184,12 @@ public class GameScreen implements Screen
 	
 	private void handleGameState()
 	{
+		Gdx.app.debug("GameScreen", "handleGameState");
+		
 		if(currentState == State.startOfRound)
 		{
+			Gdx.app.debug("GameScreen", "State.startOfRound");
+			
 			roundNumber ++;
 			
 			lastWiningWhiteCard = null;
@@ -198,6 +208,7 @@ public class GameScreen implements Screen
 			if(this.gameOver)
 			{
 				currentState = State.gameOver;
+				Gdx.app.debug("GameScreen", "State.gameOver");
 			}
 			else
 			{
@@ -208,6 +219,7 @@ public class GameScreen implements Screen
 		
 		if(currentState == State.playersChooseCard)
 		{
+			Gdx.app.debug("GameScreen", "State.playersChooseCard");
 			if(haveAllNonJudgesSelectedACard())
 			{
 				currentState = State.judgeChoosesAnswer;
@@ -230,6 +242,8 @@ public class GameScreen implements Screen
 				GameScreen.startNextFlag = false;
 			}
 		}
+		
+		Gdx.app.debug("GameScreen", "handleGameState end");
 	}
 	
 	private void drawSprites()
@@ -461,6 +475,8 @@ public class GameScreen implements Screen
 	@SuppressWarnings("unchecked")
 	private void populateHearbeats()
 	{
+		Gdx.app.debug("GameScreen", "populateHearbeats");
+		
 		this.game.mcp.hearbeatResponses.clear();
 		for(Player p : this.game.players.values())
 		{

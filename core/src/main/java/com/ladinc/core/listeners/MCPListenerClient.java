@@ -2,6 +2,7 @@ package com.ladinc.core.listeners;
 
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
 import com.ladinc.core.screens.GameScreen;
@@ -50,12 +51,15 @@ public class MCPListenerClient implements  MCPContorllersListener
 		{
 			if(params.containsKey("event"))
 			{
+				Gdx.app.log("MCPListenerClient", "pass: " + params.get("event"));
+				
 				if(params.get("event").contains("register"))
 				{
 					registerPlayer(params.get("id"), params.get("name"));
 				}
 				else if(params.get("event").contains("start"))
 				{
+					Gdx.app.debug("MCPListenerClient", "Got Event to start Game");
 					this.game.startGame = true;
 				}
 				else if(params.get("event").contains("cardSelect"))

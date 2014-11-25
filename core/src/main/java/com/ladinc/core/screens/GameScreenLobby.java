@@ -69,6 +69,8 @@ public class GameScreenLobby implements Screen
     	smallFont.setColor(Color.WHITE);
 	}
     
+	int counter = 0;
+	
 	@Override
 	public void render(float delta) {
 		
@@ -79,7 +81,17 @@ public class GameScreenLobby implements Screen
 		
 		if(this.game.startGame)
 		{
+			Gdx.app.debug("GameScreenLobby", "Start flag is true, moving to new screen");
 			this.game.setScreen(new GameScreen(this.game));
+		}
+		else
+		{
+			counter ++;
+			if(counter > 50)
+			{
+				Gdx.app.debug("GameScreenLobby", "Start flag is false");
+				counter = 0;
+			}
 		}
 		
 	}
