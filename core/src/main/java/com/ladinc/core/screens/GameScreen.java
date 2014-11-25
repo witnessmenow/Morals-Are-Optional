@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -96,6 +97,16 @@ public class GameScreen implements Screen
 		whiteCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.BLACK));
 		
 		this.bg = this.game.backgorund;
+	}
+	
+	public boolean checkForSystemBackButton()
+	{
+		if (Gdx.input.isKeyPressed(Keys.BACK))
+		{
+			return true;
+		}
+		
+		return false;
 	}
 	
 	private void initializeFont()

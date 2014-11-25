@@ -1,9 +1,12 @@
 package com.ladinc.core;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
@@ -40,6 +43,8 @@ public class McpCah extends Game
 	@Override
 	public void create() 
 	{
+		Gdx.input.setCatchBackKey(true);
+		
 		//Assets.load();
 		CardParser.loadCards();
 		
@@ -78,11 +83,11 @@ public class McpCah extends Game
 //		this.mcp.customLinks.add("bootstrap-theme.min.css");
 //		
         this.mcp.customLinkDirect = new ArrayList<CustomResource>();
-		this.mcp.customLinkDirect.add(new CustomResource("moralsAreOptional.html", Gdx.files.internal("moralsAreOptional.html").read()));
-		this.mcp.customLinkDirect.add(new CustomResource("jquery-1.11.1.min.js", Gdx.files.internal("jquery-1.11.1.min.js").read()));
-		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.js", Gdx.files.internal("bootstrap.min.js").read()));
-		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.css", Gdx.files.internal("bootstrap.min.css").read()));
-		this.mcp.customLinkDirect.add(new CustomResource("bootstrap-theme.min.css", Gdx.files.internal("bootstrap-theme.min.css").read()));
+		this.mcp.customLinkDirect.add(new CustomResource("moralsAreOptional.html", getFileContents("moralsAreOptional.html")));
+		this.mcp.customLinkDirect.add(new CustomResource("jquery-1.11.1.min.js", getFileContents("jquery-1.11.1.min.js")));
+		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.js", getFileContents("bootstrap.min.js")));
+		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.css", getFileContents("bootstrap.min.css")));
+		this.mcp.customLinkDirect.add(new CustomResource("bootstrap-theme.min.css", getFileContents("bootstrap-theme.min.css")));
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
@@ -95,6 +100,22 @@ public class McpCah extends Game
 		this.setScreen(new GameScreenLobby(this));
 		//this.setScreen(new GameScreen(this));
 		
+	}
+	
+	//TODO this is awful there must be a better way!
+	private String getFileContents(String fileName)
+	{
+		InputStream is = Gdx.files.internal(fileName).read();
+		Scanner filesScanner = null;
+		try {
+			filesScanner = new Scanner( is );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String fileContents = filesScanner.useDelimiter("\\A").next();
+		filesScanner.close();
+		return fileContents;
 	}
 	
 	private void mockPlayers()

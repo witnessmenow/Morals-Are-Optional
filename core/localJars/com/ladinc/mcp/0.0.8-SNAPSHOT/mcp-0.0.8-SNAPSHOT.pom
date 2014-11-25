@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ladinc</groupId>
 	<artifactId>mcp</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.8-SNAPSHOT</version>
 	<name>More Controllers Please</name>
 	<description>A mini webserver that connected devices work as a controller for a game</description>
 
