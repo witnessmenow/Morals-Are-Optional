@@ -153,6 +153,9 @@
 			function goToEndOfRoundScreen(){
 				hideAllPages();
 				document.getElementById("endOfRoundScreen").className = "show";
+				setTimeout(function(){
+					document.getElementById("chooseButton").className = "btn btn-success btn-lg";
+				},2000);
 			}
 			function hideAllPages(){
 				document.getElementById("page1").className = "hide";
@@ -709,7 +712,7 @@
 					</div>
 				</span>
 			</form>
-			<button type="button" id="chooseButton" class="btn btn-success btn-lg" onclick="javascript:startNext();">
+			<button type="button" id="chooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startNext();">
 					Start Next Round!
 			</button>
 		</div>
