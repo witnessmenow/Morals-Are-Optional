@@ -1,7 +1,6 @@
 package com.ladinc.core.screens;
 
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
 
@@ -513,6 +513,16 @@ public class GameScreen implements Screen
 			if(currentState == State.endOfRound)
 			{
 				obj.put("winningCard", GameScreen.lastWiningWhiteCard);
+				obj.put("score", p.score);
+				Array<JSONObject> arr = new Array<JSONObject>();
+				for (Player p2 : this.game.players.values()) {
+					JSONObject obj2 = new JSONObject();
+					obj2.put("name", p2.name);
+					obj2.put("score", p2.score);
+					arr.add(obj2);
+				}
+				obj.put("scores", arr);
+				obj.put("playerCount", this.game.players.size());
 			}
 
 			this.game.mcp.hearbeatResponses.put(p.id, obj);

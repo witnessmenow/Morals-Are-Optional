@@ -356,6 +356,20 @@
 					if (document.getElementById("endOfRoundScreen").className != "show")
 					{
 						goToEndOfRoundScreen();
+						if(obj.hasOwnProperty('scores')){
+							document.getElementById("scoreboard").innerHTML = "";
+							for(var i in obj.scores){
+								var divHolder = document.createElement("h1");
+								divHolder.id = "scoreHolder" + i;
+								
+								var para = document.createElement("small");
+								para.innerHTML = obj.scores[i].name + " " + obj.scores[i].score
+								para.id = obj.scores[i].name + "Score";
+								
+								divHolder.appendChild(para);
+								document.getElementById("scoreboard").appendChild(divHolder);
+							}
+						}
 					}
 
 					if(document.getElementById("whiteCardEndOfRoundText").innerHTML != obj.winningCard)
@@ -715,6 +729,7 @@
 			<button type="button" id="chooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startNext();">
 					Start Next Round!
 			</button>
+			<div id="scoreboard"></div>
 		</div>
 		<div id="judgeWait" class="hide">
 			<span class="displayInlineBlock">
