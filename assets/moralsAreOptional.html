@@ -90,7 +90,7 @@
 						if(i == whiteCardDivs.length - 1)
 						{
 							document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
-							document.getElementById("startButton").className = "btn btn-success btn-lg";
+							
 							$("#singleShowCard").remove();
 							$("#dummyWhiteCard").remove();
 							for(var i = 0; i < whiteCardDivs.length; i++) {
@@ -740,7 +740,10 @@
 		</div>
 		<script type="text/javascript">
 		function clicker(clickString){
-			document.getElementById(clickString).click();			
+			document.getElementById(clickString).click();		
+			if(clickString.indexOf("winningWhiteCardInput") > -1){
+				document.getElementById("startButton").className = "btn btn-success btn-lg";
+			}
 		}
 		
 		function whiteCardPicker(index){
@@ -782,14 +785,6 @@
 					}
 				}
 			}
-			
-// 			for(var i = 0; i < numPlayers; i++){
-// 				if (i == index) {
-// 					$("#winningWhiteCard" + i ).addClass("redBorder").removeClass("noBorder");
-// 				} else {
-//				$("#winningWhiteCard" + i ).addClass("noBorder").removeClass("redBorder");
-// 				}
-// 			}
 		}
 		
 		</script>
