@@ -66,6 +66,7 @@ public class GameScreen implements Screen
 	
 	public Sprite tickSprite;
 	public Sprite judgeSprite;
+	public Sprite timerSprite;
 	
 	Timer timer = null;
 	
@@ -91,6 +92,9 @@ public class GameScreen implements Screen
 		
 		judgeSprite = new Sprite(new Texture(Gdx.files.internal("judge.png")));
 		judgeSprite.setColor(Color.WHITE);
+		
+		timerSprite = new Sprite(new Texture(Gdx.files.internal("timer.png")));
+		timerSprite.setColor(Color.WHITE);
 		
 		blackCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
 		blackCardSprite.setColor(Color.BLACK);
@@ -375,6 +379,12 @@ public class GameScreen implements Screen
 				tickSprite.setPosition(xPos, yPosAdjusted);
 				tickSprite.draw(sb);
 			}
+			else if(!entry.getValue().dealtIn)
+			{
+				yPosAdjusted = yPosAdjusted - timerSprite.getHeight() + 3f;
+				timerSprite.setPosition(xPos, yPosAdjusted);
+				timerSprite.draw(sb);
+			}
 			
 			i--;
 		}
@@ -490,7 +500,7 @@ public class GameScreen implements Screen
 		
 		for(Player p : this.game.players.values())
 		{
-			if(!p.isJudge)
+			if(!p.isJudge && p.dealtIn)
 			{
 				if(p.selectedCard == null)
 				{
@@ -520,6 +530,11 @@ public class GameScreen implements Screen
 				if(p.selectedCard != null)
 				{
 					obj.put("selectedCard", p.selectedCard);
+				}
+				
+				if(!p.dealtIn)
+				{
+					obj.put("notDealtIn", "waiting");
 				}
 			}
 			else
@@ -569,7 +584,7 @@ public class GameScreen implements Screen
 		//Populate answers from players
 		for(Player NewP : this.game.players.values())
 		{			
-			if(!NewP.isJudge)
+			if(!NewP.isJudge && NewP.dealtIn)
 			{
 				JSONObject innerObj = new JSONObject();
 				innerObj.put("playerID", NewP.id);

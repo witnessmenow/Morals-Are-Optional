@@ -236,7 +236,7 @@ public class GameScreenLobby implements Screen
 	@Override
 	public void pause() 
 	{
-		Gdx.app.error("pause", "entering Pause");
+		Gdx.app.debug("pause", "entering Pause");
 		
 		if(this.timer != null)
 		{
@@ -250,7 +250,7 @@ public class GameScreenLobby implements Screen
 			  @Override
 			  public void run() 
 			  {
-				  Gdx.app.error("pause", "fake loop");
+				  Gdx.app.debug("pause", "fake loop");
 				  
 					sendPlayerHeartbeats();
 					
@@ -275,7 +275,7 @@ public class GameScreenLobby implements Screen
 	@Override
 	public void resume() 
 	{
-		Gdx.app.error("resume", "entering Resume");
+		Gdx.app.debug("resume", "entering Resume");
 		
 		if(this.timer != null)
 		{

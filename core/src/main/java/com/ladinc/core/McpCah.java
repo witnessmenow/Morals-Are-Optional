@@ -50,7 +50,7 @@ public class McpCah extends Game
 	{
 		Gdx.input.setCatchBackKey(true);
 		
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Gdx.app.setLogLevel(Application.LOG_ERROR);
 		
 		//Assets.load();
 		CardParser.loadCards();

@@ -22,6 +22,8 @@ public class Player
 	
 	public String selectedCard = null;
 	
+	public boolean dealtIn = false;
+	
 	public static Boolean OUT_OF_WHITE_CARDS = false;
 	
 	public Player(String name, String id){
@@ -74,6 +76,7 @@ public class Player
 				//Remove card from available
 				McpCah.AVAILABLE_WHITE_CARDS.remove(i);
 				
+				dealtIn = true;
 			}
 			else
 			{
