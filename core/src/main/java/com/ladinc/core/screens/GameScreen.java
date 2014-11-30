@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -64,6 +66,8 @@ public class GameScreen implements Screen
 	
 	public Sprite tickSprite;
 	public Sprite judgeSprite;
+	
+	Timer timer = null;
 	
 	private Sprite bg;
 	
@@ -138,8 +142,24 @@ public class GameScreen implements Screen
 	}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
+	public void pause() 
+	{
+		Gdx.app.error("pause", "entering Pause");
+		
+		if(this.timer == null)
+		{
+			this.timer = new Timer();
+		}
+		
+		timer.scheduleAtFixedRate(new TimerTask() {
+			  @Override
+			  public void run() 
+			  {
+				  Gdx.app.error("pause", "fake loop");
+				  //handleGameState();
+				  //populateHearbeats();
+			  }
+			}, 100, 100);
 		
 	}
 
@@ -376,8 +396,17 @@ public class GameScreen implements Screen
 	}
 
 	@Override
-	public void resume() {
+	public void resume() 
+	{
 		// TODO Auto-generated method stub
+		
+		Gdx.app.error("resume", "entering Resume");
+		
+		if(this.timer != null)
+		{
+			this.timer.cancel();
+			this.timer.purge();
+		}
 		
 	}
 

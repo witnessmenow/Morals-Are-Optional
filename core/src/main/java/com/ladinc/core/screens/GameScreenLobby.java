@@ -1,6 +1,8 @@
 package com.ladinc.core.screens;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.simple.JSONObject;
 
@@ -70,6 +72,7 @@ public class GameScreenLobby implements Screen
 	}
     
 	int counter = 0;
+	private Timer timer;
 	
 	@Override
 	public void render(float delta) {
@@ -231,14 +234,37 @@ public class GameScreenLobby implements Screen
 	}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
+	public void pause() 
+	{
+		Gdx.app.error("pause", "entering Pause");
+		
+		if(this.timer == null)
+		{
+			this.timer = new Timer();
+		}
+		
+		timer.scheduleAtFixedRate(new TimerTask() {
+			  @Override
+			  public void run() 
+			  {
+				  Gdx.app.error("pause", "fake loop");
+				  //handleGameState();
+				  //populateHearbeats();
+			  }
+			}, 100, 100);
 		
 	}
 
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
+	public void resume() 
+	{
+		Gdx.app.error("resume", "entering Resume");
+		
+		if(this.timer != null)
+		{
+			this.timer.cancel();
+			this.timer.purge();
+		}
 		
 	}
 
