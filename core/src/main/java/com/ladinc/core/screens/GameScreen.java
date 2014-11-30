@@ -573,6 +573,54 @@ public class GameScreen implements Screen
 
 			this.game.mcp.hearbeatResponses.put(p.id, obj);
 		}
+		
+		populateTableHeartbeat();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void populateTableHeartbeat()
+	{
+		JSONObject obj = new JSONObject();
+		
+		obj.put("blackCard", this.blackCard);
+		
+		
+		if(lastRevealedWhiteCard != null || lastWiningWhiteCard != null)
+		{
+			if(this.currentState == State.judgeChoosesAnswer)
+			{
+				obj.put("whiteCard", lastRevealedWhiteCard);
+				obj.put("gameScreenMessage", "Judge is choosing");
+			}
+			else
+			{
+				obj.put("whiteCard", lastWiningWhiteCard);
+				obj.put("gameScreenMessage", "Winner - " + this.game.players.get(lastWiningId).name);
+			}
+		}
+		else
+		{
+			if(this.currentState == State.playersChooseCard)
+			{
+				obj.put("gameScreenMessage", "Waiting for players submissions");
+			}
+			else if(this.currentState == State.judgeChoosesAnswer)
+			{
+				obj.put("gameScreenMessage", "Judge is choosing");
+			}
+		}
+		
+		Array<JSONObject> arr = new Array<JSONObject>();
+		for (Player p2 : this.game.players.values()) {
+			JSONObject obj2 = new JSONObject();
+			obj2.put("name", p2.name);
+			obj2.put("score", p2.score);
+			arr.add(obj2);
+		}
+		obj.put("scores", arr);
+		obj.put("playerCount", this.game.players.size());
+		
+		this.game.mcp.hearbeatResponses.put("table", obj);
 	}
 	
 	private JSONArray selectedWhiteCards = null;

@@ -101,10 +101,12 @@ public class McpCah extends Game
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.js", getFileContents("bootstrap.min.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.css", getFileContents("bootstrap.min.css")));
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap-theme.min.css", getFileContents("bootstrap-theme.min.css")));
+		this.mcp.customLinkDirect.add(new CustomResource("table.html", getFileContents("table.html")));
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
-		this.mcp.redirectOptions.add(new RedirectOption("moralsAreOptional.html", "MCP CAH"));
+		this.mcp.redirectOptions.add(new RedirectOption("moralsAreOptional.html", "Player"));
+		this.mcp.redirectOptions.add(new RedirectOption("table.html", "Table"));
 		
 		//mockPlayers();
 		

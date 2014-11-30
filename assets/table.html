@@ -1,0 +1,338 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" />
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<link rel="stylesheet" href="bootstrap-theme.min.css">
+		<script src="jquery-1.11.1.min.js"></script>
+		<script src="jquery.mobile-1.3.2.min.js"></script>
+		<script src="bootstrap.min.js"></script>
+		
+		<title>Morals Are Optional</title>
+		<script type="text/javascript" src="defaultController.js"></script>
+		<script type="text/javascript" src="KeyboardButton.js"></script>
+		<script type="text/javascript" src="PageHelper.js"></script>
+
+ 		
+		
+		<script>
+			var nextToShow = 0;
+			var numPlayers = 3
+			
+			var currentBlackCardText = "";
+			var cardSelectionDisabled = false;
+			var cardVotingDisabled = true;
+			
+			function gotoGameScreenPage(){
+				hideAllPages();
+				document.getElementById("gameScreen").className = "show";
+			}
+			function hideAllPages(){
+				document.getElementById("lobby").className = "hide";
+				document.getElementById("gameScreen").className = "hide";
+			}
+			function sendHeartbeat()
+			{
+				var url = "heartbeat?id=table";
+				
+				var xmlhttp
+				if (window.XMLHttpRequest)
+				{
+					xmlhttp=new XMLHttpRequest();
+				}
+				
+				xmlhttp.open("GET",url,true);
+				
+				xmlhttp.onreadystatechange = function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+					{ 
+						handleHeartbeat(xmlhttp.responseText);
+					}
+				}
+				
+				xmlhttp.send();
+			}
+			
+			function handleHeartbeat(respText)
+			{
+				var obj = JSON.parse(respText);
+				
+				if ($.isEmptyObject(obj))
+				{
+					//Currently doesnt work right as state of pages is not reset
+					//goToPage1();
+				}
+				
+				if(obj.hasOwnProperty('blackCard'))
+				{
+					if (document.getElementById("gameScreen").className != "show")
+					{
+						gotoGameScreenPage();
+					}
+				
+					if(currentBlackCardText != obj.blackCard)
+					{
+						currentBlackCardText = obj.blackCard; 
+						
+						var blackCards = document.getElementsByName("blackCardText");
+						
+						var arrayLength = blackCards.length;
+						for (var i = 0; i < arrayLength; i++) {
+							blackCards[i].innerHTML = currentBlackCardText;
+						}
+						
+					}
+					
+				}
+				
+				if(obj.hasOwnProperty('whiteCard'))
+				{
+					if (document.getElementById("whiteCardTable").className != "whiteCard")
+					{
+						document.getElementById("whiteCardTable").className = "whiteCard";
+					}
+				
+					if(document.getElementById("whiteCardEndOfRoundText").innerHTML != obj.whiteCard)
+					{
+						document.getElementById("whiteCardEndOfRoundText").innerHTML = obj.whiteCard;
+					}
+				}
+				else
+				{
+					if (document.getElementById("whiteCardTable").className != "hide")
+					{
+						document.getElementById("whiteCardTable").className = "hide";
+					}
+				
+					if(document.getElementById("whiteCardEndOfRoundText").innerHTML != obj.whiteCard)
+					{
+						document.getElementById("whiteCardEndOfRoundText").innerHTML = obj.whiteCard;
+					}
+				}
+				
+				if(obj.hasOwnProperty('numberOfPlayers'))
+				{
+					if(obj.numberOfPlayers > 2){
+						enableStartButton();
+					}
+				}
+				
+				if(obj.hasOwnProperty('scores'))
+				{
+					var scoreboards = document.getElementsByName("scoreboard");
+						
+					for (var j = 0; j < scoreboards.length; j++) 
+					{
+						scoreboards[j].innerHTML = "";
+						for(var i in obj.scores)
+						{
+							var divHolder = document.createElement("h1");
+							divHolder.id = "scoreHolder" + i;
+							
+							var para = document.createElement("small");
+							para.innerHTML = obj.scores[i].name + " " + obj.scores[i].score
+							para.id = obj.scores[i].name + "Score";
+							
+							divHolder.appendChild(para);
+							scoreboards[j].appendChild(divHolder);
+						}
+					}
+				}
+				
+				if(obj.hasOwnProperty('gameScreenMessage'))
+				{
+					if (document.getElementById("gameScreenMessage").className != "bg-success")
+					{
+						document.getElementById("gameScreenMessage").className = "bg-success";
+					}
+				
+					if(document.getElementById("gameScreenMessage").innerHTML != obj.gameScreenMessage)
+					{
+						document.getElementById("gameScreenMessage").innerHTML = obj.gameScreenMessage;
+					}
+				}
+				else
+				{
+					if (document.getElementById("gameScreenMessage").className != "hide")
+					{
+						document.getElementById("gameScreenMessage").className = "hide";
+					}
+				}
+
+				
+			}
+			function initMCP()
+			{
+				setInterval(sendHeartbeat, 1000);
+			}
+		</script>
+		<style>
+			.btn, .btn a{
+                color:#ffffff;
+            }
+            
+			.hide, .hide2 {
+				display:none;
+			}
+			.show {
+				display:block;
+			}
+			.buttonDisable {
+				pointer-events:none;
+			}
+			.buttonEnable {
+				pointer-events:all;
+			}
+			.button {
+			   border-top: 1px solid #96d1f8;
+			   background: #65a9d7;
+			   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+			   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+			   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+			   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+			   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+			   padding: 5px 10px;
+			   -webkit-border-radius: 8px;
+			   -moz-border-radius: 8px;
+			   border-radius: 8px;
+			   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+			   color: white;
+			   font-size: 14px;
+			   font-family: Georgia, serif;
+			   text-decoration: none;
+			   vertical-align: middle;
+			}
+			.button:hover {
+			   border-top-color: #28597a;
+			   background: #28597a;
+			   color: #ccc;
+			}
+			.button:active {
+			   border-top-color: #1b435e;
+			   background: #1b435e;
+			}
+			
+			
+			
+			.buttonDisabledLook {
+			   border-top: 1px solid #9e9e9e;
+			   background: #9e9e9e;
+			   background: -webkit-gradient(linear, left top, left bottom, from(#adabad), to(#9e9e9e));
+			   background: -webkit-linear-gradient(top, #adabad, #9e9e9e);
+			   background: -moz-linear-gradient(top, #adabad, #9e9e9e);
+			   background: -ms-linear-gradient(top, #adabad, #9e9e9e);
+			   background: -o-linear-gradient(top, #adabad, #9e9e9e);
+			   padding: 5px 10px;
+			   -webkit-border-radius: 8px;
+			   -moz-border-radius: 8px;
+			   border-radius: 8px;
+			   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   box-shadow: rgba(0,0,0,1) 0 1px 0;
+			   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+			   color: #fafafa;
+			   font-size: 14px;
+			   font-family: Georgia, serif;
+			   text-decoration: none;
+			   vertical-align: middle;
+			   }
+			.buttonDisabledLook:hover {
+			   border-top-color: #9e9e9e;
+			   background: #9e9e9e;
+			   color: #ffffff;
+			   }
+			.buttonDisabledLook:active {
+			   border-top-color: #9e9e9e;
+			   background: #9e9e9e;
+			   }
+			   
+			   .whiteCard {
+				  position: relative;
+				  float: left;
+				  margin-right: 10px;
+				  width: 150px;
+				  height: 220px;
+				  border-radius: 10px;
+				  background: #fff;
+				  -webkit-box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+				  box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+				  margin-top:10px;
+				  margin-left:10px;
+				}
+				
+				.blackCard {
+				  position: relative;
+				  float: left;
+				  margin-right: 10px;
+				  width: 150px;
+				  height: 220px;
+				  border-radius: 10px;
+				  background: #000;
+				  -webkit-box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+				  box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
+				  margin-top:10px;
+				  margin-left:10px;
+				}
+				
+				.blackCard p{
+				  color: #fff
+				  }
+
+				.displayInlineBlock{
+					display:inline-block;
+				}
+				
+				input[type='radio']{
+						display: none;
+				}
+				
+				.whiteCard p, .blackCard p {
+				    width: 135px;
+				    word-wrap: break-word;
+				    margin-top: 5px;
+				    margin-left: 5px;
+				}
+				
+				.redBorder{
+					border: 3px solid #ff0000;
+				}
+				
+				.noBorder{
+					boarder: none;
+				}
+				
+				.buttonDivider{
+					clear: both;
+					padding-top: 1em;
+					padding-left: 0.75em;
+				}
+		</style>
+	</head>
+	<body onLoad="initMCP();">
+		<div id="lobby">
+			<h3 class="bg-success">
+				Waiting for game to start
+			</h3>
+			<div name="scoreboard"></div>
+		</div>
+		<div id="gameScreen" class="hide">
+			<form>
+				<span class="displayInlineBlock">
+					<div class="blackCard" >
+						<p name="blackCardText" id="blackCardTextEndOfRound"></p>
+					</div>
+					<div id="whiteCardTable" class="whiteCard">
+						<p id="whiteCardEndOfRoundText"></p>
+					</div>
+				</span>
+			</form>
+			<h3 id="gameScreenMessage" class="bg-success">
+				Waiting for players Votes
+			</h3>
+			<div name="scoreboard"></div>
+		</div>
+	</body>
+</html>

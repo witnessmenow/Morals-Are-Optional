@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
 import com.ladinc.core.screens.GameScreen.State;
@@ -219,6 +220,28 @@ public class GameScreenLobby implements Screen
 		for(Player p : this.game.players.values()){
 			this.game.mcp.hearbeatResponses.put(p.id,obj);
 		}
+		
+		sendTableHeartbeats();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void sendTableHeartbeats()
+	{
+		JSONObject obj = new JSONObject();
+		
+		Array<JSONObject> arr = new Array<JSONObject>();
+		for (Player p2 : this.game.players.values()) {
+			JSONObject obj2 = new JSONObject();
+			obj2.put("name", p2.name);
+			obj2.put("score", "");
+			arr.add(obj2);
+		}
+		obj.put("scores", arr);
+		obj.put("playerCount", this.game.players.size());
+		
+		obj.put("address", this.game.ipAddr);
+		
+		this.game.mcp.hearbeatResponses.put("table",obj);
 	}
 
 	@Override
