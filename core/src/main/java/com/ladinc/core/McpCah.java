@@ -41,12 +41,16 @@ public class McpCah extends Game
 	public Sprite backgorund;
 	
 	public boolean startGame = false; 
+	
+	public GameScreen gameScreen;
+	public GameScreenLobby gameScreenLobby;
+	
 	@Override
 	public void create() 
 	{
 		Gdx.input.setCatchBackKey(true);
 		
-		Gdx.app.setLogLevel(Application.LOG_ERROR);
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		
 		//Assets.load();
 		CardParser.loadCards();
@@ -106,7 +110,10 @@ public class McpCah extends Game
 		
 		this.backgorund = new Sprite(new Texture(Gdx.files.internal("background.jpg")));
 		
-		this.setScreen(new GameScreenLobby(this));
+		gameScreenLobby = new GameScreenLobby(this);
+		gameScreen = new GameScreen(this);
+		
+		this.setScreen(gameScreenLobby);
 		//this.setScreen(new GameScreen(this));
 		
 	}

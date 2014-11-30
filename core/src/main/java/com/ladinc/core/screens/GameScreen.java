@@ -144,20 +144,23 @@ public class GameScreen implements Screen
 	@Override
 	public void pause() 
 	{
-		Gdx.app.error("pause", "entering Pause");
+		Gdx.app.debug("pause", "entering Pause");
 		
-		if(this.timer == null)
+		if(this.timer != null)
 		{
-			this.timer = new Timer();
+			timer.cancel();
+			timer.purge();
 		}
+		
+		this.timer = new Timer();
 		
 		timer.scheduleAtFixedRate(new TimerTask() {
 			  @Override
 			  public void run() 
 			  {
-				  Gdx.app.error("pause", "fake loop");
-				  //handleGameState();
-				  //populateHearbeats();
+				  Gdx.app.debug("Game Screen - pause", "fake loop");
+				  handleGameState();
+				  populateHearbeats();
 			  }
 			}, 100, 100);
 		
@@ -397,10 +400,8 @@ public class GameScreen implements Screen
 
 	@Override
 	public void resume() 
-	{
-		// TODO Auto-generated method stub
-		
-		Gdx.app.error("resume", "entering Resume");
+	{	
+		Gdx.app.debug("resume", "entering Resume");
 		
 		if(this.timer != null)
 		{
@@ -411,8 +412,9 @@ public class GameScreen implements Screen
 	}
 
 	@Override
-	public void show() {
-		// TODO Auto-generated method stub
+	public void show() 
+	{
+		Gdx.app.debug("show", "entering show");
 		
 	}
 	

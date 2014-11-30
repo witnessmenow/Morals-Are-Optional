@@ -85,7 +85,7 @@ public class GameScreenLobby implements Screen
 		if(this.game.startGame)
 		{
 			Gdx.app.debug("GameScreenLobby", "Start flag is true, moving to new screen");
-			this.game.setScreen(new GameScreen(this.game));
+			this.game.setScreen(game.gameScreen);
 		}
 		else
 		{
@@ -238,18 +238,35 @@ public class GameScreenLobby implements Screen
 	{
 		Gdx.app.error("pause", "entering Pause");
 		
-		if(this.timer == null)
+		if(this.timer != null)
 		{
-			this.timer = new Timer();
+			timer.cancel();
+			timer.purge();
 		}
+		
+		this.timer = new Timer();
 		
 		timer.scheduleAtFixedRate(new TimerTask() {
 			  @Override
 			  public void run() 
 			  {
 				  Gdx.app.error("pause", "fake loop");
-				  //handleGameState();
-				  //populateHearbeats();
+				  
+					sendPlayerHeartbeats();
+					
+					if(game.startGame)
+					{
+						Gdx.app.debug("GameScreenLobby - pause", "Start flag is true, moving to new screen");
+						
+						if(timer != null)
+						{
+							timer.cancel();
+							timer.purge();
+						}
+						
+						game.setScreen(game.gameScreen);
+						game.pause();
+					}
 			  }
 			}, 100, 100);
 		
