@@ -16,6 +16,7 @@ hs_err_pid*
 */target/*
 android/libs/*
 android/gen/*
+android/bin/*
 .project
 .classpath
 
