@@ -23,12 +23,18 @@ import com.ladinc.core.McpCah;
 public class CardParser 
 {
 	
+	private static String DEFAULT_CARD_FILE = "cards/cards.json";
+	
 	public static List<Card> masterCards;
 	
 	public static List<String> selectedPacks;
 	
+	public static List<String> availalbePacks;
+	
 	public static void loadCards()
 	{
+		//DEFAULT_CARD_FILE = "cards/test.json";
+		
 		readNewCards();
 		populateSelectedPacks();
 		parseCards();
@@ -56,7 +62,7 @@ public class CardParser
 		
 		try 
 		{
-			InputStream is = Gdx.files.internal("cards/cards.json").read();
+			InputStream is = Gdx.files.internal(DEFAULT_CARD_FILE).read();
 			
 			 String jsonTxt = IOUtils.toString(is); 
 			
@@ -116,6 +122,7 @@ public class CardParser
 	public static String parseText(String text)
 	{
 		String t = text.replace("&reg;", "");
+		t = t.replace("\\", "");
 		return t;
 	}
 
