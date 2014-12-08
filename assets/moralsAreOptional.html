@@ -174,6 +174,7 @@
 				var myRand=parseInt(Math.random()*99999999);
 				
 				var url = "passEvent?id=" + getId()  +  "&event=cardSelect&card="	+ cardText;
+				url = makeUrlSafe(url);
 				
 				var xmlhttp
 				if (window.XMLHttpRequest)
@@ -198,6 +199,8 @@
 				
 				var url = "passEvent?id=" + getId()  +  "&event=winnerSelect&winnerId=" + selectedCard + "&card="	+ cardText;
 				
+				url = makeUrlSafe(url);
+				
 				var xmlhttp
 				if (window.XMLHttpRequest)
 				{
@@ -216,10 +219,18 @@
 				
 				xmlhttp.send();
 			}
+			function makeUrlSafe(text)
+			{
+				var t = text.replace(/%/g,'%25');
+				
+				return t;
+			}
 			function revealCard(cardText)
 			{
 				
 				var url = "passEvent?&event=revealCard&card=" + cardText;
+				
+				url = makeUrlSafe(url);
 				
 				var xmlhttp
 				if (window.XMLHttpRequest)
@@ -290,6 +301,8 @@
 				var myRand=parseInt(Math.random()*99999999);
 				
 				var url = "passEvent?id=" + getId()  +  "&event=register&name="	+ name;
+				
+				url = makeUrlSafe(url);
 				
 				var xmlhttp
 				if (window.XMLHttpRequest)
