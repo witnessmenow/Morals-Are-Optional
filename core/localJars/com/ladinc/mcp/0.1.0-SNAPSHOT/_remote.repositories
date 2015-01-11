@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Sun Jan 11 22:43:13 GMT 2015
+mcp-0.1.0-SNAPSHOT.pom>=
+mcp-0.1.0-SNAPSHOT.jar>=
+mcp-0.1.0-SNAPSHOT-jar-with-dependencies.jar>=
+mcp-0.1.0-SNAPSHOT-sources.jar>=

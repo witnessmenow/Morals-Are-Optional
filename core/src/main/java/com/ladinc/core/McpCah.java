@@ -1,12 +1,15 @@
 package com.ladinc.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import org.json.simple.parser.ParseException;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Application.ApplicationType;
@@ -63,6 +66,19 @@ public class McpCah extends Game
 		
 		//Create MCP, try use port 8888
 		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);
+		
+		mcp.baseMCPRocksURL = "http://checkargos.com/mcp";
+		
+		try 
+		{	
+			mcp.registerWithMCPRocks("Morals_Are_Optional");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//Users IP addresses used as IDS
 		MCP.USE_IP_ADDRESS_AS_ID = true;
