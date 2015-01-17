@@ -613,7 +613,14 @@ public class GameScreen implements Screen
 		Array<JSONObject> arr = new Array<JSONObject>();
 		for (Player p2 : this.game.players.values()) {
 			JSONObject obj2 = new JSONObject();
-			obj2.put("name", p2.name);
+			if(p2.isJudge)
+			{
+				obj2.put("name", "(J) " + p2.name);
+			}
+			else
+			{
+				obj2.put("name", p2.name);
+			}
 			obj2.put("score", p2.score);
 			arr.add(obj2);
 		}
