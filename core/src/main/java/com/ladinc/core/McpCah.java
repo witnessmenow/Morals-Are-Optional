@@ -67,7 +67,7 @@ public class McpCah extends Game
 		//Create MCP, try use port 8888
 		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);
 		
-		mcp.baseMCPRocksURL = "http://checkargos.com/mcp";
+		mcp.baseMCPRocksURL = "http://mcp.rocks";
 		
 		try 
 		{	

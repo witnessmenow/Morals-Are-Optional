@@ -415,6 +415,19 @@
 						if(!cardSelectionDisabled)
 						{
 							disableCardSelection();
+							if(document.getElementById("madeVoteWaitingForJudgement").className != "show")
+							{
+								document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+								document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
+							}
+						}
+					}
+					else
+					{
+						//If we dont have a card selected the cardSelection should be enabled
+						if(cardSelectionDisabled)
+						{
+							clearSelectedCard();
 						}
 					}
 					
@@ -531,6 +544,7 @@
 			function initMCP()
 			{
 				setInterval(sendHeartbeat, 1000);
+				sendHeartbeat();
 			}
 		</script>
 		<style>
