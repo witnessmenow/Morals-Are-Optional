@@ -4,6 +4,9 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.ladinc.core.McpCah;
+import com.ladinc.core.cards.CardCollection;
+import com.ladinc.core.cards.CardParser;
+import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.objects.Player;
 import com.ladinc.core.screens.GameScreen;
 import com.ladinc.mcp.interfaces.MCPContorllersListener;
@@ -72,7 +75,7 @@ public class MCPListenerClient implements  MCPContorllersListener
 				}
 				else if(params.get("event").contains("winnerSelect"))
 				{
-					winnerSelected(params.get("winnerId"), params.get("card"));
+					winnerSelected(params.get("card"));
 				}
 				else if(params.get("event").contains("nextRound"))
 				{
@@ -83,21 +86,27 @@ public class MCPListenerClient implements  MCPContorllersListener
 		
 	}
 	
-	private void winnerSelected(String winnerId, String card)
+	private void winnerSelected(String card)
 	{
-		if(this.game.players.containsKey(winnerId))
+		int winningCard = Integer.parseInt(card);
+		String winnerId = null;
+		for(Player p: this.game.players.values())
 		{
-			Player p = this.game.players.get(winnerId);
-			p.score++;
 			
-			GameScreen.lastWiningWhiteCard = card;
+			if (p.selectedCard != null && p.selectedCard.id == winningCard)
+			{
+				p.score++;
+				winnerId = p.id;
+			}
+			
+			GameScreen.lastWiningWhiteCard = new SimpleWhiteCard(CardParser.masterCards.get(winningCard));
 			GameScreen.lastWiningId = winnerId;
 		}
 	}
 	
 	private void revealCard(String card)
 	{
-		GameScreen.lastRevealedWhiteCard = card;
+		GameScreen.lastRevealedWhiteCard = new SimpleWhiteCard(CardParser.masterCards.get(Integer.parseInt(card)));
 	}
 	
 	private void cardSelected(String id, String card)
@@ -105,7 +114,7 @@ public class MCPListenerClient implements  MCPContorllersListener
 		if(this.game.players.containsKey(id))
 		{
 			Player p = this.game.players.get(id);
-			p.selectCardAction(card);
+			p.selectCardAction(Integer.parseInt(card));
 		}
 	}
 	

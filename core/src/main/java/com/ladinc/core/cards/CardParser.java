@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ public class CardParser
 	
 	private static String DEFAULT_CARD_FILE = "cards/cards.json";
 	
-	public static List<Card> masterCards;
+	public static Map<Integer, Card> masterCards;
 	
 	public static List<String> selectedPacks;
 	
@@ -58,7 +60,7 @@ public class CardParser
 	
 	public static void readNewCards()
 	{
-		masterCards = new ArrayList<Card>();
+		masterCards = new HashMap<Integer, Card>();
 		
 		try 
 		{
@@ -79,7 +81,10 @@ public class CardParser
 			
             
             CardCollection col = new Gson().fromJson(jsonTxt, CardCollection.class);
-			masterCards = col.masterCards;
+            for(Card c : col.masterCards)
+            {
+            	masterCards.put(c.id, c);
+            }
 			
 			int i = 0;
 			
@@ -95,7 +100,7 @@ public class CardParser
 	{
 		if(masterCards != null && masterCards.size() > 0)
 		{
-			for(Card c : masterCards)
+			for(Card c : masterCards.values())
 			{
 				//Check is card wanted
 				if(selectedPacks.contains(c.expansion))
@@ -112,7 +117,7 @@ public class CardParser
 					}
 					else if(c.cardType.contains("A"))
 					{
-						McpCah.AVAILABLE_WHITE_CARDS.add(parseText(c.text));
+						McpCah.AVAILABLE_WHITE_CARDS.add(new SimpleWhiteCard(c.id, parseText(c.text)));
 					}
 				}
 			}

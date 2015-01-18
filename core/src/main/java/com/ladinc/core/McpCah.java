@@ -18,6 +18,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.ladinc.core.cards.CardParser;
+import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.listeners.MCPListenerClient;
 import com.ladinc.core.objects.Player;
 import com.ladinc.core.screens.GameScreen;
@@ -36,7 +37,7 @@ public class McpCah extends Game
 	public static Map<String, String> ALL_WHITE_CARDS = new HashMap<String, String>();
 	public static Map<String, String> ALL_BLACK_CARDS = new HashMap<String, String>();
 	
-	public static List<String> AVAILABLE_WHITE_CARDS = new ArrayList<String>();
+	public static List<SimpleWhiteCard> AVAILABLE_WHITE_CARDS = new ArrayList<SimpleWhiteCard>();
 	public static List<String> AVAILABLE_BLACK_CARDS = new ArrayList<String>();
 	
 	public Map<String, Player> players = new HashMap<String, Player>();
@@ -118,6 +119,11 @@ public class McpCah extends Game
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.css", getFileContents("bootstrap.min.css")));
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap-theme.min.css", getFileContents("bootstrap-theme.min.css")));
 		this.mcp.customLinkDirect.add(new CustomResource("table.html", getFileContents("table.html")));
+		this.mcp.customLinkDirect.add(new CustomResource("heartbeatHelper.js", getFileContents("heartbeatHelper.js")));
+		this.mcp.customLinkDirect.add(new CustomResource("judge.js", getFileContents("judge.js")));
+		this.mcp.customLinkDirect.add(new CustomResource("pageHelper.js", getFileContents("pageHelper.js")));
+		this.mcp.customLinkDirect.add(new CustomResource("serviceCalls.js", getFileContents("serviceCalls.js")));
+		this.mcp.customLinkDirect.add(new CustomResource("mao.css", getFileContents("mao.css")));
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults

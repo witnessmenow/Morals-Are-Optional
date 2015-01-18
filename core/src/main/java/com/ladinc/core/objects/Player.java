@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.ladinc.core.McpCah;
+import com.ladinc.core.cards.SimpleWhiteCard;
 
 public class Player 
 {
@@ -18,9 +20,9 @@ public class Player
 	
 	public boolean isJudge = false;
 	
-	public List<String> hand = new ArrayList<String>();
+	public List<SimpleWhiteCard> hand = new ArrayList<SimpleWhiteCard>();
 	
-	public String selectedCard = null;
+	public SimpleWhiteCard selectedCard = null;
 	
 	public boolean dealtIn = false;
 	
@@ -31,25 +33,27 @@ public class Player
 		this.id = id;
 	}
 	
-	public void selectCardAction(String card)
+	public void selectCardAction(int cardId)
 	{
-		if(hand.contains(card))
+		for(SimpleWhiteCard s: hand)
 		{
-			//hand.remove(card);
-			this.selectedCard = card;
+			if(s.id == cardId)
+			{
+				selectedCard = s;
+				return;
+			}
 		}
-		else
-		{
-			//user selected a card they dont have?!	
-		}
+		
+		//If we get here the user selected a card they do not have in their hand?
 	}
 	
 	public JSONArray cardsToJsonArray()
 	{
 		JSONArray cards = new JSONArray();
-		for(String s: hand)
+		JSONObject obj;
+		for(SimpleWhiteCard s: hand)
 		{
-			cards.add(s);
+			cards.add(s.getJsonObj());
 		}
 		
 		return cards;

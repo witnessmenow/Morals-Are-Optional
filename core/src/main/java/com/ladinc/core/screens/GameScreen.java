@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.ladinc.core.McpCah;
+import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.objects.Player;
 
 public class GameScreen implements Screen
@@ -33,9 +34,9 @@ public class GameScreen implements Screen
 		startOfRound, endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
 	};
 	
-	public static String lastWiningWhiteCard = null;
+	public static SimpleWhiteCard lastWiningWhiteCard = null;
 	public static String lastWiningId = null;
-	public static String lastRevealedWhiteCard = null;
+	public static SimpleWhiteCard lastRevealedWhiteCard = null;
 	
 	public static Boolean startNextFlag = false;
 	
@@ -317,11 +318,11 @@ public class GameScreen implements Screen
 		this.whiteCardLabel.setAlignment(Align.left | Align.top);
 		if(this.currentState == State.judgeChoosesAnswer)
 		{
-			this.whiteCardLabel.setText(lastRevealedWhiteCard);
+			this.whiteCardLabel.setText(lastRevealedWhiteCard.text);
 		}
 		else
 		{
-			this.whiteCardLabel.setText(lastWiningWhiteCard);
+			this.whiteCardLabel.setText(lastWiningWhiteCard.text);
 			
 			String name = this.game.players.get(lastWiningId).name;
 			
@@ -529,7 +530,7 @@ public class GameScreen implements Screen
 				
 				if(p.selectedCard != null)
 				{
-					obj.put("selectedCard", p.selectedCard);
+					obj.put("selectedCard", p.selectedCard.getJsonObj());
 				}
 				
 				if(!p.dealtIn)
@@ -558,7 +559,7 @@ public class GameScreen implements Screen
 			
 			if(currentState == State.endOfRound)
 			{
-				obj.put("winningCard", GameScreen.lastWiningWhiteCard);
+				obj.put("winningCard", GameScreen.lastWiningWhiteCard.getJsonObj());
 				obj.put("score", p.score);
 				Array<JSONObject> arr = new Array<JSONObject>();
 				for (Player p2 : this.game.players.values()) {
@@ -589,12 +590,12 @@ public class GameScreen implements Screen
 		{
 			if(this.currentState == State.judgeChoosesAnswer)
 			{
-				obj.put("whiteCard", lastRevealedWhiteCard);
+				obj.put("whiteCard", lastRevealedWhiteCard.getJsonObj());
 				obj.put("gameScreenMessage", "Judge is choosing");
 			}
 			else
 			{
-				obj.put("whiteCard", lastWiningWhiteCard);
+				obj.put("whiteCard", lastWiningWhiteCard.getJsonObj());
 				obj.put("gameScreenMessage", "Winner - " + this.game.players.get(lastWiningId).name);
 			}
 		}
@@ -643,7 +644,7 @@ public class GameScreen implements Screen
 			{
 				JSONObject innerObj = new JSONObject();
 				innerObj.put("playerID", NewP.id);
-				innerObj.put("selectedCard", NewP.selectedCard);
+				innerObj.put("selectedCard", NewP.selectedCard.getJsonObj());
 				array.add(innerObj);
 			}	
 		}

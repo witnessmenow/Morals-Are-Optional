@@ -11,542 +11,15 @@
 		<script type="text/javascript" src="defaultController.js"></script>
 		<script type="text/javascript" src="KeyboardButton.js"></script>
 		<script type="text/javascript" src="PageHelper.js"></script>
-
- 		
 		
-		<script>
-			var nextToShow = 0;
-			var numPlayers = 3
-			
-			var currentBlackCardText = "";
-			var cardSelectionDisabled = false;
-			var cardVotingDisabled = true;
-			
-			function enableStartButton(){
-				document.getElementById("beginButton").className = "btn btn-success btn-lg";
-			}
-			function clearSelectedCard(){
-				var cards = document.getElementsByName("whiteCard");
-				var selectedCard = "";
-				for(var i = 0; i < cards.length; i++) 
-				{
-				   cards[i].checked = false;
-				   cards[i].className = "whitecard noBorder";
-				   cards[i].disabled = false;
-				}
-				
-				cardSelectionDisabled = false;
-				
-			}
-			function disableCardSelection(){
-				var cards = document.getElementsByName("whiteCard");
-				var selectedCard = "";
-				for(var i = 0; i < cards.length; i++) 
-				{
-				   cards[i].disabled = true;
-				}
-				
-				cardSelectionDisabled = true;
-				
-			}
-			function choose(){
-				var cards = document.getElementsByName("whiteCard");
-				var selectedCard = "";
-				for(var i = 0; i < cards.length; i++) {
-				   if(cards[i].checked == true) {
-					   selectedCard = cards[i].value;
-					   disableCardSelection();
-				   }
-				 }
-				
-				var cardText = document.getElementById("whiteCardText" + selectedCard).innerHTML;
-				playCard(cardText);
-				document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
-				document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
-				 
-				 //alert(selectedCard);
-				 //goToPage3();
-			}
-			function next(){
-				var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
-				
-				for(var i = 0; i < whiteCardDivs.length; i++) 
-				{
-					if(whiteCardDivs[i].className == "hide")
-					{
-						document.getElementById("singleShowCard").className = "whiteCard noBorder";
-						whiteCardDivs[i].className = "hide2";
-						
-						var children = whiteCardDivs[i].childNodes;
-						for(var j = 0; j < whiteCardDivs.length; j++)
-						{
-							if(children[j] != undefined && children[j].nodeName == "P")
-							{
-								$("#singleCardText").html(children[j].innerHTML);
-								revealCard(children[j].innerHTML);
-							}
-						}
-						
-						//If this is the last card enable the button
-						if(i == whiteCardDivs.length - 1)
-						{
-							document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
-							
-							$("#singleShowCard").remove();
-							$("#dummyWhiteCard").remove();
-							for(var i = 0; i < whiteCardDivs.length; i++) {
-								if(whiteCardDivs[i].className == "hide2"){
-									whiteCardDivs[i].className = "whiteCard noBorder";
-								}
-							}
-							cardVotingDisabled = false;
-						}
-						
-						//We only want to show one at a time;
-						return;
-					}
-					
-					cardVotingDisabled = false;
-				}
-				
-			}
-			function castVote(){
-				var cards = document.getElementsByName("chosenCard");
-				var selectedCard = "";
-				for(var i = 0; i < cards.length; i++) {
-				   if(cards[i].checked == true) {
-					   selectedCard = cards[i].value;
-				   }
-				 }
-				
-				var cardText = document.getElementById("winningWhiteCardPara" + selectedCard).innerHTML;
-				voteCard(selectedCard, cardText);
-			}
-			function goToPage1(){
-				hideAllPages();
-				document.getElementById("page1").className = "show";
-			}
-			function goToPage1Dot5(){
-				hideAllPages();
-				document.getElementById("page1Dot5").className = "show";
-			}
-			function startButtonPressed(){
-				sendStartToServer();
-			}
-			function goToPage2(){
-				hideAllPages();
-				document.getElementById("page2").className = "show";
-				document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
-				document.getElementById("madeVoteWaitingForJudgement").className = "hide";
-				clearSelectedCard();
-			}
-			function goToJudgeVote(){
-				hideAllPages();
-				document.getElementById("judgeChooseButton").className = "btn btn-success btn-lg";
-				document.getElementById("startButton").className = "btn btn-default btn-lg disabled buttonDisable";
-				document.getElementById("judgeVote").className = "show";
-			}
-			function goToJudgeWait(){
-				hideAllPages();
-				document.getElementById("judgeWait").className = "show";
-			}
-			function goToEndOfRoundScreen(){
-				hideAllPages();
-				document.getElementById("endOfRoundScreen").className = "show";
-				setTimeout(function(){
-					document.getElementById("chooseButton").className = "btn btn-success btn-lg";
-				},2000);
-			}
-			function hideAllPages(){
-				document.getElementById("page1").className = "hide";
-				document.getElementById("page1Dot5").className = "hide";
-				document.getElementById("page2").className = "hide";
-				document.getElementById("judgeVote").className = "hide";
-				document.getElementById("judgeWait").className = "hide";
-				document.getElementById("endOfRoundScreen").className = "hide";
-			}
-			function registerPlayer()
-			{
-				registerNameWithServer(document.getElementById("name").value);	
-			}
-			function playCard(cardText)
-			{
-				var myRand=parseInt(Math.random()*99999999);
-				
-				var url = "passEvent?id=" + getId()  +  "&event=cardSelect&card="	+ cardText;
-				url = makeUrlSafe(url);
-				
-				var xmlhttp
-				if (window.XMLHttpRequest)
-				{
-					xmlhttp=new XMLHttpRequest();
-				}
-				
-				xmlhttp.open("GET",url,true);
-				
-				xmlhttp.onreadystatechange = function()
-				{
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
-					{ 
-					
-					}
-				}
-				
-				xmlhttp.send();
-			}
-			function voteCard(selectedCard, cardText)
-			{
-				
-				var url = "passEvent?id=" + getId()  +  "&event=winnerSelect&winnerId=" + selectedCard + "&card="	+ cardText;
-				
-				url = makeUrlSafe(url);
-				
-				var xmlhttp
-				if (window.XMLHttpRequest)
-				{
-					xmlhttp=new XMLHttpRequest();
-				}
-				
-				xmlhttp.open("GET",url,true);
-				
-				xmlhttp.onreadystatechange = function()
-				{
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
-					{ 
-					
-					}
-				}
-				
-				xmlhttp.send();
-			}
-			function makeUrlSafe(text)
-			{
-				var t = text.replace(/%/g,'%25');
-				
-				return t;
-			}
-			function revealCard(cardText)
-			{
-				
-				var url = "passEvent?&event=revealCard&card=" + cardText;
-				
-				url = makeUrlSafe(url);
-				
-				var xmlhttp
-				if (window.XMLHttpRequest)
-				{
-					xmlhttp=new XMLHttpRequest();
-				}
-				
-				xmlhttp.open("GET",url,true);
-				
-				xmlhttp.onreadystatechange = function()
-				{
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
-					{ 
-					
-					}
-				}
-				
-				xmlhttp.send();
-			}
-			function startNext()
-			{
-				var url = "passEvent?&event=nextRound";
-				
-				var xmlhttp
-				if (window.XMLHttpRequest)
-				{
-					xmlhttp=new XMLHttpRequest();
-				}
-				
-				xmlhttp.open("GET",url,true);
-				
-				xmlhttp.onreadystatechange = function()
-				{
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
-					{ 
-					
-					}
-				}
-				
-				xmlhttp.send();
-			}
-			function sendStartToServer()
-			{
-				var myRand=parseInt(Math.random()*99999999);
-				
-				var url = "passEvent?&event=start";
-				
-				var xmlhttp
-				if (window.XMLHttpRequest)
-				{
-					xmlhttp=new XMLHttpRequest();
-				}
-				
-				xmlhttp.open("GET",url,true);
-				
-				xmlhttp.onreadystatechange = function()
-				{
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
-					{ 
-						//Don't Care :)					
-					}
-				}
-				
-				xmlhttp.send();
-			}
-			function registerNameWithServer(name)
-			{
-				var myRand=parseInt(Math.random()*99999999);
-				
-				var url = "passEvent?id=" + getId()  +  "&event=register&name="	+ name;
-				
-				url = makeUrlSafe(url);
-				
-				var xmlhttp
-				if (window.XMLHttpRequest)
-				{
-					xmlhttp=new XMLHttpRequest();
-				}
-				
-				xmlhttp.open("GET",url,true);
-				
-				xmlhttp.onreadystatechange = function()
-				{
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
-					{ 
-						//When name is registered. redirect to wait screen
-						goToPage1Dot5();						
-					}
-				}
-				
-				xmlhttp.send();
-			}
-			function sendHeartbeat()
-			{
-				var url = "heartbeat?id=" + getId();
-				
-				var xmlhttp
-				if (window.XMLHttpRequest)
-				{
-					xmlhttp=new XMLHttpRequest();
-				}
-				
-				xmlhttp.open("GET",url,true);
-				
-				xmlhttp.onreadystatechange = function()
-				{
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) 
-					{ 
-						handleHeartbeat(xmlhttp.responseText);
-					}
-				}
-				
-				xmlhttp.send();
-			}
-			
-			function handleHeartbeat(respText)
-			{
-				var obj = JSON.parse(respText);
-				
-				if ($.isEmptyObject(obj))
-				{
-					//Currently doesnt work right as state of pages is not reset
-					//goToPage1();
-				}
-				
-				if(obj.hasOwnProperty('numberOfPlayers'))
-				{
-					if(obj.numberOfPlayers > 2){
-						enableStartButton();
-					}
-				}
-				
-				
-				if(obj.hasOwnProperty('winningCard'))
-				{
-					if (document.getElementById("endOfRoundScreen").className != "show")
-					{
-						goToEndOfRoundScreen();
-						if(obj.hasOwnProperty('scores')){
-							document.getElementById("scoreboard").innerHTML = "";
-							for(var i in obj.scores){
-								var divHolder = document.createElement("h1");
-								divHolder.id = "scoreHolder" + i;
-								
-								var para = document.createElement("small");
-								para.innerHTML = obj.scores[i].name + " " + obj.scores[i].score
-								para.id = obj.scores[i].name + "Score";
-								
-								divHolder.appendChild(para);
-								document.getElementById("scoreboard").appendChild(divHolder);
-							}
-						}
-					}
-
-					if(document.getElementById("whiteCardEndOfRoundText").innerHTML != obj.winningCard)
-					{
-						document.getElementById("whiteCardEndOfRoundText").innerHTML = obj.winningCard;
-					}
-				}
-				else
-				{
-					if(obj.hasOwnProperty('cards'))
-					{
-						if (document.getElementById("page2").className != "show")
-						{
-							//fix border
-							noBorderFunction();
-							goToPage2();
-						}
-						
-						var arrayLength = obj.cards.length;
-						for (var i = 0; i < arrayLength; i++) {
-							if (document.getElementById("whiteCardText" + i).innerHTML != obj.cards[i])
-							{
-								document.getElementById("whiteCardText" + i).innerHTML = obj.cards[i];
-							}
-						}
-					}
-					
-					if(obj.hasOwnProperty('selectedCard'))
-					{
-						if(!cardSelectionDisabled)
-						{
-							disableCardSelection();
-							if(document.getElementById("madeVoteWaitingForJudgement").className != "show")
-							{
-								document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
-								document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
-							}
-						}
-					}
-					else
-					{
-						//If we dont have a card selected the cardSelection should be enabled
-						if(cardSelectionDisabled)
-						{
-							clearSelectedCard();
-						}
-					}
-					
-					if(obj.hasOwnProperty('judge'))
-					{
-						if(obj.judge == "wait")
-						{
-							if (document.getElementById("judgeWait").className != "show")
-							{
-								goToJudgeWait();
-							}
-						}
-						
-						if(obj.judge == "vote")
-						{
-							if (document.getElementById("judgeVote").className != "show")
-							{
-								goToJudgeVote();
-								if(obj.hasOwnProperty('selected'))
-								{
-									generateJudgeWhiteCards(obj.selected);	
-								}
-							}
-						}
-	
-					}
-				}
-				
-				if(obj.hasOwnProperty('blackCard'))
-				{
-					if(currentBlackCardText != obj.blackCard)
-					{
-						currentBlackCardText = obj.blackCard; 
-						
-						var blackCards = document.getElementsByName("blackCardText");
-						
-						var arrayLength = blackCards.length;
-						for (var i = 0; i < arrayLength; i++) {
-							blackCards[i].innerHTML = currentBlackCardText;
-						}
-						
-					}
-					
-				}
-			}
-			function removeJudgeWhiteCards()
-			{
-				var parentElement = document.getElementById("judgeVoteCards");
-				var judgesWhiteCards = document.getElementsByName("judgesWhiteCard");
-				
-				while( 0 < judgesWhiteCards.length) 
-				{
-			        if(judgesWhiteCards[0] && judgesWhiteCards[0].parentElement) 
-			        {
-			        	parentElement.removeChild(judgesWhiteCards[0]);
-			        }
-			    }
-			}
-			function generateJudgeWhiteCards(cards)
-			{
-				removeJudgeWhiteCards();
-				cardVotingDisabled = true;
-				
-				var arrayLength = cards.length;
-				
-				var divtest = document.createElement("div");
-				var ptest = document.createElement("p");
-				divtest.setAttribute("id","singleShowCard");
-				ptest.setAttribute("id","singleCardText");
-				divtest.appendChild(ptest);
-				document.getElementById("judgeVoteCards").appendChild(divtest);
-				for (var i = 0; i < arrayLength; i++) 
-				{
-					var id = cards[i].playerID;
-					
-					var div = document.createElement("div");
-					div.id = "winningWhiteCard" + id;
-					div.setAttribute("name", "judgesWhiteCard");
-					div.setAttribute('class', 'hide');
-					
-					var div2 = document.createElement("div");
-					div2.setAttribute('class', 'ui-radio');
-					
-					var input = document.createElement("input");
-					input.id = "winningWhiteCardInput" + id;
-					input.type = "radio";
-					input.name = "chosenCard";
-					input.value = id;
-					
-					input.setAttribute('onclick','winningWhiteCardPicker("'+ id + '")');
-					
-					winningWhiteCardPicker
-					
-					var para = document.createElement("p");
-					para.innerHTML = cards[i].selectedCard;
-					para.id = "winningWhiteCardPara" + id;
-					
-					div2.appendChild(input);
-					div.appendChild(div2);
-					div.appendChild(para);
-					
-					div.setAttribute('onclick','clicker("winningWhiteCardInput'+ id + '")');
-					
-					document.getElementById("judgeVoteCards").appendChild(div);
-				}
-				
-				var dummyWhiteCard = document.createElement("div");
-				dummyWhiteCard.id = "dummyWhiteCard"; 
-				dummyWhiteCard.setAttribute("name", "judgesWhiteCard");
-				dummyWhiteCard.setAttribute("class", "hide");
-				document.getElementById("judgeVoteCards").appendChild(dummyWhiteCard);
-
-			}
-			function initMCP()
-			{
-				setInterval(sendHeartbeat, 1000);
-				sendHeartbeat();
-			}
-		</script>
+		<script type="text/javascript" src="serviceCalls.js"></script>
+		<script type="text/javascript" src="pageHelper.js"></script>
+		<script type="text/javascript" src="heartbeatHelper.js"></script>
+		<script type="text/javascript" src="judge.js"></script>
+		
+		<!-- This isnt wokring so I added it back in -->
+		<!-- <style type="text/css" src="mao.css"></style> -->
+		
 		<style>
 			.btn, .btn a{
                 color:#ffffff;
@@ -661,7 +134,6 @@
 				.blackCard p{
 				  color: #fff
 				  }
-
 				.displayInlineBlock{
 					display:inline-block;
 				}
@@ -691,6 +163,136 @@
 					padding-left: 0.75em;
 				}
 		</style>
+
+ 		
+		
+		<script>
+			var nextToShow = 0;
+			var numPlayers = 3
+			
+			var currentBlackCardText = "";
+			var cardSelectionDisabled = false;
+			var cardVotingDisabled = true;
+			
+			function enableStartButton(){
+				document.getElementById("beginButton").className = "btn btn-success btn-lg";
+			}
+			function clearSelectedCard(){
+				var cards = document.getElementsByName("whiteCard");
+				var selectedCard = "";
+				for(var i = 0; i < cards.length; i++) 
+				{
+				   cards[i].checked = false;
+				   cards[i].className = "whitecard noBorder";
+				   cards[i].disabled = false;
+				}
+				
+				cardSelectionDisabled = false;
+				
+			}
+			function disableCardSelection(){
+				var cards = document.getElementsByName("whiteCard");
+				var selectedCard = "";
+				for(var i = 0; i < cards.length; i++) 
+				{
+				   cards[i].disabled = true;
+				}
+				
+				cardSelectionDisabled = true;
+				
+			}
+			function choose(){
+				var cards = document.getElementsByName("whiteCard");
+				var selectedCard = "";
+				for(var i = 0; i < cards.length; i++) {
+				   if(cards[i].checked == true) {
+					   selectedCard = cards[i].value;
+					   disableCardSelection();
+				   }
+				 }
+				
+				playCard(selectedCard);
+				document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
+				 
+				 //alert(selectedCard);
+				 //goToPage3();
+			}
+			function castVote(){
+				var cards = document.getElementsByName("chosenCard");
+				var selectedCard = "";
+				for(var i = 0; i < cards.length; i++) {
+				   if(cards[i].checked == true) {
+					   selectedCard = cards[i].value;
+				   }
+				 }
+				
+				voteCard(selectedCard);
+			}
+			function registerPlayer()
+			{
+				registerNameWithServer(document.getElementById("name").value);	
+			}
+			
+			function initMCP()
+			{
+				setInterval(sendHeartbeat, 1000);
+				sendHeartbeat();
+			}
+			
+			function clicker(clickString){
+				document.getElementById(clickString).click();		
+				if(clickString.indexOf("winningWhiteCardInput") > -1){
+					document.getElementById("startButton").className = "btn btn-success btn-lg";
+				}
+			}
+			
+			function whiteCardPicker(value){
+				if(!cardSelectionDisabled)
+				{
+					for(var i =0; i< 5; i++)
+					{
+						var v = document.getElementById("whiteCard" + i).value;
+						if (v == value) 
+						{
+							$("#parentWhiteCard" + i).addClass("redBorder").removeClass("noBorder");
+							document.getElementById("whiteCardChooseButton").className = "btn btn-success btn-lg";
+						} 
+						else 
+						{
+							$("#parentWhiteCard" + i).addClass("noBorder").removeClass("redBorder");
+						}
+					}
+				}
+			}
+			
+			function noBorderFunction(){
+				for(var i =0; i< 5; i++){
+					$("#parentWhiteCard" + i).addClass("noBorder").removeClass("redBorder");
+				}
+			}
+			
+			function winningWhiteCardPicker(index){
+				
+				if(!cardVotingDisabled)
+				{
+					var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
+					
+					for(var i = 0; i < whiteCardDivs.length; i++) 
+					{
+						if(whiteCardDivs[i].id == "winningWhiteCard" + index)
+						{
+							whiteCardDivs[i].className = "whitecard redBorder";
+							document.getElementById("startButton").className = "btn btn-success btn-lg";
+						}
+						else
+						{
+							whiteCardDivs[i].className = "whitecard noBorder";
+						}
+					}
+				}
+			}
+		</script>
 	</head>
 	<body onLoad="initMCP();">
 		<div id="page1">
@@ -717,7 +319,7 @@
 				<br/>
 				<div class="ui-grid-e">
 					<div id="parentWhiteCard0" class="whiteCard ui-block-a" onclick="clicker('whiteCard0')">
-						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">This is a long string to see how the wrapping works</p>
+						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">Waiting for next round to begin</p>
 					</div>
 					<div id="parentWhiteCard1" class="whiteCard ui-block-b" onclick="clicker('whiteCard1')">
 						<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
@@ -784,55 +386,5 @@
 					Vote!
 			</button>
 		</div>
-		<script type="text/javascript">
-		function clicker(clickString){
-			document.getElementById(clickString).click();		
-			if(clickString.indexOf("winningWhiteCardInput") > -1){
-				document.getElementById("startButton").className = "btn btn-success btn-lg";
-			}
-		}
-		
-		function whiteCardPicker(index){
-			if(!cardSelectionDisabled)
-			{
-				for(var i =0; i< 5; i++){
-					if (i == index) {
-						$("#parentWhiteCard" + i).addClass("redBorder").removeClass("noBorder");
-						document.getElementById("whiteCardChooseButton").className = "btn btn-success btn-lg";
-					} else {
-						$("#parentWhiteCard" + i).addClass("noBorder").removeClass("redBorder");
-					}
-				}
-			}
-		}
-		
-		function noBorderFunction(){
-			for(var i =0; i< 5; i++){
-				$("#parentWhiteCard" + i).addClass("noBorder").removeClass("redBorder");
-			}
-		}
-		
-		function winningWhiteCardPicker(index){
-			
-			if(!cardVotingDisabled)
-			{
-				var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
-				
-				for(var i = 0; i < whiteCardDivs.length; i++) 
-				{
-					if(whiteCardDivs[i].id == "winningWhiteCard" + index)
-					{
-						whiteCardDivs[i].className = "whitecard redBorder";
-						document.getElementById("startButton").className = "btn btn-success btn-lg";
-					}
-					else
-					{
-						whiteCardDivs[i].className = "whitecard noBorder";
-					}
-				}
-			}
-		}
-		
-		</script>
 	</body>
 </html>
