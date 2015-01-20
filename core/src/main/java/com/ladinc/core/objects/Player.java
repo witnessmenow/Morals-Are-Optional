@@ -25,6 +25,7 @@ public class Player
 	public SimpleWhiteCard selectedCard = null;
 	
 	public boolean dealtIn = false;
+	public boolean isPaused = false;
 	
 	public static Boolean OUT_OF_WHITE_CARDS = false;
 	

@@ -31,7 +31,7 @@ import com.ladinc.core.objects.Player;
 public class GameScreen implements Screen
 {	
 	public static enum State {
-		startOfRound, endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver
+		startOfRound, endOfRound, playersChooseCard, judgeChoosesAnswer, gameOver, needMorePlayers
 	};
 	
 	public static SimpleWhiteCard lastWiningWhiteCard = null;
@@ -68,6 +68,7 @@ public class GameScreen implements Screen
 	public Sprite tickSprite;
 	public Sprite judgeSprite;
 	public Sprite timerSprite;
+	public Sprite exitSprite;
 	
 	Timer timer = null;
 	
@@ -210,6 +211,20 @@ public class GameScreen implements Screen
 		
 	}
 	
+	private boolean checkForEnoughPlayers()
+	{
+		int i = 0;
+		for(Player p : this.game.players.values())
+		{
+			if(!p.isPaused)
+			{
+				i++;
+			}
+		}
+		
+		return (i >= 3);
+	}
+	
 	private void handleGameState()
 	{
 		Gdx.app.debug("GameScreen", "handleGameState");
@@ -218,15 +233,22 @@ public class GameScreen implements Screen
 		{
 			Gdx.app.debug("GameScreen", "State.startOfRound");
 			
-			roundNumber ++;
-			
-			lastWiningWhiteCard = null;
-			lastRevealedWhiteCard = null;
-			selectedWhiteCards = null;
-			getNewBlackCard();
-			moveToNextJudge();
-			repopulateHands();
-			//clearSelectedCards();
+			if(checkForEnoughPlayers())
+			{
+				currentState = State.needMorePlayers;
+			}
+			else
+			{
+				roundNumber ++;
+				
+				lastWiningWhiteCard = null;
+				lastRevealedWhiteCard = null;
+				selectedWhiteCards = null;
+				getNewBlackCard();
+				moveToNextJudge();
+				repopulateHands();
+				//clearSelectedCards();
+			}
 			
 			if(Player.OUT_OF_WHITE_CARDS)
 			{
@@ -243,6 +265,18 @@ public class GameScreen implements Screen
 				currentState = State.playersChooseCard;
 			}
 			
+		}
+		
+		if(currentState == State.needMorePlayers)
+		{
+			if(checkForEnoughPlayers())
+			{
+				currentState = State.needMorePlayers;
+			}
+			else
+			{
+				this.currentState = State.startOfRound;
+			}
 		}
 		
 		if(currentState == State.playersChooseCard)
@@ -386,6 +420,12 @@ public class GameScreen implements Screen
 				timerSprite.setPosition(xPos, yPosAdjusted);
 				timerSprite.draw(sb);
 			}
+			else if(!entry.getValue().dealtIn)
+			{
+				yPosAdjusted = yPosAdjusted - timerSprite.getHeight() + 3f;
+				timerSprite.setPosition(xPos, yPosAdjusted);
+				timerSprite.draw(sb);
+			}
 			
 			i--;
 		}
@@ -458,10 +498,22 @@ public class GameScreen implements Screen
 			
 			if(i == indexOfNextJudge)
 			{
-				p.isJudge = true;
+				if(p.isPaused)
+				{
+					//this player is paused and cant be the judge
+					moveToNextJudge();
+				}
+				else
+				{
+					p.isJudge = true;
+				}
+				break;
 			}
 			i++;
 		}
+		
+		
+		
 	}
 	
 	private void getNewBlackCard()
@@ -501,7 +553,7 @@ public class GameScreen implements Screen
 		
 		for(Player p : this.game.players.values())
 		{
-			if(!p.isJudge && p.dealtIn)
+			if(!p.isJudge && p.dealtIn && !p.isPaused)
 			{
 				if(p.selectedCard == null)
 				{
