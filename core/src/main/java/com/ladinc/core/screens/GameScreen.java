@@ -68,7 +68,7 @@ public class GameScreen implements Screen
 	public Sprite tickSprite;
 	public Sprite judgeSprite;
 	public Sprite timerSprite;
-	public Sprite exitSprite;
+	public Sprite pausedSprite;
 	
 	Timer timer = null;
 	
@@ -88,15 +88,18 @@ public class GameScreen implements Screen
 
 		this.spriteBatch = new SpriteBatch();
 		
-		tickSprite = new Sprite(new Texture(Gdx.files.internal("tick.png")));
+		tickSprite = new Sprite(new Texture(Gdx.files.internal("icons/checkmark.png")));
 		
 		tickSprite.setColor(Color.WHITE);
 		
-		judgeSprite = new Sprite(new Texture(Gdx.files.internal("judge.png")));
+		judgeSprite = new Sprite(new Texture(Gdx.files.internal("icons/medal2.png")));
 		judgeSprite.setColor(Color.WHITE);
 		
-		timerSprite = new Sprite(new Texture(Gdx.files.internal("timer.png")));
+		timerSprite = new Sprite(new Texture(Gdx.files.internal("icons/exitRight.png")));
 		timerSprite.setColor(Color.WHITE);
+		
+		pausedSprite = new Sprite(new Texture(Gdx.files.internal("icons/pause.png")));
+		pausedSprite.setColor(Color.WHITE);
 		
 		blackCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
 		blackCardSprite.setColor(Color.BLACK);
@@ -233,7 +236,7 @@ public class GameScreen implements Screen
 		{
 			Gdx.app.debug("GameScreen", "State.startOfRound");
 			
-			if(checkForEnoughPlayers())
+			if(!checkForEnoughPlayers())
 			{
 				currentState = State.needMorePlayers;
 			}
@@ -420,7 +423,7 @@ public class GameScreen implements Screen
 				timerSprite.setPosition(xPos, yPosAdjusted);
 				timerSprite.draw(sb);
 			}
-			else if(!entry.getValue().dealtIn)
+			else if(!entry.getValue().isPaused)
 			{
 				yPosAdjusted = yPosAdjusted - timerSprite.getHeight() + 3f;
 				timerSprite.setPosition(xPos, yPosAdjusted);
