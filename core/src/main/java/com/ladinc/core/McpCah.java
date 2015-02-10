@@ -49,6 +49,8 @@ public class McpCah extends Game
 	public GameScreen gameScreen;
 	public GameScreenLobby gameScreenLobby;
 	
+	public Boolean usingMCPRocks;
+	
 	@Override
 	public void create() 
 	{
@@ -92,10 +94,13 @@ public class McpCah extends Game
 		MCP.SHOW_DEBUG_LOGGING = false;
 		
         ipAddr = mcp.getAddressForClients();
+        
         if(ipAddr.equals(":8888"))
         {
         	ipAddr = "No Network";
         }
+        
+        usingMCPRocks = mcp.mcpRocksVerified;
         
         Gdx.app.error("Main-MCP", "Connection Address: " + ipAddr);
 		
@@ -170,5 +175,28 @@ public class McpCah extends Game
 		
 		p = new Player("Kieran", "3");
 		players.put(p.id, p);
+	}
+	
+	public void toggleMCPAddressType()
+	{
+		if(mcp.mcpRocksVerified)
+		{
+			if(usingMCPRocks)
+			{
+				usingMCPRocks = false;
+				ipAddr = mcp.getIpAddressForClients();
+			}
+			else
+			{
+				usingMCPRocks = true;
+				ipAddr = mcp.getAddressForClients();
+				
+			}
+		}
+		else
+		{
+			usingMCPRocks = false;
+			ipAddr = mcp.getIpAddressForClients();
+		}
 	}
 }

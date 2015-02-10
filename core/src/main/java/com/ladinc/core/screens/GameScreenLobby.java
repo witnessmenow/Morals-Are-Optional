@@ -11,10 +11,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
 import com.ladinc.core.screens.GameScreen.State;
@@ -37,9 +47,13 @@ public class GameScreenLobby implements Screen
     public BitmapFont titleFont;
     public BitmapFont smallFont;
     
+    public Table table;
+    
     private static final String TITLE = "Morals Are Optional";
     
     private Sprite bg;
+    
+    private Stage stage;
 	
 	public GameScreenLobby(McpCah g)
 	{
@@ -48,11 +62,51 @@ public class GameScreenLobby implements Screen
 		initializeFont();
 		this.screenWidth = 1920;
 		this.screenHeight = 1080;
-		spriteBatch = new SpriteBatch();
+		//spriteBatch = new SpriteBatch();
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(false, this.screenWidth, screenHeight);
 		
 		this.bg = this.game.backgorund;
+		
+		Table titleTable = new Table();
+		
+		titleTable = new Table();
+		titleTable.add(new Label("Morals Are Optional", new Label.LabelStyle(titleFont, Color.WHITE)));
+		titleTable.row();
+		titleTable.add(new Label("A digital rip-off of a popular card game!", new Label.LabelStyle(smallFont, Color.WHITE)));
+		
+		table = new Table();
+		table.add(titleTable).colspan(3).padBottom(50f);;
+		table.row();
+		table.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.WHITE))).colspan(3).padBottom(40f);
+		table.row();
+		table.add(new Label("Step One:", new Label.LabelStyle(font, Color.WHITE)));
+		table.add(new Label("Step Two:", new Label.LabelStyle(font, Color.WHITE)));
+		table.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.WHITE)));
+		table.row();
+		String text;
+		
+		if(this.game.players.size() < 3)
+		{
+			text = "Waiting for more players to connect";
+		}
+		else
+		{
+			text = "Ready to start";
+		}
+		table.add(new Label("Status: " + text, new Label.LabelStyle(font, Color.WHITE))).colspan(3);
+		
+		//table.setCenterPosition(screenWidth/2, (screenHeight/4 * 3) + 10f);
+		
+		//table.draw(spriteBatch, 1);
+		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));
+		//stage = new Stage(new ScreenViewport());
+	    Gdx.input.setInputProcessor(stage);
+	    
+	    table.setFillParent(true);
+	    stage.addActor(table);
+	    spriteBatch = (SpriteBatch) stage.getBatch();
+
 
 	}
 
@@ -76,11 +130,33 @@ public class GameScreenLobby implements Screen
 	private Timer timer;
 	
 	@Override
-	public void render(float delta) {
+	public void render(float delta) 
+	{
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.combined);
-		drawSprites();
+		
+		if(table != null)
+		{
+			table.remove();
+		}
+		
+		table = createMainTable();
+		
+		//table.debug();
+		
+		table.setFillParent(true);
+	    stage.addActor(table);
+		
+		stage.act(delta);
+		
+		spriteBatch.begin();
+		this.bg.draw(spriteBatch);
+		spriteBatch.end();
+	    stage.draw();
+	    
+		//drawSprites();
 		sendPlayerHeartbeats();
 		
 		if(this.game.startGame)
@@ -99,117 +175,137 @@ public class GameScreenLobby implements Screen
 		}
 		
 	}
-	private void drawSprites()
-	{
-    	Gdx.gl.glClearColor(0, 0f, 0f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		spriteBatch.begin();
-		
-		this.bg.draw(spriteBatch);
-		
-		DisplayHeadingText(spriteBatch);
-		DisplayMCPAddressText(spriteBatch);
-		displayPlayers(spriteBatch);
-		spriteBatch.end();
-	}
 	
-	private void DisplayHeadingText(SpriteBatch sb)
+	private Table createMainTable()
 	{
-		float xPos = (this.screenWidth/2) -  titleFont.getBounds(TITLE).width/2;
-		float yPos = (this.screenHeight) -  (this.screenHeight/16);
+		Table mainTable = new Table();
 		
-		titleFont.setColor(Color.WHITE);
-		titleFont.draw(sb, TITLE, xPos, yPos);
-		titleFont.setColor(Color.WHITE);
+		mainTable.setPosition(0, 70f);
 		
-		xPos = (this.screenWidth/2) -  smallFont.getBounds("A digital rip-off of a popular card game!").width/2;
-		yPos = yPos - 75f;
+		mainTable.setWidth(screenWidth);
+		mainTable.add(createTitleTable()).colspan(3).padBottom(50f);;
+		mainTable.row();
+		mainTable.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.WHITE))).colspan(3).padBottom(60f);
+		mainTable.row();
+
+		mainTable.add(createStep1Table()).expandX().align(Align.top);
+
+		mainTable.add(createStep2Table()).expandX().align(Align.top);
 		
-		smallFont.draw(sb, "A digital rip-off of a popular card game!", xPos, yPos);
-	}
-	
-	private void DisplayMCPAddressText(SpriteBatch sb)
-	{
-		String text = "Game Address:";
-		
-		float xPos = (this.screenWidth/3)*2 - font.getBounds(text).width/2;
-		float yPos = (this.screenHeight) - 250f;
-		
-		font.draw(sb, text, xPos, yPos);
-		
-		xPos = (this.screenWidth/3)*2 - titleFont.getBounds(this.game.mcp.getAddressForClients()).width/2;
-		yPos = (this.screenHeight) - (this.screenHeight/7)*2;
-		
-		titleFont.setColor(Color.YELLOW);
-		titleFont.draw(sb, this.game.mcp.getAddressForClients(), xPos, yPos);
-		titleFont.setColor(Color.WHITE);
-		
-		String instructionText = "1: Each player needs a Phone/Tablet/Laptop.";
-		
-		xPos = (this.screenWidth/3)*2 -  smallFont.getBounds(instructionText).width/2;
-		yPos = yPos - 125f;
-		
-		smallFont.draw(sb, instructionText, xPos, yPos);
-		
-		instructionText = "2: Using your device's web browser, connect to the game address.";
-		
-		xPos = (this.screenWidth/3)*2 -  smallFont.getBounds(instructionText).width/2;
-		yPos = yPos - 75f;
-		
-		smallFont.draw(sb, instructionText, xPos, yPos);
-		
-		instructionText = "3: When 3 or more people have joined, the game can be started.";
-		
-		xPos = (this.screenWidth/3)*2 -  smallFont.getBounds(instructionText).width/2;
-		yPos = yPos - 75f;
-		
-		smallFont.draw(sb, instructionText, xPos, yPos);
-		
-		instructionText = "4: Additional players can join at anytime after the game starts.";
-		
-		xPos = (this.screenWidth/3)*2 -  smallFont.getBounds(instructionText).width/2;
-		yPos = yPos - 75f;
-		
-		smallFont.draw(sb, instructionText, xPos, yPos);
+		mainTable.add(createConnectedPlayersTable()).expandX().align(Align.top);;
+		mainTable.row();
+		String text;
 		
 		if(this.game.players.size() < 3)
 		{
-			text = "Waiting for players";
+			text = "Waiting for more players to connect";
 		}
 		else
 		{
 			text = "Ready to start";
 		}
+		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(3).padTop(70f);
 		
-		xPos = (this.screenWidth/2) - font.getBounds(text).width/2;
-		yPos = 250f;
-		
-		font.draw(sb, text, xPos, yPos);
+		return mainTable;
 	}
 	
-	private void displayPlayers(SpriteBatch sb)
+	private Table createTitleTable()
 	{
-
-		float yPos = (this.screenHeight) - 250f;
-		float xPos = (this.screenWidth/14);
+		Table titleTable = new Table();
 		
-		font.draw(sb, "Connected Players", xPos - 40f, yPos);
+		titleTable = new Table();
+		titleTable.add(new Label("Morals Are Optional", new Label.LabelStyle(titleFont, Color.WHITE)));
+		titleTable.row();
+		titleTable.add(new Label("A digital rip-off of a popular card game!", new Label.LabelStyle(smallFont, Color.WHITE)));
 		
-		String playerText = "";
+		return titleTable;
+	}
+	
+	private Table createStep1Table()
+	{
+		Table stepOne = new Table();
 		
-		int i = this.game.players.size() + 1;
+		stepOne.add(new Label("Step One:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f);
+		stepOne.row();
 		
-		for(Map.Entry<String, Player> entry : this.game.players.entrySet())
-		{		
-			playerText = entry.getValue().getName();
-			
-			float yPosAdjusted = (float) (yPos -  (i-1)*font.getBounds(playerText).height*(1.8));
-			
-			font.draw(sb, playerText, xPos, yPosAdjusted);
-			
-			i--;
+		Label step1Message = new Label("Connect your phone to the Wi-Fi Network.", new Label.LabelStyle(font, Color.WHITE));
+		step1Message.setAlignment(Align.center | Align.top);
+		step1Message.setWrap(true);
+		step1Message.setWidth(500f);
+		
+		stepOne.add(step1Message).width(500f);
+		
+		return stepOne;
+	}
+	
+	private Table createStep2Table()
+	{
+		Table stepTwo = new Table();
+		stepTwo.add(new Label("Step Two:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f);
+		stepTwo.row();
+		
+		Label step2Message = new Label("Type the following into your phones web browser:", new Label.LabelStyle(font, Color.WHITE));
+		step2Message.setWrap(true);
+		step2Message.setAlignment(Align.center | Align.top);
+		stepTwo.add(step2Message).width(800f);
+		stepTwo.row();
+		
+		stepTwo.add(new Label(this.game.ipAddr, new Label.LabelStyle(titleFont, Color.YELLOW)));
+		
+		if(this.game.usingMCPRocks)
+		{
+			stepTwo.row();
+		
+			Label step2Warning = new Label("Tip: You can click here to reveal the IP address", new Label.LabelStyle(smallFont, Color.WHITE));
+			step2Warning.setWrap(true);
+			step2Warning.setAlignment(Align.center | Align.top);
+			stepTwo.add(step2Warning).width(800f);
 		}
+		
+		stepTwo.setBounds(stepTwo.getX(), stepTwo.getY(), stepTwo.getWidth(), stepTwo.getHeight());
+		
+		stepTwo.addListener(new InputListener() 
+		{
+		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
+		    {
+		        game.toggleMCPAddressType();
+		        return true;
+		    }
+		});
+		
+		return stepTwo;
+		
+	}
+	
+	private Table createConnectedPlayersTable()
+	{
+		Table connectedPlayers = new Table();
+		
+		connectedPlayers.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f);
+		connectedPlayers.row();
+		
+		Table playerList = new Table();
+		boolean first = true;
+		for(Map.Entry<String, Player> entry : this.game.players.entrySet())
+		{	
+			if(first)
+			{
+				first = false;
+			}
+			else
+			{
+				playerList.row();
+			}
+			
+			String playerText = entry.getValue().getName();
+			
+			playerList.add(new Label(playerText, new Label.LabelStyle(font, Color.WHITE)));
+			
+		}
+		
+		connectedPlayers.add(playerList);
+		
+		return connectedPlayers;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -245,8 +341,9 @@ public class GameScreenLobby implements Screen
 	}
 
 	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+	public void resize(int width, int height) 
+	{
+		stage.getViewport().update(width, height, true);
 		
 	}
 
