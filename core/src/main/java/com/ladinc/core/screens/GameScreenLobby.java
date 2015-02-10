@@ -185,15 +185,10 @@ public class GameScreenLobby implements Screen
 		mainTable.setWidth(screenWidth);
 		mainTable.add(createTitleTable()).colspan(3).padBottom(50f);;
 		mainTable.row();
-		mainTable.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.WHITE))).colspan(3).padBottom(60f);
+		mainTable.add(createStepTable()).colspan(2).padBottom(60f).expandX();
+		mainTable.add(createConnectedPlayersTable()).align(Align.top);
 		mainTable.row();
 
-		mainTable.add(createStep1Table()).expandX().align(Align.top);
-
-		mainTable.add(createStep2Table()).expandX().align(Align.top);
-		
-		mainTable.add(createConnectedPlayersTable()).expandX().align(Align.top);;
-		mainTable.row();
 		String text;
 		
 		if(this.game.players.size() < 3)
@@ -207,6 +202,20 @@ public class GameScreenLobby implements Screen
 		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(3).padTop(70f);
 		
 		return mainTable;
+	}
+	
+	private Table createStepTable()
+	{
+		Table stepTable = new Table();
+		
+		stepTable.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.WHITE))).colspan(2).padBottom(60f);
+		stepTable.row();
+
+		stepTable.add(createStep1Table()).align(Align.top).padRight(30f);
+
+		stepTable.add(createStep2Table()).align(Align.top| Align.right).padLeft(30f);
+		
+		return stepTable;
 	}
 	
 	private Table createTitleTable()
@@ -247,7 +256,7 @@ public class GameScreenLobby implements Screen
 		Label step2Message = new Label("Type the following into your phones web browser:", new Label.LabelStyle(font, Color.WHITE));
 		step2Message.setWrap(true);
 		step2Message.setAlignment(Align.center | Align.top);
-		stepTwo.add(step2Message).width(800f);
+		stepTwo.add(step2Message).width(700f);
 		stepTwo.row();
 		
 		stepTwo.add(new Label(this.game.ipAddr, new Label.LabelStyle(titleFont, Color.YELLOW)));
@@ -259,7 +268,7 @@ public class GameScreenLobby implements Screen
 			Label step2Warning = new Label("Tip: You can click here to reveal the IP address", new Label.LabelStyle(smallFont, Color.WHITE));
 			step2Warning.setWrap(true);
 			step2Warning.setAlignment(Align.center | Align.top);
-			stepTwo.add(step2Warning).width(800f);
+			stepTwo.add(step2Warning).width(600f);
 		}
 		
 		stepTwo.setBounds(stepTwo.getX(), stepTwo.getY(), stepTwo.getWidth(), stepTwo.getHeight());
@@ -281,25 +290,27 @@ public class GameScreenLobby implements Screen
 	{
 		Table connectedPlayers = new Table();
 		
-		connectedPlayers.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f);
+		connectedPlayers.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f).colspan(2);
 		connectedPlayers.row();
 		
 		Table playerList = new Table();
-		boolean first = true;
+		int i = 0;
 		for(Map.Entry<String, Player> entry : this.game.players.entrySet())
 		{	
-			if(first)
-			{
-				first = false;
-			}
-			else
+			if(i != 0)
 			{
 				playerList.row();
 			}
 			
-			String playerText = entry.getValue().getName();
+			i++;
 			
-			playerList.add(new Label(playerText, new Label.LabelStyle(font, Color.WHITE)));
+			playerList.add(new Label(i + ":", new Label.LabelStyle(smallFont, Color.WHITE))).spaceRight(20f);
+			
+			String playerText = entry.getValue().getName();
+			Label name = new Label(playerText, new Label.LabelStyle(smallFont, Color.WHITE));
+			name.setAlignment(Align.left);
+			name.setWrap(true);
+			playerList.add(name).width(500f);
 			
 		}
 		
