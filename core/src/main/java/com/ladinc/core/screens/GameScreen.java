@@ -423,7 +423,7 @@ public class GameScreen implements Screen
 				timerSprite.setPosition(xPos, yPosAdjusted);
 				timerSprite.draw(sb);
 			}
-			else if(!entry.getValue().isPaused)
+			else if(entry.getValue().isPaused)
 			{
 				yPosAdjusted = yPosAdjusted - timerSprite.getHeight() + 3f;
 				timerSprite.setPosition(xPos, yPosAdjusted);
