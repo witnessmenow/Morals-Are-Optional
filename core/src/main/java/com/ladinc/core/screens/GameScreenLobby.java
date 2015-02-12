@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -47,6 +48,10 @@ public class GameScreenLobby implements Screen
     public BitmapFont titleFont;
     public BitmapFont smallFont;
     
+    public BitmapFont boldFont;
+    public BitmapFont boldTitleFont;
+    public BitmapFont boldSmallFont;
+    
     public Table table;
     
     private static final String TITLE = "Morals Are Optional";
@@ -68,43 +73,10 @@ public class GameScreenLobby implements Screen
 		
 		this.bg = this.game.backgorund;
 		
-		Table titleTable = new Table();
-		
-		titleTable = new Table();
-		titleTable.add(new Label("Morals Are Optional", new Label.LabelStyle(titleFont, Color.WHITE)));
-		titleTable.row();
-		titleTable.add(new Label("A digital rip-off of a popular card game!", new Label.LabelStyle(smallFont, Color.WHITE)));
-		
-		table = new Table();
-		table.add(titleTable).colspan(3).padBottom(50f);;
-		table.row();
-		table.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.WHITE))).colspan(3).padBottom(40f);
-		table.row();
-		table.add(new Label("Step One:", new Label.LabelStyle(font, Color.WHITE)));
-		table.add(new Label("Step Two:", new Label.LabelStyle(font, Color.WHITE)));
-		table.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.WHITE)));
-		table.row();
-		String text;
-		
-		if(this.game.players.size() < 3)
-		{
-			text = "Waiting for more players to connect";
-		}
-		else
-		{
-			text = "Ready to start";
-		}
-		table.add(new Label("Status: " + text, new Label.LabelStyle(font, Color.WHITE))).colspan(3);
-		
-		//table.setCenterPosition(screenWidth/2, (screenHeight/4 * 3) + 10f);
-		
-		//table.draw(spriteBatch, 1);
 		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));
 		//stage = new Stage(new ScreenViewport());
 	    Gdx.input.setInputProcessor(stage);
 	    
-	    table.setFillParent(true);
-	    stage.addActor(table);
 	    spriteBatch = (SpriteBatch) stage.getBatch();
 
 
@@ -124,6 +96,18 @@ public class GameScreenLobby implements Screen
     	smallFont = new BitmapFont(Gdx.files.internal("fonts/Swis-721-32.fnt"), Gdx.files.internal("fonts/Swis-721-32.png"), false);
     	//Make text black
     	smallFont.setColor(Color.WHITE);
+    	
+    	boldFont = new BitmapFont(Gdx.files.internal("fonts/Swis-721-50-Bold.fnt"), Gdx.files.internal("fonts/Swis-721-50-Bold.png"), false);
+    	//Make text black
+    	boldFont.setColor(Color.WHITE);
+    	
+    	boldTitleFont = new BitmapFont(Gdx.files.internal("fonts/Swis-721-75-Bold.fnt"), Gdx.files.internal("fonts/Swis-721-75-Bold.png"), false);
+    	//Make text black
+    	boldTitleFont.setColor(Color.WHITE);
+    	
+    	boldSmallFont = new BitmapFont(Gdx.files.internal("fonts/Swis-721-32-Bold.fnt"), Gdx.files.internal("fonts/Swis-721-32-Bold.png"), false);
+    	//Make text black
+    	boldSmallFont.setColor(Color.WHITE);
 	}
     
 	int counter = 0;
@@ -156,7 +140,6 @@ public class GameScreenLobby implements Screen
 		spriteBatch.end();
 	    stage.draw();
 	    
-		//drawSprites();
 		sendPlayerHeartbeats();
 		
 		if(this.game.startGame)
@@ -183,10 +166,10 @@ public class GameScreenLobby implements Screen
 		mainTable.setPosition(0, 70f);
 		
 		mainTable.setWidth(screenWidth);
-		mainTable.add(createTitleTable()).colspan(3).padBottom(50f);;
+		mainTable.add(createTitleTable()).colspan(2).padBottom(50f);;
 		mainTable.row();
-		mainTable.add(createStepTable()).colspan(2).padBottom(60f).expandX();
-		mainTable.add(createConnectedPlayersTable()).align(Align.top);
+		mainTable.add(createStepTable()).padBottom(60f).width(Value.percentWidth(0.75f, mainTable));
+		mainTable.add(createConnectedPlayersTable()).align(Align.top).expandX();
 		mainTable.row();
 
 		String text;
@@ -199,7 +182,7 @@ public class GameScreenLobby implements Screen
 		{
 			text = "Ready to start";
 		}
-		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(3).padTop(70f);
+		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(2).padTop(70f);
 		
 		return mainTable;
 	}
@@ -208,12 +191,12 @@ public class GameScreenLobby implements Screen
 	{
 		Table stepTable = new Table();
 		
-		stepTable.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.WHITE))).colspan(2).padBottom(60f);
+		stepTable.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.ORANGE))).colspan(2).padBottom(60f);
 		stepTable.row();
 
-		stepTable.add(createStep1Table()).align(Align.top).padRight(30f);
+		stepTable.add(createStep1Table()).align(Align.top).width(Value.percentWidth(0.45f, stepTable));
 
-		stepTable.add(createStep2Table()).align(Align.top| Align.right).padLeft(30f);
+		stepTable.add(createStep2Table()).align(Align.top| Align.right).width(Value.percentWidth(0.55f, stepTable));
 		
 		return stepTable;
 	}
@@ -223,7 +206,7 @@ public class GameScreenLobby implements Screen
 		Table titleTable = new Table();
 		
 		titleTable = new Table();
-		titleTable.add(new Label("Morals Are Optional", new Label.LabelStyle(titleFont, Color.WHITE)));
+		titleTable.add(new Label("Morals Are Optional", new Label.LabelStyle(boldTitleFont, Color.WHITE)));
 		titleTable.row();
 		titleTable.add(new Label("A digital rip-off of a popular card game!", new Label.LabelStyle(smallFont, Color.WHITE)));
 		
@@ -234,7 +217,7 @@ public class GameScreenLobby implements Screen
 	{
 		Table stepOne = new Table();
 		
-		stepOne.add(new Label("Step One:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f);
+		stepOne.add(new Label("Step One:", new Label.LabelStyle(boldFont, Color.GREEN))).padBottom(20f);
 		stepOne.row();
 		
 		Label step1Message = new Label("Connect your phone to the Wi-Fi Network.", new Label.LabelStyle(font, Color.WHITE));
@@ -250,7 +233,7 @@ public class GameScreenLobby implements Screen
 	private Table createStep2Table()
 	{
 		Table stepTwo = new Table();
-		stepTwo.add(new Label("Step Two:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f);
+		stepTwo.add(new Label("Step Two:", new Label.LabelStyle(boldFont, Color.GREEN))).padBottom(20f);
 		stepTwo.row();
 		
 		Label step2Message = new Label("Type the following into your phones web browser:", new Label.LabelStyle(font, Color.WHITE));
@@ -265,7 +248,7 @@ public class GameScreenLobby implements Screen
 		{
 			stepTwo.row();
 		
-			Label step2Warning = new Label("Tip: You can click here to reveal the IP address", new Label.LabelStyle(smallFont, Color.WHITE));
+			Label step2Warning = new Label("Tip: Click here to reveal the IP address", new Label.LabelStyle(smallFont, Color.WHITE));
 			step2Warning.setWrap(true);
 			step2Warning.setAlignment(Align.center | Align.top);
 			stepTwo.add(step2Warning).width(600f);
@@ -290,7 +273,7 @@ public class GameScreenLobby implements Screen
 	{
 		Table connectedPlayers = new Table();
 		
-		connectedPlayers.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.WHITE))).padBottom(20f).colspan(2);
+		connectedPlayers.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.ORANGE))).padBottom(20f).colspan(2);
 		connectedPlayers.row();
 		
 		Table playerList = new Table();
@@ -310,7 +293,7 @@ public class GameScreenLobby implements Screen
 			Label name = new Label(playerText, new Label.LabelStyle(smallFont, Color.WHITE));
 			name.setAlignment(Align.left);
 			name.setWrap(true);
-			playerList.add(name).width(500f);
+			playerList.add(name).width(400f);
 			
 		}
 		
