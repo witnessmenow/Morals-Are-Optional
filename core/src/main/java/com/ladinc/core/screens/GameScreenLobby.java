@@ -176,7 +176,7 @@ public class GameScreenLobby implements Screen
 		
 		if(this.game.players.size() < 3)
 		{
-			text = "Waiting for more players to connect";
+			text = "Waiting for players to connect ( " + (3 - this.game.players.size()) + " more needed )";
 		}
 		else
 		{
