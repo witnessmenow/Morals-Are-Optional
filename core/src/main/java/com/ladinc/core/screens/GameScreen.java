@@ -21,9 +21,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.objects.Player;
@@ -56,8 +63,12 @@ public class GameScreen implements Screen
 	
 	public BitmapFont font;
 	public BitmapFont labelFont;
+	public BitmapFont smallFont;
 	
 	public Label blackCardLabel;
+	
+	public Sprite largeblackCardSprite;
+	public Sprite largeWhiteCardSprite;
 	
 	public Sprite blackCardSprite;
 	
@@ -74,6 +85,9 @@ public class GameScreen implements Screen
 	
 	private Sprite bg;
 	
+	public Table table;
+	private Stage stage;
+	
 	public GameScreen(McpCah g)
 	{
 		Gdx.app.debug("GameScreen", "Start of constructor");
@@ -85,8 +99,6 @@ public class GameScreen implements Screen
 		
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(false, this.screenWidth, screenHeight);
-
-		this.spriteBatch = new SpriteBatch();
 		
 		tickSprite = new Sprite(new Texture(Gdx.files.internal("icons/checkmark.png")));
 		
@@ -107,11 +119,21 @@ public class GameScreen implements Screen
 		whiteCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
 		whiteCardSprite.setColor(Color.WHITE);
 		
+		largeblackCardSprite = new Sprite(new Texture(Gdx.files.internal("LargeBlackBlankCard.png")));
+		largeWhiteCardSprite = new Sprite(new Texture(Gdx.files.internal("LargeBlankCard.png")));
+		//largeblackCardSprite.setColor(Color.WHITE);
+		
 		blackCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.WHITE));
 		
 		whiteCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.BLACK));
 		
 		this.bg = this.game.backgorund;
+		
+		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));
+		//stage = new Stage(new ScreenViewport());
+	    Gdx.input.setInputProcessor(stage);
+	    
+	    this.spriteBatch = (SpriteBatch) stage.getBatch();
 		
 		Gdx.app.debug("GameScreen", "End of constructor");
 	}
@@ -135,6 +157,10 @@ public class GameScreen implements Screen
     	labelFont = new BitmapFont(Gdx.files.internal("fonts/Swis-721-32.fnt"), Gdx.files.internal("fonts/Swis-721-32.png"), false);
     	//Make text black
     	labelFont.setColor(Color.WHITE);
+    	
+    	smallFont = new BitmapFont(Gdx.files.internal("fonts/Swis-721-32.fnt"), Gdx.files.internal("fonts/Swis-721-32.png"), false);
+    	//Make text black
+    	smallFont.setColor(Color.WHITE);
 	}
 
 	@Override
@@ -178,7 +204,7 @@ public class GameScreen implements Screen
 	private boolean buttonJustPressCoolDown = false;
 	
 	@Override
-	public void render(float arg0) 
+	public void render(float delta) 
 	{
 		Gdx.app.debug("GameScreen", "game loop");
 		
@@ -189,7 +215,27 @@ public class GameScreen implements Screen
 		
 		populateHearbeats();
 		
-		drawSprites();
+		
+		if(table != null)
+		{
+			table.remove();
+		}
+		
+		table = createMainTable();
+		
+		//table.debug();
+		
+		table.setFillParent(true);
+	    stage.addActor(table);
+		
+		stage.act(delta);
+		
+		spriteBatch.begin();
+		this.bg.draw(spriteBatch);
+		spriteBatch.end();
+	    stage.draw();
+	    
+		//drawSprites();
 		
 		if(Gdx.input.isKeyPressed(Input.Keys.N))
 		{
@@ -212,6 +258,165 @@ public class GameScreen implements Screen
 			buttonJustPressCoolDown = false;
 		}
 		
+	}
+	
+	private Table createMainTable()
+	{
+		Table mainTable = new Table();
+		
+		//mainTable.setPosition(0, 0f);
+		
+		//mainTable.setWidth(screenWidth);
+		mainTable.add().align(Align.center | Align.top).padTop(50f).padBottom(70f);
+		mainTable.add(new Label("Round " + roundNumber, new Label.LabelStyle(font, Color.ORANGE))).align(Align.center | Align.top).padTop(50f).padBottom(70f);
+		mainTable.add(new Label("New players: " + this.game.ipAddr, new Label.LabelStyle(smallFont, Color.YELLOW))).align(Align.right | Align.bottom).padRight(100f).padTop(50f).padBottom(70f);
+		mainTable.row();
+		mainTable.add(createCardTable()).padBottom(60f).colspan(2).width(Value.percentWidth(0.7f, mainTable)).expandY().align(Align.top);
+		mainTable.add(createConnectedPlayersTable()).align(Align.top | Align.left).expandX();
+		mainTable.row();
+
+		String text = "";
+		
+		if(this.game.players.size() < 3)
+		{
+			text = "Waiting for players to connect ( " + (3 - this.game.players.size()) + " more needed )";
+		}
+		else
+		{
+			if(this.currentState == State.playersChooseCard)
+			{
+				text = "Waiting for players answers";
+			}
+			else if(currentState == State.judgeChoosesAnswer)
+			{
+				text = "Judge is revealing cards";
+			}
+			else if(currentState == State.endOfRound)
+			{
+				text = "Winner: " + this.game.players.get(lastWiningId).name;
+			}
+			else if(currentState == State.gameOver)
+			{
+				text = "Game Over!";
+			}
+		}
+		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(3).padBottom(50f);
+		
+		return mainTable;
+	}
+	
+	private Table createCardTable()
+	{
+		Table cardTable = new Table();
+		cardTable.add(createBlackCard()).padLeft(100f);
+		if(lastRevealedWhiteCard != null || lastWiningWhiteCard != null)
+		{
+			cardTable.add(createWhiteCard()).expandX();
+		}
+		else
+		{
+			cardTable.add().expandX();
+		}
+		
+		//cardTable.debug();
+		
+		return cardTable;
+		
+	}
+	
+	private Actor createBlackCard()
+	{
+		Table blackCardTable = new Table();
+		Image card = new Image(largeblackCardSprite.getTexture());
+		blackCardTable.background(card.getDrawable());
+		
+		blackCardLabel = new Label("", new Label.LabelStyle(font, Color.WHITE));
+		this.blackCardLabel.setText(blackCard);
+		this.blackCardLabel.setWrap(true);
+		
+		blackCardTable.add(this.blackCardLabel).align(Align.left | Align.top).width(card.getWidth() - 20f).pad(10f).expandY();
+		
+		return blackCardTable;
+		
+	}
+	
+	private Actor createWhiteCard()
+	{
+		Table whiteCardTable = new Table();
+		
+		Image card = new Image(largeWhiteCardSprite.getTexture());
+		whiteCardTable.background(card.getDrawable());
+		
+		whiteCardLabel = new Label("", new Label.LabelStyle(font, Color.BLACK));
+		if(this.currentState == State.judgeChoosesAnswer)
+		{
+			this.whiteCardLabel.setText(lastRevealedWhiteCard.text);
+		}
+		else
+		{
+			this.whiteCardLabel.setText(lastWiningWhiteCard.text);
+		}
+
+		this.whiteCardLabel.setWrap(true);
+		
+		whiteCardTable.add(this.whiteCardLabel).align(Align.left | Align.top).width(card.getWidth() - 20f).pad(10f).expandY();
+		
+		return whiteCardTable;
+		
+	}
+	
+	private Table createConnectedPlayersTable()
+	{
+		Table playerList = new Table();
+		int i = 0;
+		for(Map.Entry<String, Player> entry : this.game.players.entrySet())
+		{	
+			if(i != 0)
+			{
+				playerList.row();
+			}
+			
+			i++;
+			
+			Image image = null;
+			
+			if(entry.getValue().isJudge)
+			{
+				image = new Image(judgeSprite.getTexture());
+			}
+			else if(entry.getValue().selectedCard != null)
+			{
+				image = new Image(tickSprite.getTexture());
+			}
+			else if(!entry.getValue().dealtIn)
+			{
+				image = new Image(timerSprite.getTexture());
+			}
+			else if(entry.getValue().isPaused)
+			{
+				image = new Image(pausedSprite.getTexture());
+			}
+			
+			if(image != null)
+			{
+				playerList.add(image).spaceRight(20f).align(Align.left);
+			}
+			else
+			{
+				playerList.add().height(50f);
+			}
+			
+			String playerText = entry.getValue().getName();
+			String playerScore = String.valueOf(entry.getValue().score);
+			Label name = new Label(playerText, new Label.LabelStyle(smallFont, Color.WHITE));
+			name.setAlignment(Align.left);
+			name.setWrap(true);
+			playerList.add(name).width(360f);
+			playerList.add(new Label(playerScore, new Label.LabelStyle(smallFont, Color.WHITE))).align(Align.right).padLeft(20f);
+			
+		}
+		
+		return playerList;
 	}
 	
 	private boolean checkForEnoughPlayers()
@@ -310,145 +515,11 @@ public class GameScreen implements Screen
 		
 		Gdx.app.debug("GameScreen", "handleGameState end");
 	}
-	
-	private void drawSprites()
-	{
-    	Gdx.gl.glClearColor(0f, 0f, 1f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		this.spriteBatch.begin();
-		this.bg.draw(spriteBatch);
-		displayPlayers(spriteBatch);
-		DisplayMCPAddressText(spriteBatch);
-		drawBlackCard(spriteBatch);
-		if(lastRevealedWhiteCard != null || lastWiningWhiteCard != null)
-		{
-			drawWhiteCard(spriteBatch);
-		}
-		
-		this.spriteBatch.end();
-	}
-	
-	private void drawBlackCard(SpriteBatch sb)
-	{
-		float blackCardYBase = screenHeight/2 + 100f;
-		
-		blackCardSprite.setPosition(screenWidth/2, blackCardYBase - 100f);
-		blackCardSprite.draw(sb);
-
-		this.blackCardLabel.setAlignment(Align.left | Align.top);
-		this.blackCardLabel.setText(blackCard);
-		this.blackCardLabel.setColor(Color.WHITE);
-		this.blackCardLabel.setWrap(true);
-		this.blackCardLabel.setWidth(320f);
-		this.blackCardLabel.setPosition(screenWidth/2 + 15f, blackCardYBase + 300f);
-		this.blackCardLabel.draw(sb, 1);
-	}
-	
-	private void drawWhiteCard(SpriteBatch sb)
-	{
-		float whiteCardYBase = screenHeight/2 - 400f;
-		
-		whiteCardSprite.setPosition(screenWidth/2, whiteCardYBase - 100f);
-		whiteCardSprite.draw(sb);
-
-		this.whiteCardLabel.setAlignment(Align.left | Align.top);
-		if(this.currentState == State.judgeChoosesAnswer)
-		{
-			this.whiteCardLabel.setText(lastRevealedWhiteCard.text);
-		}
-		else
-		{
-			this.whiteCardLabel.setText(lastWiningWhiteCard.text);
-			
-			String name = this.game.players.get(lastWiningId).name;
-			
-			float xPos = 1625f - font.getBounds("Winner:").width/2;
-			float yPos = 450f;
-			
-			font.draw(spriteBatch, "Winner:", xPos, yPos);
-			
-			xPos = 1625f - font.getBounds(name).width/2;
-			yPos = 350f;
-			
-			font.draw(spriteBatch, name, xPos, yPos);
-		}
-		
-		this.whiteCardLabel.setColor(Color.BLACK);
-		this.whiteCardLabel.setWrap(true);
-		this.whiteCardLabel.setWidth(320f);
-		this.whiteCardLabel.setPosition(screenWidth/2 + 15f, whiteCardYBase + 300f);
-		this.whiteCardLabel.draw(sb, 1);
-	}
-	
-	private void displayPlayers(SpriteBatch sb)
-	{
-		
-		float yPos = (this.screenHeight) - (this.screenHeight/7);
-		
-		String playerText = "";
-		
-		int i = this.game.players.size();
-		
-		font.setColor(Color.WHITE);
-		
-		for(Map.Entry<String, Player> entry : this.game.players.entrySet())
-		{		
-			playerText = entry.getValue().getName() + ": " + entry.getValue().score;
-			
-			float xPos = (this.screenWidth/14);
-			float yPosAdjusted = (float) (yPos -  (i-1)*font.getBounds(playerText).height*(1.8));
-			
-			font.draw(sb, playerText, xPos, yPosAdjusted);
-			
-			xPos = xPos - tickSprite.getWidth() - 10f;
-			
-			//entry.getValue().selectedCard = "card";
-			
-			if(entry.getValue().isJudge)
-			{
-				yPosAdjusted = yPosAdjusted - tickSprite.getHeight() + 3f;
-				judgeSprite.setPosition(xPos, yPosAdjusted);
-				judgeSprite.draw(sb);
-			}
-			else if(entry.getValue().selectedCard != null)
-			{
-				yPosAdjusted = yPosAdjusted - tickSprite.getHeight() + 10f;
-				tickSprite.setPosition(xPos, yPosAdjusted);
-				tickSprite.draw(sb);
-			}
-			else if(!entry.getValue().dealtIn)
-			{
-				yPosAdjusted = yPosAdjusted - timerSprite.getHeight() + 3f;
-				timerSprite.setPosition(xPos, yPosAdjusted);
-				timerSprite.draw(sb);
-			}
-			else if(entry.getValue().isPaused)
-			{
-				yPosAdjusted = yPosAdjusted - timerSprite.getHeight() + 3f;
-				timerSprite.setPosition(xPos, yPosAdjusted);
-				timerSprite.draw(sb);
-			}
-			
-			i--;
-		}
-	}
-	
-	private void DisplayMCPAddressText(SpriteBatch sb)
-	{
-		String text = this.game.mcp.getAddressForClients();
-		
-		float xPos = (this.screenWidth) - font.getBounds(text).width - 50f;
-		float yPos = (this.screenHeight) - 20f;
-		
-		font.setColor(Color.YELLOW);
-		font.draw(sb, text, xPos, yPos);
-		font.setColor(Color.WHITE);
-	}
 
 	@Override
-	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
+	public void resize(int width, int height) 
+	{
+		stage.getViewport().update(width, height, true);
 		
 	}
 
@@ -501,9 +572,9 @@ public class GameScreen implements Screen
 			
 			if(i == indexOfNextJudge)
 			{
-				if(p.isPaused)
+				if(p.isPaused || p.isRando)
 				{
-					//this player is paused and cant be the judge
+					//this player is paused or is rando and cant be the judge
 					moveToNextJudge();
 				}
 				else
@@ -581,6 +652,12 @@ public class GameScreen implements Screen
 		
 			if(!p.isJudge)
 			{
+				if(p.isRando)
+				{
+					//rando doesnt need hearbeats
+					break;
+				}
+				
 				obj.put("cards", p.cardsToJsonArray());
 				
 				if(p.selectedCard != null)

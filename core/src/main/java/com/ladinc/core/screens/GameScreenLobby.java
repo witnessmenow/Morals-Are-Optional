@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.objects.Player;
+import com.ladinc.core.objects.Rando;
 import com.ladinc.core.screens.GameScreen.State;
 
 public class GameScreenLobby implements Screen
@@ -59,6 +60,8 @@ public class GameScreenLobby implements Screen
     private Sprite bg;
     
     private Stage stage;
+    
+    private Table stepTwo;
 	
 	public GameScreenLobby(McpCah g)
 	{
@@ -80,6 +83,7 @@ public class GameScreenLobby implements Screen
 	    spriteBatch = (SpriteBatch) stage.getBatch();
 
 
+	    //this.game.players.put("rando", new Rando());
 	}
 
 	private void initializeFont()
@@ -191,7 +195,7 @@ public class GameScreenLobby implements Screen
 	{
 		Table stepTable = new Table();
 		
-		stepTable.add(new Label("To Join The Game:", new Label.LabelStyle(font, Color.ORANGE))).colspan(2).padBottom(60f);
+		stepTable.add(new Label("To Join The Game", new Label.LabelStyle(font, Color.ORANGE))).colspan(2).padBottom(60f);
 		stepTable.row();
 
 		stepTable.add(createStep1Table()).align(Align.top).width(Value.percentWidth(0.45f, stepTable));
@@ -217,7 +221,7 @@ public class GameScreenLobby implements Screen
 	{
 		Table stepOne = new Table();
 		
-		stepOne.add(new Label("Step One:", new Label.LabelStyle(boldFont, Color.GREEN))).padBottom(20f);
+		stepOne.add(new Label("Step One", new Label.LabelStyle(boldFont, Color.GREEN))).padBottom(20f);
 		stepOne.row();
 		
 		Label step1Message = new Label("Connect your phone to the Wi-Fi Network.", new Label.LabelStyle(font, Color.WHITE));
@@ -227,13 +231,22 @@ public class GameScreenLobby implements Screen
 		
 		stepOne.add(step1Message).width(500f);
 		
+		stepOne.row();
+		
+		Label step1Instruction = new Label("Note: All devices must be on the same Wi-Fi network.", new Label.LabelStyle(smallFont, Color.WHITE));
+		step1Instruction.setAlignment(Align.center | Align.top);
+		step1Instruction.setWrap(true);
+		step1Instruction.setWidth(500f);
+		
+		stepOne.add(step1Instruction).width(500f).padTop(30f);
+		
 		return stepOne;
 	}
 	
 	private Table createStep2Table()
 	{
-		Table stepTwo = new Table();
-		stepTwo.add(new Label("Step Two:", new Label.LabelStyle(boldFont, Color.GREEN))).padBottom(20f);
+		stepTwo = new Table();
+		stepTwo.add(new Label("Step Two", new Label.LabelStyle(boldFont, Color.GREEN))).padBottom(20f);
 		stepTwo.row();
 		
 		Label step2Message = new Label("Type the following into your phones web browser:", new Label.LabelStyle(font, Color.WHITE));
@@ -273,7 +286,7 @@ public class GameScreenLobby implements Screen
 	{
 		Table connectedPlayers = new Table();
 		
-		connectedPlayers.add(new Label("Connected Players:", new Label.LabelStyle(font, Color.ORANGE))).padBottom(20f).colspan(2);
+		connectedPlayers.add(new Label("Players", new Label.LabelStyle(font, Color.ORANGE))).padBottom(20f).colspan(2);
 		connectedPlayers.row();
 		
 		Table playerList = new Table();

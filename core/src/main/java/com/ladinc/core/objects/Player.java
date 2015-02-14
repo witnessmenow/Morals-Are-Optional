@@ -27,6 +27,8 @@ public class Player
 	public boolean dealtIn = false;
 	public boolean isPaused = false;
 	
+	public boolean isRando = false;
+	
 	public static Boolean OUT_OF_WHITE_CARDS = false;
 	
 	public Player(String name, String id){
