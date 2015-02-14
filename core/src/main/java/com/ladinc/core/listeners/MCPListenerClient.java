@@ -8,6 +8,7 @@ import com.ladinc.core.cards.CardCollection;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.objects.Player;
+import com.ladinc.core.objects.Rando;
 import com.ladinc.core.screens.GameScreen;
 import com.ladinc.mcp.interfaces.MCPContorllersListener;
 
@@ -56,9 +57,13 @@ public class MCPListenerClient implements  MCPContorllersListener
 			{
 				Gdx.app.log("MCPListenerClient", "pass: " + params.get("event"));
 				
-				if(params.get("event").contains("register"))
+				if(params.get("event").equals("register"))
 				{
 					registerPlayer(params.get("id"), params.get("name"));
+				}
+				else if(params.get("event").equals("registerRando"))
+				{
+					registerRando();
 				}
 				else if(params.get("event").contains("start"))
 				{
@@ -126,6 +131,10 @@ public class MCPListenerClient implements  MCPContorllersListener
 			this.game.players.put(controllerId, new Player(name, controllerId));
 		}
 		
+	}
+	
+	private void registerRando(){
+		this.game.players.put("rando", new Rando());
 	}
 
 }

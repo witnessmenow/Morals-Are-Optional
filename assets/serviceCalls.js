@@ -127,6 +127,30 @@ function sendStartToServer()
 	
 	xmlhttp.send();
 }
+function registerRandoWithServer()
+{
+	var myRand=parseInt(Math.random()*99999999);
+	
+	var url = "passEvent?&event=registerRando";
+	
+	var xmlhttp
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	
+	xmlhttp.open("GET",url,true);
+	
+	xmlhttp.onreadystatechange = function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+		{ 
+			
+		}
+	}
+	
+	xmlhttp.send();
+}
 function registerNameWithServer(name)
 {
 	var myRand=parseInt(Math.random()*99999999);

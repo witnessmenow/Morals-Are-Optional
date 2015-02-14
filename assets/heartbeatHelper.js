@@ -53,7 +53,7 @@ function handleHeartbeat(respText)
 					divHolder.id = "scoreHolder" + i;
 					
 					var para = document.createElement("small");
-					para.innerHTML = obj.scores[i].name + " " + obj.scores[i].score
+					para.innerHTML = obj.scores[i].name + " " + obj.scores[i].score;
 					para.id = obj.scores[i].name + "Score";
 					
 					divHolder.appendChild(para);

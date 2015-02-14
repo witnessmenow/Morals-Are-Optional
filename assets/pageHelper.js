@@ -9,11 +9,14 @@ function goToPage1Dot5(){
 	document.getElementById("page1Dot5").className = "show";
 }
 function startButtonPressed(){
+	if($("#addRando").attr("checked",true)){
+		registerRandoWithServer();
+	}
 	sendStartToServer();
 }
 function goToPage2(){
 	hideAllPages();
-	document.getElementById("page2").className = "show";
+	$("#page2").addClass("show").removeClass("hide");
 	document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
 	document.getElementById("madeVoteWaitingForJudgement").className = "hide";
 	clearSelectedCard();
@@ -38,7 +41,7 @@ function goToEndOfRoundScreen(){
 function hideAllPages(){
 	document.getElementById("page1").className = "hide";
 	document.getElementById("page1Dot5").className = "hide";
-	document.getElementById("page2").className = "hide";
+	$("#page2").addClass("hide").removeClass("show");
 	document.getElementById("judgeVote").className = "hide";
 	document.getElementById("judgeWait").className = "hide";
 	document.getElementById("endOfRoundScreen").className = "hide";
