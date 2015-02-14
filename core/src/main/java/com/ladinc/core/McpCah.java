@@ -129,6 +129,7 @@ public class McpCah extends Game
 		this.mcp.customLinkDirect.add(new CustomResource("pageHelper.js", getFileContents("pageHelper.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("serviceCalls.js", getFileContents("serviceCalls.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("mao.css", getFileContents("mao.css")));
+		this.mcp.customLinkDirect.add(new CustomResource("gameFunctions.js", getFileContents("gameFunctions.js")));
 		
 		//This controls which controllers are visible in the initial MCP drop down
 		this.mcp.redirectOptions = new ArrayList<RedirectOption>(); //This clears the defaults
