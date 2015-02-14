@@ -78,7 +78,6 @@ public class GameScreenLobby implements Screen
 		
 		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));  
 	    spriteBatch = (SpriteBatch) stage.getBatch();
-	    this.game.players.put("rando", new Rando());
 	}
 
 	private void initializeFont()

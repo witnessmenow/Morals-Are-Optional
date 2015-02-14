@@ -63,7 +63,7 @@ public class MCPListenerClient implements  MCPContorllersListener
 				}
 				else if(params.get("event").equals("registerRando"))
 				{
-					registerRando();
+					this.game.addRando();
 				}
 				else if(params.get("event").contains("start"))
 				{
@@ -142,10 +142,6 @@ public class MCPListenerClient implements  MCPContorllersListener
 			this.game.players.put(controllerId, new Player(name, controllerId));
 		}
 		
-	}
-	
-	private void registerRando(){
-		this.game.players.put("rando", new Rando());
 	}
 
 }
