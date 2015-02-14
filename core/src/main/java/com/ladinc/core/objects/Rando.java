@@ -8,10 +8,11 @@ import com.ladinc.core.McpCah;
 
 public class Rando extends Player
 {
+	public static String ID = "rando";
 
 	public Rando() 
 	{
-		super("Rando Cardrissian", "rando");
+		super("Rando Cardrissian", ID);
 		
 		this.isRando = true;
 	}

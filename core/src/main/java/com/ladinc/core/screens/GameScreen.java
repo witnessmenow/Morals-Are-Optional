@@ -131,7 +131,7 @@ public class GameScreen implements Screen
 		
 		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));
 		//stage = new Stage(new ScreenViewport());
-	    Gdx.input.setInputProcessor(stage);
+	    //Gdx.input.setInputProcessor(stage);
 	    
 	    this.spriteBatch = (SpriteBatch) stage.getBatch();
 		
@@ -540,6 +540,7 @@ public class GameScreen implements Screen
 	public void show() 
 	{
 		Gdx.app.debug("show", "entering show");
+		Gdx.input.setInputProcessor(stage);
 		
 	}
 	

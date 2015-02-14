@@ -61,7 +61,7 @@ public class GameScreenLobby implements Screen
     
     private Stage stage;
     
-    private Table stepTwo;
+    //private Table stepTwo;
 	
 	public GameScreenLobby(McpCah g)
 	{
@@ -76,14 +76,9 @@ public class GameScreenLobby implements Screen
 		
 		this.bg = this.game.backgorund;
 		
-		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));
-		//stage = new Stage(new ScreenViewport());
-	    Gdx.input.setInputProcessor(stage);
-	    
+		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));  
 	    spriteBatch = (SpriteBatch) stage.getBatch();
-
-
-	    //this.game.players.put("rando", new Rando());
+	    this.game.players.put("rando", new Rando());
 	}
 
 	private void initializeFont()
@@ -167,12 +162,10 @@ public class GameScreenLobby implements Screen
 	{
 		Table mainTable = new Table();
 		
-		mainTable.setPosition(0, 70f);
-		
 		mainTable.setWidth(screenWidth);
-		mainTable.add(createTitleTable()).colspan(2).padBottom(50f);;
+		mainTable.add(createTitleTable()).colspan(2).padTop(50f).padBottom(70f).align(Align.top);
 		mainTable.row();
-		mainTable.add(createStepTable()).padBottom(60f).width(Value.percentWidth(0.75f, mainTable));
+		mainTable.add(createStepTable()).padBottom(60f).width(Value.percentWidth(0.75f, mainTable)).expandY().align(Align.top);
 		mainTable.add(createConnectedPlayersTable()).align(Align.top).expandX();
 		mainTable.row();
 
@@ -186,7 +179,7 @@ public class GameScreenLobby implements Screen
 		{
 			text = "Ready to start";
 		}
-		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(2).padTop(70f);
+		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(2).padBottom(70f);
 		
 		return mainTable;
 	}
@@ -245,7 +238,7 @@ public class GameScreenLobby implements Screen
 	
 	private Table createStep2Table()
 	{
-		stepTwo = new Table();
+		Table stepTwo = new Table();
 		stepTwo.add(new Label("Step Two", new Label.LabelStyle(boldFont, Color.GREEN))).padBottom(20f);
 		stepTwo.row();
 		
@@ -419,10 +412,9 @@ public class GameScreenLobby implements Screen
 	}
 
 	@Override
-	public void show() {
-		spriteBatch = new SpriteBatch();
-	
-		
+	public void show() 
+	{
+		Gdx.input.setInputProcessor(stage);
 	}
 }
 

@@ -86,6 +86,17 @@ public class MCPListenerClient implements  MCPContorllersListener
 				{
 					GameScreen.startNextFlag = true;
 				}
+				else if(params.get("event").contains("rando"))
+				{
+					if(params.get("include").contains("true"))
+					{
+						this.game.addRando();
+					}
+					else if(params.get("include").contains("false"))
+					{
+						this.game.remmoveRando();
+					}
+				}
 			}
 		}
 		

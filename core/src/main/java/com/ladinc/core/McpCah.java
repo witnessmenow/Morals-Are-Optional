@@ -15,12 +15,15 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.listeners.MCPListenerClient;
 import com.ladinc.core.objects.Player;
+import com.ladinc.core.objects.Rando;
 import com.ladinc.core.screens.GameScreen;
 import com.ladinc.core.screens.GameScreenLobby;
 import com.ladinc.mcp.CustomResource;
@@ -164,6 +167,28 @@ public class McpCah extends Game
 		return fileContents;
 	}
 	
+	public void addRando()
+	{
+		if(this.players != null)
+		{
+			if(!this.players.containsKey(Rando.ID))
+			{
+				this.players.put(Rando.ID, new Rando());
+			}
+		}
+	}
+	
+	public void remmoveRando()
+	{
+		if(this.players != null)
+		{
+			if(this.players.containsKey(Rando.ID))
+			{
+				this.players.remove(Rando.ID);
+			}
+		}
+	}
+		
 	private void mockPlayers()
 	{
 		players.clear();
