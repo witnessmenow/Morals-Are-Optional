@@ -7,5 +7,14 @@ public class Card
 	public String text;
 	public int numAnswers;
 	public String expansion;
+	
+	public static String filterText(String input)
+	{
+		String output = input;
+		output = output.replace("&reg;", "(R)");
+		output = output.replace("&trade;", " (TM)");
+		output = output.replace("&copy;", " (C)");
+		return output;
+	}
 
 }

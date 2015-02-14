@@ -21,18 +21,27 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ladinc.core.McpCah;
+import com.ladinc.core.cards.Card;
 import com.ladinc.core.cards.SimpleWhiteCard;
+import com.ladinc.core.listeners.CustomInputListener;
 import com.ladinc.core.objects.Player;
 
 public class GameScreen implements Screen
@@ -48,6 +57,7 @@ public class GameScreen implements Screen
 	public static Boolean startNextFlag = false;
 	
 	private String blackCard;
+	private String filteredBlackCard;
 	
 	public McpCah game;
 	private final OrthographicCamera camera;
@@ -80,6 +90,15 @@ public class GameScreen implements Screen
 	public Sprite judgeSprite;
 	public Sprite timerSprite;
 	public Sprite pausedSprite;
+	public Sprite deleteSprite;
+	public Sprite plusSprite;
+	
+	public TextureRegionDrawable buttomPressedDrawable;
+	public TextureRegionDrawable buttomDrawable;
+	
+	private boolean playerEditMode = false;
+	
+	public static boolean CHANGES_TO_PLAYERS = false;
 	
 	Timer timer = null;
 	
@@ -113,6 +132,12 @@ public class GameScreen implements Screen
 		pausedSprite = new Sprite(new Texture(Gdx.files.internal("icons/pause.png")));
 		pausedSprite.setColor(Color.WHITE);
 		
+		deleteSprite = new Sprite(new Texture(Gdx.files.internal("icons/cross.png")));
+		deleteSprite.setColor(Color.WHITE);
+		
+		plusSprite = new Sprite(new Texture(Gdx.files.internal("icons/plus.png")));
+		plusSprite.setColor(Color.WHITE);
+		
 		blackCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
 		blackCardSprite.setColor(Color.BLACK);
 		
@@ -127,6 +152,9 @@ public class GameScreen implements Screen
 		
 		whiteCardLabel = new Label("", new Label.LabelStyle(labelFont, Color.BLACK));
 		
+		buttomPressedDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/pressed.png"))));
+		buttomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/raised.png"))));
+			
 		this.bg = this.game.backgorund;
 		
 		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));
@@ -295,6 +323,10 @@ public class GameScreen implements Screen
 			{
 				text = "Winner: " + this.game.players.get(lastWiningId).name;
 			}
+			else if(currentState == State.needMorePlayers)
+			{
+				text = "Need more active players to continue!";
+			}
 			else if(currentState == State.gameOver)
 			{
 				text = "Game Over!";
@@ -331,7 +363,7 @@ public class GameScreen implements Screen
 		blackCardTable.background(card.getDrawable());
 		
 		blackCardLabel = new Label("", new Label.LabelStyle(font, Color.WHITE));
-		this.blackCardLabel.setText(blackCard);
+		this.blackCardLabel.setText(filteredBlackCard);
 		this.blackCardLabel.setWrap(true);
 		
 		blackCardTable.add(this.blackCardLabel).align(Align.left | Align.top).width(card.getWidth() - 20f).pad(10f).expandY();
@@ -350,11 +382,11 @@ public class GameScreen implements Screen
 		whiteCardLabel = new Label("", new Label.LabelStyle(font, Color.BLACK));
 		if(this.currentState == State.judgeChoosesAnswer)
 		{
-			this.whiteCardLabel.setText(lastRevealedWhiteCard.text);
+			this.whiteCardLabel.setText(lastRevealedWhiteCard.filteredText);
 		}
 		else
 		{
-			this.whiteCardLabel.setText(lastWiningWhiteCard.text);
+			this.whiteCardLabel.setText(lastWiningWhiteCard.filteredText);
 		}
 
 		this.whiteCardLabel.setWrap(true);
@@ -379,22 +411,41 @@ public class GameScreen implements Screen
 			i++;
 			
 			Image image = null;
-			
-			if(entry.getValue().isJudge)
+			if(playerEditMode)
 			{
-				image = new Image(judgeSprite.getTexture());
+				if(!entry.getValue().isPaused)
+				{
+					image = new Image(deleteSprite.getTexture());
+				}
+				else
+				{
+					image = new Image(plusSprite.getTexture());
+				}
+				
+				image.setBounds(image.getX(), image.getY(), image.getWidth(), image.getHeight());
+				
+				image.addListener(new CustomInputListener(entry.getValue()));
+				
 			}
-			else if(entry.getValue().selectedCard != null)
+			else
 			{
-				image = new Image(tickSprite.getTexture());
-			}
-			else if(!entry.getValue().dealtIn)
-			{
-				image = new Image(timerSprite.getTexture());
-			}
-			else if(entry.getValue().isPaused)
-			{
-				image = new Image(pausedSprite.getTexture());
+				if(entry.getValue().isJudge)
+				{
+					image = new Image(judgeSprite.getTexture());
+				}
+				else if(entry.getValue().selectedCard != null)
+				{
+					image = new Image(tickSprite.getTexture());
+				}
+				else if(!entry.getValue().dealtIn)
+				{
+					image = new Image(timerSprite.getTexture());
+				}
+				else if(entry.getValue().isPaused)
+				{
+					image = new Image(pausedSprite.getTexture());
+				}
+				
 			}
 			
 			if(image != null)
@@ -408,13 +459,61 @@ public class GameScreen implements Screen
 			
 			String playerText = entry.getValue().getName();
 			String playerScore = String.valueOf(entry.getValue().score);
-			Label name = new Label(playerText, new Label.LabelStyle(smallFont, Color.WHITE));
+			
+			Color color = Color.WHITE;
+			
+			
+			if(entry.getValue().isPaused)
+			{
+				color = Color.GRAY;
+			}
+			
+			Label name = new Label(playerText, new Label.LabelStyle(smallFont, color));
+			
 			name.setAlignment(Align.left);
 			name.setWrap(true);
 			playerList.add(name).width(360f);
-			playerList.add(new Label(playerScore, new Label.LabelStyle(smallFont, Color.WHITE))).align(Align.right).padLeft(20f);
+			playerList.add(new Label(playerScore, new Label.LabelStyle(smallFont, color))).align(Align.right).padLeft(20f);
 			
 		}
+		
+		TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
+        style.up = buttomDrawable;
+        style.down = buttomPressedDrawable;
+        style.font = smallFont;
+        style.fontColor = Color.GRAY;
+        
+        String text = "";
+        if(playerEditMode)
+        {
+        	text = "Done";
+        }
+        else
+        {
+        	text = "Remove Player";
+        }
+        
+        TextButton button = new TextButton(text, style);
+		
+		button.setBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight());
+		
+		button.addListener(new InputListener() 
+		{
+		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
+		    {
+		    	playerEditMode = !playerEditMode;
+		        return true;
+		    }
+		});
+		
+		button.padLeft(8f);
+		button.padRight(8f);
+		button.padTop(5f);
+		button.padBottom(5f);
+		
+		playerList.row();
+		playerList.add(button).colspan(3).padTop(50f);
+		
 		
 		return playerList;
 	}
@@ -437,6 +536,14 @@ public class GameScreen implements Screen
 	{
 		Gdx.app.debug("GameScreen", "handleGameState");
 		
+		if(!this.playerEditMode && GameScreen.CHANGES_TO_PLAYERS)
+		{
+			GameScreen.CHANGES_TO_PLAYERS = false;
+			//Starting a new round as we may not have a judge or enough players
+			currentState = State.startOfRound;
+			
+		}
+		
 		if(currentState == State.startOfRound)
 		{
 			Gdx.app.debug("GameScreen", "State.startOfRound");
@@ -456,34 +563,37 @@ public class GameScreen implements Screen
 				moveToNextJudge();
 				repopulateHands();
 				//clearSelectedCards();
-			}
-			
-			if(Player.OUT_OF_WHITE_CARDS)
-			{
-				this.gameOver = true;
-			}
-			
-			if(this.gameOver)
-			{
-				currentState = State.gameOver;
-				Gdx.app.debug("GameScreen", "State.gameOver");
-			}
-			else
-			{
-				currentState = State.playersChooseCard;
+				
+				if(Player.OUT_OF_WHITE_CARDS)
+				{
+					this.gameOver = true;
+				}
+				
+				if(this.gameOver)
+				{
+					currentState = State.gameOver;
+					Gdx.app.debug("GameScreen", "State.gameOver");
+				}
+				else
+				{
+					currentState = State.playersChooseCard;
+				}
 			}
 			
 		}
 		
 		if(currentState == State.needMorePlayers)
 		{
-			if(checkForEnoughPlayers())
+			if(!checkForEnoughPlayers())
 			{
 				currentState = State.needMorePlayers;
 			}
 			else
 			{
-				this.currentState = State.startOfRound;
+				if(!this.playerEditMode)
+				{
+					this.currentState = State.startOfRound;
+				}
 			}
 		}
 		
@@ -603,6 +713,7 @@ public class GameScreen implements Screen
 			int index = r.nextInt(McpCah.AVAILABLE_BLACK_CARDS.size());
 		
 			blackCard = McpCah.AVAILABLE_BLACK_CARDS.get(index);
+			filteredBlackCard = Card.filterText(blackCard);
 			McpCah.AVAILABLE_BLACK_CARDS.remove(index);
 		}
 	}
@@ -773,7 +884,7 @@ public class GameScreen implements Screen
 		//Populate answers from players
 		for(Player NewP : this.game.players.values())
 		{			
-			if(!NewP.isJudge && NewP.dealtIn)
+			if(!NewP.isJudge && NewP.dealtIn && !NewP.isPaused)
 			{
 				JSONObject innerObj = new JSONObject();
 				innerObj.put("playerID", NewP.id);
@@ -786,7 +897,6 @@ public class GameScreen implements Screen
 		
 		return array;
 	}
-	
 
 }
 
