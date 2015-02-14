@@ -9,7 +9,7 @@ function goToPage1Dot5(){
 	document.getElementById("page1Dot5").className = "show";
 }
 function startButtonPressed(){
-	if($("#addRando").attr("checked",true)){
+	if(document.getElementById("addRando").checked){
 		registerRandoWithServer();
 	}
 	sendStartToServer();
