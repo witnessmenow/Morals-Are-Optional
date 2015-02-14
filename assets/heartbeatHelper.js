@@ -35,6 +35,22 @@ function handleHeartbeat(respText)
 	
 	if(obj.hasOwnProperty('numberOfPlayers'))
 	{
+		if(obj.hasOwnProperty('connectedPlayers')){
+			document.getElementById("connectedPlayers").innerHTML = "";
+			for(var i in obj.connectedPlayers){
+				var divHolder = document.createElement("h4");
+				divHolder.id = "scoreHolder" + i;
+				
+				var para = document.createElement("span");
+				para.innerHTML = obj.connectedPlayers[i].name;
+				para.id = obj.connectedPlayers[i].name;
+				para.className = "marginPt5em";
+				
+				divHolder.appendChild(para);
+				document.getElementById("connectedPlayers").appendChild(divHolder);
+			}
+		}
+		
 		if(obj.numberOfPlayers > 2){
 			enableStartButton();
 		}

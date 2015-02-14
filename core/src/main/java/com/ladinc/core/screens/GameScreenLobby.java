@@ -1,5 +1,7 @@
 package com.ladinc.core.screens;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -311,11 +313,18 @@ public class GameScreenLobby implements Screen
 	private void sendPlayerHeartbeats()
 	{
 		JSONObject obj = new JSONObject();
-		obj.put("numberOfPlayers", this.game.players.size());
+		
+		List<JSONObject> array = new ArrayList<JSONObject>();
+		
 		for(Player p : this.game.players.values()){
+			JSONObject obj2 = new JSONObject();
+			obj2.put("name", p.name);
+			array.add(obj2);
 			this.game.mcp.hearbeatResponses.put(p.id,obj);
 		}
 		
+		obj.put("connectedPlayers", array);
+		obj.put("numberOfPlayers", this.game.players.size());
 		sendTableHeartbeats();
 	}
 	

@@ -4,11 +4,9 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.ladinc.core.McpCah;
-import com.ladinc.core.cards.CardCollection;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.objects.Player;
-import com.ladinc.core.objects.Rando;
 import com.ladinc.core.screens.GameScreen;
 import com.ladinc.mcp.interfaces.MCPContorllersListener;
 
