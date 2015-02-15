@@ -670,35 +670,38 @@ public class GameScreen implements Screen
 			i++;
 		}
 		
-		int indexOfNextJudge = indexOfCurrentJudge + 1;
 		
-		if(indexOfNextJudge >= game.players.size())
-		{
-			indexOfNextJudge = 0;
-		}
+		//we will add to this shortly
+		int indexOfNextJudge = indexOfCurrentJudge;
+		Player newJudge = null;
 		
-		i = 0;
-		for(Player p : this.game.players.values())
+		while(newJudge == null)
 		{
-			
-			if(i == indexOfNextJudge)
+			indexOfNextJudge++;
+			if(indexOfNextJudge >= game.players.size())
 			{
-				if(p.isPaused || p.isRando)
-				{
-					//this player is paused or is rando and cant be the judge
-					moveToNextJudge();
-				}
-				else
-				{
-					p.isJudge = true;
-				}
-				break;
+				indexOfNextJudge = 0;
 			}
-			i++;
+			
+			i = 0;
+			for(Player p : this.game.players.values())
+			{
+				
+				if(i == indexOfNextJudge)
+				{
+					if(!p.isPaused && !p.isRando)
+					{
+						//this player is paused or is rando and cant be the judge
+						p.isJudge = true;
+						newJudge = p;
+					}
+					break;
+				}
+				i++;
+			}
+			
 		}
-		
-		
-		
+			
 	}
 	
 	private void getNewBlackCard()
