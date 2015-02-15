@@ -762,61 +762,61 @@ public class GameScreen implements Screen
 		{
 			JSONObject obj = new JSONObject();
 		
-			if(!p.isJudge)
+			//rando doesnt need hearbeats
+			if(!p.isRando)
 			{
-				if(p.isRando)
+				if(!p.isJudge)
 				{
-					//rando doesnt need hearbeats
-					break;
-				}
-				
-				obj.put("cards", p.cardsToJsonArray());
-				
-				if(p.selectedCard != null)
-				{
-					obj.put("selectedCard", p.selectedCard.getJsonObj());
-				}
-				
-				if(!p.dealtIn)
-				{
-					obj.put("notDealtIn", "waiting");
-				}
-			}
-			else
-			{
-				if(currentState == State.playersChooseCard)
-				{
-					obj.put("judge", "wait");
-				}
-				else if(currentState == State.judgeChoosesAnswer)
-				{
-					if(selectedWhiteCards == null)
+					
+					obj.put("cards", p.cardsToJsonArray());
+					
+					if(p.selectedCard != null)
 					{
-						selectedWhiteCards = generateSelectedWhiteCards();
+						obj.put("selectedCard", p.selectedCard.getJsonObj());
 					}
-					obj.put("judge", "vote");
-					obj.put("selected", selectedWhiteCards);
+					
+					if(!p.dealtIn)
+					{
+						obj.put("notDealtIn", "waiting");
+					}
 				}
-			}
-			
-			obj.put("blackCard", this.blackCard);
-			
-			if(currentState == State.endOfRound)
-			{
-				obj.put("winningCard", GameScreen.lastWiningWhiteCard.getJsonObj());
-				obj.put("score", p.score);
-				Array<JSONObject> arr = new Array<JSONObject>();
-				for (Player p2 : this.game.players.values()) {
-					JSONObject obj2 = new JSONObject();
-					obj2.put("name", p2.name);
-					obj2.put("score", p2.score);
-					arr.add(obj2);
+				else
+				{
+					if(currentState == State.playersChooseCard)
+					{
+						obj.put("judge", "wait");
+					}
+					else if(currentState == State.judgeChoosesAnswer)
+					{
+						if(selectedWhiteCards == null)
+						{
+							selectedWhiteCards = generateSelectedWhiteCards();
+						}
+						obj.put("judge", "vote");
+						obj.put("selected", selectedWhiteCards);
+					}
 				}
-				obj.put("scores", arr);
-				obj.put("playerCount", this.game.players.size());
-			}
+				
+				obj.put("blackCard", this.blackCard);
+				
+				if(currentState == State.endOfRound)
+				{
+					obj.put("winningCard", GameScreen.lastWiningWhiteCard.getJsonObj());
+					obj.put("score", p.score);
+					Array<JSONObject> arr = new Array<JSONObject>();
+					for (Player p2 : this.game.players.values()) {
+						JSONObject obj2 = new JSONObject();
+						obj2.put("name", p2.name);
+						obj2.put("score", p2.score);
+						arr.add(obj2);
+					}
+					obj.put("scores", arr);
+					obj.put("playerCount", this.game.players.size());
+				}
 
-			this.game.mcp.hearbeatResponses.put(p.id, obj);
+				this.game.mcp.hearbeatResponses.put(p.id, obj);
+			}
+			
 		}
 		
 		populateTableHeartbeat();

@@ -14,6 +14,7 @@ public class Card
 		output = output.replace("&reg;", "(R)");
 		output = output.replace("&trade;", " (TM)");
 		output = output.replace("&copy;", " (C)");
+		output = output.replace("&#34;;", " \"");
 		return output;
 	}
 
