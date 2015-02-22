@@ -17,14 +17,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -56,6 +60,7 @@ public class GameScreenLobby implements Screen
     public BitmapFont boldSmallFont;
     
     public Table table;
+    public Table mainCreditsTable;
     
     private static final String TITLE = "Morals Are Optional";
     
@@ -64,6 +69,13 @@ public class GameScreenLobby implements Screen
     private Stage stage;
     
     //private Table stepTwo;
+	public TextureRegionDrawable buttomPressedDrawable;
+	public TextureRegionDrawable buttomDrawable;
+	
+	public TextureRegionDrawable credits;
+	public Sprite creditsSprite;
+	
+	private boolean displayCredits = false;
 	
 	public GameScreenLobby(McpCah g)
 	{
@@ -80,6 +92,13 @@ public class GameScreenLobby implements Screen
 		
 		stage = new Stage(new ExtendViewport(screenWidth, screenHeight));  
 	    spriteBatch = (SpriteBatch) stage.getBatch();
+	    
+	    buttomPressedDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/pressed.png"))));
+		buttomDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/raised.png"))));
+		
+		credits = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("credits.png"))));
+		
+		creditsSprite = new Sprite(new Texture(Gdx.files.internal("credits.png")));
 	}
 
 	private void initializeFont()
@@ -126,12 +145,25 @@ public class GameScreenLobby implements Screen
 			table.remove();
 		}
 		
-		table = createMainTable();
+		if(mainCreditsTable != null)
+		{
+			mainCreditsTable.remove();
+		}
 		
+		table = createMainTable();
+		if(displayCredits)
+	    {
+			mainCreditsTable = displayCredits();
+	    }
 		//table.debug();
 		
 		table.setFillParent(true);
 	    stage.addActor(table);
+		if(displayCredits)
+	    {
+			stage.addActor(mainCreditsTable);
+	    }
+	    
 		
 		stage.act(delta);
 		
@@ -159,9 +191,87 @@ public class GameScreenLobby implements Screen
 		
 	}
 	
+	private Table displayCredits()
+	{
+		Table creditsTable = new Table();
+		
+		Image card = new Image(creditsSprite.getTexture());
+		creditsTable.background(card.getDrawable());
+		
+		//creditsTable.background(credits);
+		
+		creditsTable.add(new Label("Credits", new Label.LabelStyle(titleFont, Color.WHITE))).padBottom(20f);
+		creditsTable.row();
+		creditsTable.add(new Label("Developers", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.row();
+		creditsTable.add(new Label("Brian Lough", new Label.LabelStyle(font, Color.WHITE)));
+		creditsTable.row();
+		creditsTable.add(new Label("Kieran Nestor", new Label.LabelStyle(font, Color.WHITE)));
+		creditsTable.row();
+		creditsTable.add(new Label("Gary Cregan", new Label.LabelStyle(font, Color.WHITE)));
+		
+		creditsTable.row();
+		creditsTable.add(new Label("Artwork", new Label.LabelStyle(smallFont, Color.WHITE))).padTop(30f);
+		creditsTable.row();
+		creditsTable.add(new Label("Buttons & Icons - kenney.nl", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.row();
+		creditsTable.add(new Label("Background (Modified) - laurakerbyson.com", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.row();
+		creditsTable.add(new Label("Written In Libgdx", new Label.LabelStyle(smallFont, Color.WHITE))).padTop(30f);
+		creditsTable.row();
+		
+		creditsTable.add(new Label("Source Code of Game availalbe at:", new Label.LabelStyle(smallFont, Color.WHITE))).padTop(25f);
+		creditsTable.row();
+		creditsTable.add(new Label("github.com/witnessmenow/Morals-Are-Optional", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.row();
+
+		TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
+        style.up = buttomDrawable;
+        style.down = buttomPressedDrawable;
+        style.font = smallFont;
+        style.fontColor = Color.GRAY;
+        
+        String buttonText = "Close";
+
+        TextButton button = new TextButton(buttonText, style);
+		
+		button.setBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight());
+		
+		button.addListener(new InputListener() 
+		{
+		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
+		    {
+		    	displayCredits = false;
+		        return true;
+		    }
+		});
+		
+		button.padLeft(8f);
+		button.padRight(8f);
+		button.padTop(5f);
+		button.padBottom(5f);
+		
+		creditsTable.add(button).padTop(30f).padBottom(20f);
+		
+		creditsTable.setPosition(screenWidth/2 - creditsSprite.getWidth()/2, screenHeight/2 -  creditsSprite.getHeight()/2);
+		
+		//creditsSprite.setPosition(screenWidth/2 - creditsSprite.getWidth()/2, screenHeight/2 -  creditsSprite.getHeight()/2);
+		
+//		spriteBatch.begin();
+//		creditsSprite.draw(spriteBatch);
+//		creditsTable.draw(spriteBatch, 1);
+//		spriteBatch.end();
+		
+		creditsTable.pack();
+		
+		return creditsTable;
+	}
+	
 	private Table createMainTable()
 	{
 		Table mainTable = new Table();
+		
+		mainTable.debug();
 		
 		mainTable.setWidth(screenWidth);
 		mainTable.add(createTitleTable()).colspan(2).padTop(50f).padBottom(70f).align(Align.top);
@@ -169,18 +279,7 @@ public class GameScreenLobby implements Screen
 		mainTable.add(createStepTable()).padBottom(60f).width(Value.percentWidth(0.75f, mainTable)).expandY().align(Align.top);
 		mainTable.add(createConnectedPlayersTable()).align(Align.top).expandX();
 		mainTable.row();
-
-		String text;
-		
-		if(this.game.players.size() < 3)
-		{
-			text = "Waiting for players to connect ( " + (3 - this.game.players.size()) + " more needed )";
-		}
-		else
-		{
-			text = "Ready to start";
-		}
-		mainTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).colspan(2).padBottom(70f);
+		createBottomRow(mainTable);
 		
 		return mainTable;
 	}
@@ -197,6 +296,51 @@ public class GameScreenLobby implements Screen
 		stepTable.add(createStep2Table()).align(Align.top| Align.right).width(Value.percentWidth(0.55f, stepTable));
 		
 		return stepTable;
+	}
+	
+	private void createBottomRow(Table table)
+	{
+		Table bottomTable = table;
+		String text;
+		
+		TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
+        style.up = buttomDrawable;
+        style.down = buttomPressedDrawable;
+        style.font = smallFont;
+        style.fontColor = Color.GRAY;
+        
+        String buttonText = "Credits";
+
+        
+        TextButton button = new TextButton(buttonText, style);
+		
+		button.setBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight());
+		
+		button.addListener(new InputListener() 
+		{
+		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
+		    {
+		    	displayCredits = true;
+		        return true;
+		    }
+		});
+		
+		button.padLeft(8f);
+		button.padRight(8f);
+		button.padTop(5f);
+		button.padBottom(5f);
+		
+		
+		if(this.game.players.size() < 3)
+		{
+			text = "Waiting for players to connect ( " + (3 - this.game.players.size()) + " more needed )";
+		}
+		else
+		{
+			text = "Ready to start";
+		}
+		bottomTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).padBottom(70f);
+		bottomTable.add(button).align(Align.top).padTop(10f);
 	}
 	
 	private Table createTitleTable()
