@@ -37,6 +37,9 @@ public class McpCah extends Game
 	
 	public String ipAddr;
 	
+	//How often the game should refresh when running the background
+	public static int BACKGROUND_REFRESH_TIME = 10;
+	
 	public static Map<String, String> ALL_WHITE_CARDS = new HashMap<String, String>();
 	public static Map<String, String> ALL_BLACK_CARDS = new HashMap<String, String>();
 	
@@ -74,10 +77,11 @@ public class McpCah extends Game
 		this.mcp = MCP.tryCreateAndStartMCPWithPort(8888);
 		
 		mcp.baseMCPRocksURL = "http://mcp.rocks";
+		//mcp.baseMCPRocksURL = "http://192.168.1.200/mcp";
 		
 		try 
 		{	
-			mcp.registerWithMCPRocks("Morals_Are_Optional");
+			mcp.registerWithMCPRocks("Morals Are Optional");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,6 +124,9 @@ public class McpCah extends Game
 //		this.mcp.customLinks.add("bootstrap.min.css");
 //		this.mcp.customLinks.add("bootstrap-theme.min.css");
 //		
+        
+        this.mcp.defaultStartPage = "moralsAreOptional.html";
+        
         this.mcp.customLinkDirect = new ArrayList<CustomResource>();
 		this.mcp.customLinkDirect.add(new CustomResource("moralsAreOptional.html", getFileContents("moralsAreOptional.html")));
 		this.mcp.customLinkDirect.add(new CustomResource("jquery-1.11.1.min.js", getFileContents("jquery-1.11.1.min.js")));

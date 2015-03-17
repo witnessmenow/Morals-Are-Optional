@@ -191,6 +191,8 @@ public class GameScreenLobby implements Screen
 		
 	}
 	
+	private TextButton closeCreditsButton = null;
+	
 	private Table displayCredits()
 	{
 		Table creditsTable = new Table();
@@ -200,18 +202,18 @@ public class GameScreenLobby implements Screen
 		
 		//creditsTable.background(credits);
 		
-		creditsTable.add(new Label("Credits", new Label.LabelStyle(titleFont, Color.WHITE))).padBottom(20f);
+		creditsTable.add(new Label("Credits", new Label.LabelStyle(titleFont, Color.ORANGE))).padBottom(20f);
 		creditsTable.row();
-		creditsTable.add(new Label("Developers", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.add(new Label("Developers", new Label.LabelStyle(smallFont, Color.GREEN)));
 		creditsTable.row();
-		creditsTable.add(new Label("Brian Lough", new Label.LabelStyle(font, Color.WHITE)));
+		creditsTable.add(new Label("Brian Lough", new Label.LabelStyle(smallFont, Color.WHITE)));
 		creditsTable.row();
-		creditsTable.add(new Label("Kieran Nestor", new Label.LabelStyle(font, Color.WHITE)));
+		creditsTable.add(new Label("Kieran Nestor", new Label.LabelStyle(smallFont, Color.WHITE)));
 		creditsTable.row();
-		creditsTable.add(new Label("Gary Cregan", new Label.LabelStyle(font, Color.WHITE)));
+		creditsTable.add(new Label("Gary Cregan", new Label.LabelStyle(smallFont, Color.WHITE)));
 		
 		creditsTable.row();
-		creditsTable.add(new Label("Artwork", new Label.LabelStyle(smallFont, Color.WHITE))).padTop(30f);
+		creditsTable.add(new Label("Artwork", new Label.LabelStyle(smallFont, Color.GREEN))).padTop(30f);
 		creditsTable.row();
 		creditsTable.add(new Label("Buttons & Icons - kenney.nl", new Label.LabelStyle(smallFont, Color.WHITE)));
 		creditsTable.row();
@@ -222,36 +224,42 @@ public class GameScreenLobby implements Screen
 		
 		creditsTable.add(new Label("Source Code of Game availalbe at:", new Label.LabelStyle(smallFont, Color.WHITE))).padTop(25f);
 		creditsTable.row();
-		creditsTable.add(new Label("github.com/witnessmenow/Morals-Are-Optional", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.add(new Label("mcp.rocks/mao", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.row();
+		creditsTable.add(new Label("CAH cards used under the Creative Commons License", new Label.LabelStyle(smallFont, Color.WHITE))).padTop(25f);
 		creditsTable.row();
 
-		TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
-        style.up = buttomDrawable;
-        style.down = buttomPressedDrawable;
-        style.font = smallFont;
-        style.fontColor = Color.GRAY;
-        
-        String buttonText = "Close";
-
-        TextButton button = new TextButton(buttonText, style);
-		
-		button.setBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight());
-		
-		button.addListener(new InputListener() 
+		if(closeCreditsButton == null)
 		{
-		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
-		    {
-		    	displayCredits = false;
-		        return true;
-		    }
-		});
 		
-		button.padLeft(8f);
-		button.padRight(8f);
-		button.padTop(5f);
-		button.padBottom(5f);
+			TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
+	        style.up = buttomDrawable;
+	        style.down = buttomPressedDrawable;
+	        style.font = smallFont;
+	        style.fontColor = Color.GRAY;
+	        
+	        String buttonText = "Close";
+	
+	        closeCreditsButton = new TextButton(buttonText, style);
+			
+	        closeCreditsButton.setBounds(closeCreditsButton.getX(), closeCreditsButton.getY(), closeCreditsButton.getWidth(), closeCreditsButton.getHeight());
+			
+	        closeCreditsButton.addListener(new InputListener() 
+			{
+			    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
+			    {
+			    	displayCredits = false;
+			        return true;
+			    }
+			});
+			
+	        closeCreditsButton.padLeft(8f);
+	        closeCreditsButton.padRight(8f);
+	        closeCreditsButton.padTop(5f);
+	        closeCreditsButton.padBottom(5f);
+		}
 		
-		creditsTable.add(button).padTop(30f).padBottom(20f);
+		creditsTable.add(closeCreditsButton).padTop(30f).padBottom(20f);
 		
 		creditsTable.setPosition(screenWidth/2 - creditsSprite.getWidth()/2, screenHeight/2 -  creditsSprite.getHeight()/2);
 		
@@ -271,7 +279,7 @@ public class GameScreenLobby implements Screen
 	{
 		Table mainTable = new Table();
 		
-		mainTable.debug();
+		//mainTable.debug();
 		
 		mainTable.setWidth(screenWidth);
 		mainTable.add(createTitleTable()).colspan(2).padTop(50f).padBottom(70f).align(Align.top);
@@ -298,37 +306,41 @@ public class GameScreenLobby implements Screen
 		return stepTable;
 	}
 	
+	private TextButton creditsButton = null;
+	
 	private void createBottomRow(Table table)
 	{
 		Table bottomTable = table;
 		String text;
 		
-		TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
-        style.up = buttomDrawable;
-        style.down = buttomPressedDrawable;
-        style.font = smallFont;
-        style.fontColor = Color.GRAY;
-        
-        String buttonText = "Credits";
-
-        
-        TextButton button = new TextButton(buttonText, style);
-		
-		button.setBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight());
-		
-		button.addListener(new InputListener() 
+		if(creditsButton == null)
 		{
-		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
-		    {
-		    	displayCredits = true;
-		        return true;
-		    }
-		});
+			TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
+	        style.up = buttomDrawable;
+	        style.down = buttomPressedDrawable;
+	        style.font = smallFont;
+	        style.fontColor = Color.GRAY;
+	        
+	        String buttonText = "Credits";
+	
+	        creditsButton = new TextButton(buttonText, style);
 		
-		button.padLeft(8f);
-		button.padRight(8f);
-		button.padTop(5f);
-		button.padBottom(5f);
+	        creditsButton.setBounds(creditsButton.getX(), creditsButton.getY(), creditsButton.getWidth(), creditsButton.getHeight());
+			
+	        creditsButton.addListener(new InputListener() 
+			{
+			    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
+			    {
+			    	displayCredits = true;
+			        return true;
+			    }
+			});
+			
+	        creditsButton.padLeft(8f);
+	        creditsButton.padRight(8f);
+	        creditsButton.padTop(5f);
+	        creditsButton.padBottom(5f);
+		}
 		
 		
 		if(this.game.players.size() < 3)
@@ -340,7 +352,7 @@ public class GameScreenLobby implements Screen
 			text = "Ready to start";
 		}
 		bottomTable.add(new Label(text, new Label.LabelStyle(font, Color.WHITE))).padBottom(70f);
-		bottomTable.add(button).align(Align.top).padTop(10f);
+		bottomTable.add(creditsButton).align(Align.top).padTop(10f);
 	}
 	
 	private Table createTitleTable()
@@ -540,7 +552,7 @@ public class GameScreenLobby implements Screen
 						game.pause();
 					}
 			  }
-			}, 100, 100);
+			}, McpCah.BACKGROUND_REFRESH_TIME, McpCah.BACKGROUND_REFRESH_TIME);
 		
 	}
 

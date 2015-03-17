@@ -225,7 +225,7 @@ public class GameScreen implements Screen
 				  handleGameState();
 				  populateHearbeats();
 			  }
-			}, 100, 100);
+			}, McpCah.BACKGROUND_REFRESH_TIME, McpCah.BACKGROUND_REFRESH_TIME);
 		
 	}
 
