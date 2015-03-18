@@ -1,6 +1,5 @@
 package com.ladinc.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,10 +14,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.ladinc.core.cards.CardParser;
 import com.ladinc.core.cards.SimpleWhiteCard;
 import com.ladinc.core.listeners.MCPListenerClient;
