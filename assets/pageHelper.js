@@ -23,9 +23,7 @@ function goToPage2(){
 }
 function goToJudgeVote(){
 	hideAllPages();
-	document.getElementById("judgeChooseButton").className = "btn btn-success btn-lg";
-	document.getElementById("startButton").className = "btn btn-default btn-lg disabled buttonDisable";
-	document.getElementById("judgeVote").className = "show";
+	resetJudgePage();
 }
 function goToJudgeWait(){
 	hideAllPages();
@@ -34,6 +32,8 @@ function goToJudgeWait(){
 function goToEndOfRoundScreen(){
 	hideAllPages();
 	document.getElementById("endOfRoundScreen").className = "show";
+	
+	document.getElementById("chooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
 	setTimeout(function(){
 		document.getElementById("chooseButton").className = "btn btn-success btn-lg";
 	},2000);

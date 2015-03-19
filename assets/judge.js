@@ -66,10 +66,20 @@ function generateJudgeWhiteCards(cards)
 	document.getElementById("judgeVoteCards").appendChild(dummyWhiteCard);
 
 }
+function resetJudgePage()
+{
+	document.getElementById("judgeChooseButton").className = "btn btn-success btn-lg";
+	document.getElementById("judgeChooseButton").innerHTML = "Reveal Next";
+	document.getElementById("startButton").className = "hide";
+	document.getElementById("judgeVote").className = "show";
+	document.getElementById("JudgeScreenMessage").className = "hide";
+}
 function next()
 {
 	var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
 	
+	
+	//White Card Div is made up of all available white cards plus one dummy
 	for(var i = 0; i < whiteCardDivs.length; i++) 
 	{
 		if(whiteCardDivs[i].className == "hide")
@@ -100,10 +110,19 @@ function next()
 				}
 			}
 			
-			//If this is the last card enable the button
+			//The this is the last real white card, change inner text of the button
+			if(i == whiteCardDivs.length - 2)
+			{
+				document.getElementById("judgeChooseButton").innerHTML = "Show All";
+			}
+			
+			//If this is the last card (the dummy card) show all real cards for voting.
 			if(i == whiteCardDivs.length - 1)
 			{
-				document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				document.getElementById("judgeChooseButton").className = "hide";
+				document.getElementById("startButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				document.getElementById("JudgeScreenMessage").className = "bg-success";
+				
 				
 				$("#singleShowCard").remove();
 				$("#dummyWhiteCard").remove();
@@ -113,6 +132,16 @@ function next()
 					}
 				}
 				cardVotingDisabled = false;
+			}
+			else
+			{
+				//not the dummy card, so we want to disable the reveal button for 2 seconds
+				
+				document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				
+				setTimeout(function(){
+					document.getElementById("judgeChooseButton").className = "btn btn-success btn-lg";
+					},2000);
 			}
 			
 			//We only want to show one at a time;
