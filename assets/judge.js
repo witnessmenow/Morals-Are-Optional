@@ -120,7 +120,7 @@ function next()
 			{
 				document.getElementById("judgeChooseButton").className = "hide";
 				document.getElementById("startButton").className = "btn btn-default btn-lg disabled buttonDisable";
-				document.getElementById("JudgeScreenMessage").className = "bg-success";
+				document.getElementById("JudgeScreenMessage").className = "bg-success centerText";
 				
 				
 				$("#singleShowCard").remove();

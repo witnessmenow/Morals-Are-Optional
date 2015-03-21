@@ -42,7 +42,7 @@ function choose() {
 
 	playCard(selectedCard);
 	document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
-	document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
+	document.getElementById("madeVoteWaitingForJudgement").className = "bg-success centerText";
 
 	//alert(selectedCard);
 	//goToPage3();

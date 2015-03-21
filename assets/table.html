@@ -141,9 +141,9 @@
 				
 				if(obj.hasOwnProperty('gameScreenMessage'))
 				{
-					if (document.getElementById("gameScreenMessage").className != "bg-success")
+					if (document.getElementById("gameScreenMessage").className != "bg-success centerText")
 					{
-						document.getElementById("gameScreenMessage").className = "bg-success";
+						document.getElementById("gameScreenMessage").className = "bg-success centerText";
 					}
 				
 					if(document.getElementById("gameScreenMessage").innerHTML != obj.gameScreenMessage)
@@ -313,7 +313,7 @@
 	</head>
 	<body onLoad="initMCP();">
 		<div id="lobby">
-			<h3 class="bg-success">
+			<h3 class="bg-success centerText">
 				Waiting for game to start
 			</h3>
 			<div name="scoreboard"></div>
@@ -329,7 +329,7 @@
 					</div>
 				</span>
 			</form>
-			<h3 id="gameScreenMessage" class="bg-success">
+			<h3 id="gameScreenMessage" class="bg-success centerText">
 				Waiting for players Votes
 			</h3>
 			<div name="scoreboard"></div>
