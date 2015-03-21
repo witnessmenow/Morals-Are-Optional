@@ -1,7 +1,6 @@
 package com.ladinc.core.cards;
 
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.apache.commons.io.IOUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.ladinc.core.McpCah;
 
 public class CardParser 
@@ -48,6 +46,7 @@ public class CardParser
 		selectedPacks.add("CAHe4");
 		selectedPacks.add("christmas2013");
 		selectedPacks.add("CAHe5");
+		selectedPacks.add("90s");
 	}
 	
 	public static void readNewCards()
@@ -67,18 +66,12 @@ public class CardParser
 			//JSONObject obj = new JSONObject(jsonTxt);
 			
 			//JSONArray arr = obj.getJSONArray("masterCards");
-			
-			Type listType = new TypeToken<List<Card>>() {
-            }.getType();
-			
-            
+			            
             CardCollection col = new Gson().fromJson(jsonTxt, CardCollection.class);
             for(Card c : col.masterCards)
             {
             	masterCards.put(c.id, c);
             }
-			
-			int i = 0;
 			
 		} 
 		catch (Exception e) 
