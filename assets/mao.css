@@ -156,3 +156,28 @@ input[type='radio'] {
 .marginPt5em{
 	margin:0.5em;
 }
+
+#winnerOfRoundDiv{
+	display: none;
+}
+
+.winnerOfRoundDiv{
+	background-color: blue;
+	border-top-color: gold;
+	border-right-color: gold;
+	border-left-color: gold;
+	top: 50%;
+	height:5%;
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	border-width: 1px;
+}
+
+.winnerOfRoundP{
+	width: 100%;
+	text-align: center;
+	color: gold;
+	font-weight: bold;
+	margin: auto;
+}

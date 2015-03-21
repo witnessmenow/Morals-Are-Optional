@@ -802,6 +802,7 @@ public class GameScreen implements Screen
 				if(currentState == State.endOfRound)
 				{
 					obj.put("winningCard", GameScreen.lastWiningWhiteCard.getJsonObj());
+					obj.put("winner", this.game.players.get(lastWiningId).name);
 					obj.put("score", p.score);
 					Array<JSONObject> arr = new Array<JSONObject>();
 					for (Player p2 : this.game.players.values()) {
@@ -897,6 +898,4 @@ public class GameScreen implements Screen
 		
 		return array;
 	}
-
 }
-

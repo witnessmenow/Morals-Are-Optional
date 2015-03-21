@@ -71,6 +71,10 @@ function handleHeartbeat(respText)
 					var para = document.createElement("small");
 					para.innerHTML = obj.scores[i].name + " " + obj.scores[i].score;
 					para.id = obj.scores[i].name + "Score";
+					if(obj.hasOwnProperty('winner') && obj.winner == obj.scores[i].name){
+						para.style = "color:gold; font-weight:bold";
+						showWinnerBanner(obj.scores[i].name);
+					}
 					
 					divHolder.appendChild(para);
 					document.getElementById("scoreboard").appendChild(divHolder);
@@ -171,4 +175,12 @@ function handleHeartbeat(respText)
 		}
 		
 	}
+}
+
+function showWinnerBanner(winnerName){
+	document.getElementById("winnerOfRoundName").innerHTML = winnerName;
+	$("#winnerOfRoundDiv").fadeIn(100, function() {
+		$("#winnerOfRoundDiv").fadeOut(2000, function() {
+		});
+	});
 }
