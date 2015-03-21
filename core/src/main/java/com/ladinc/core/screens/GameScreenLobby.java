@@ -465,19 +465,26 @@ public class GameScreenLobby implements Screen
 	@SuppressWarnings("unchecked")
 	private void sendPlayerHeartbeats()
 	{
-		JSONObject obj = new JSONObject();
-		
+
 		List<JSONObject> array = new ArrayList<JSONObject>();
 		
 		for(Player p : this.game.players.values()){
 			JSONObject obj2 = new JSONObject();
 			obj2.put("name", p.name);
 			array.add(obj2);
+		}
+		
+		for(Player p : this.game.players.values())
+		{
+			JSONObject obj = new JSONObject();
+			obj.put("connectedPlayers", array);
+			obj.put("numberOfPlayers", this.game.players.size());
+			
+			obj.put("playerName", p.name);
+			
 			this.game.mcp.hearbeatResponses.put(p.id,obj);
 		}
 		
-		obj.put("connectedPlayers", array);
-		obj.put("numberOfPlayers", this.game.players.size());
 		sendTableHeartbeats();
 	}
 	

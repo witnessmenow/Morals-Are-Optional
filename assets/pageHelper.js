@@ -46,3 +46,13 @@ function hideAllPages(){
 	document.getElementById("judgeWait").className = "hide";
 	document.getElementById("endOfRoundScreen").className = "hide";
 }
+
+function disableButton(buttonJqueryObj)
+{
+	buttonJqueryObj.prop("class" , "btn btn-default btn-lg disabled");
+}
+
+function enableButton(buttonJqueryObj)
+{
+	buttonJqueryObj.prop("class" , "btn btn-success btn-lg");
+}

@@ -62,6 +62,35 @@ function registerPlayer() {
 	registerNameWithServer(document.getElementById("name").value);
 }
 
+function validateName(){
+	var name = $("#name").val();
+	
+	name = name.replace(" ", "");
+	
+	//First check is it empty
+	if(name === "")
+	{
+		disableButton($("#nameButton"));
+	}
+	else
+	{
+    	var patt = new RegExp("^[a-zA-Z0-9]+$");
+    	var res = patt.test(name);
+    	
+    	//name only contains alpha numeric or spaces
+    	if(res)
+    	{
+    		enableButton($("#nameButton"));
+    		$("#nameErrorMessage").prop("class" , "hide");
+    	}
+    	else
+    	{
+    		disableButton($("#nameButton"));
+    		$("#nameErrorMessage").prop("class" , "bg-danger");
+    	}
+	}		
+}
+
 function initMCP() {
 	setInterval(sendHeartbeat, 1000);
 	sendHeartbeat();

@@ -1,5 +1,7 @@
 //Methods for sending and handling heartbeats
 
+var handledPlayerName = false;
+
 function sendHeartbeat()
 {
 	var url = "heartbeat?id=" + getId();
@@ -35,18 +37,25 @@ function handleHeartbeat(respText)
 	
 	if(obj.hasOwnProperty('numberOfPlayers'))
 	{
+		if(document.getElementById("page1Dot5").className == "hide")
+		{
+			goToPage1Dot5();
+		}
+	
 		if(obj.hasOwnProperty('connectedPlayers')){
 			document.getElementById("connectedPlayers").innerHTML = "";
 			for(var i in obj.connectedPlayers){
-				var divHolder = document.createElement("h4");
+				var divHolder = document.createElement("p");
 				divHolder.id = "scoreHolder" + i;
+				divHolder.innerHTML = obj.connectedPlayers[i].name;
+				divHolder.className = "lead";
 				
-				var para = document.createElement("span");
-				para.innerHTML = obj.connectedPlayers[i].name;
-				para.id = obj.connectedPlayers[i].name;
-				para.className = "marginPt5em";
+				//var para = document.createElement("span");
+				//para.innerHTML = obj.connectedPlayers[i].name;
+				//para.id = obj.connectedPlayers[i].name;
+				//para.className = "marginPt5em";
 				
-				divHolder.appendChild(para);
+				//divHolder.appendChild(para);
 				document.getElementById("connectedPlayers").appendChild(divHolder);
 			}
 		}
@@ -175,8 +184,17 @@ function handleHeartbeat(respText)
 		}
 		
 	}
+	
+	if(!handledPlayerName)
+	{
+		if(obj.hasOwnProperty('playerName'))
+		{
+			handledPlayerName = true;
+			$("#navBarRight").prop("class" , "nav navbar-nav navbar-right");
+			$("#navDropDownText").text(obj.playerName);
+		}
+	}
 }
-
 function showWinnerBanner(winnerName){
 	document.getElementById("winnerOfRoundName").innerHTML = winnerName;
 	$("#winnerOfRoundDiv").fadeIn(100, function() {

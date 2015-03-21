@@ -20,21 +20,54 @@
 		<meta charset="UTF-8">
 	</head>
 	<body onLoad="initMCP();">
+	
+		<nav class="navbar navbar-inverse navbar-fixed-top" id="topnavbar">
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a id=""class="navbar-brand" href="#">Morals Are Optional</a>
+	        </div>
+	        <div id="navbar" class="collapse navbar-collapse">
+	          <ul id="navBarRight" class="hide">
+	            <li class="dropdown">
+		          <a id="navDropDown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span id="navDropDownText"></span> <span class="caret"></span></a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="#">Maybe</a></li>
+		            <li><a href="#">Maybe not</a></li>
+		            <li class="divider"></li>
+		            <li><a href="#">Maybe fuck yourself</a></li>
+		          </ul>
+		        </li>
+	          </ul>
+	        </div><!--/.nav-collapse -->
+	      </div>
+    	</nav>
 		<div id="page1">
-			<h4>Enter Your Name:</h4>
-			<input id="name" type="text" class="form-control" name="name" value=""/>
-			<br/>
-			<button type="button" class="btn btn-success btn-lg" onclick="javascript:registerPlayer();">
-					Ready?
-			</button>
+			<div class="container" style="text-align:center;">
+				<h1>Enter Your Name:</h1>
+				<input id="name" type="text" class="form-control" onkeyup="javascript:validateName();" name="name" style="margin-bottom: 1.25em;"/>
+				<div id="nameErrorMessage" class="hide">
+					Names can only contain letters and numbers.
+				</div>
+				<button id="nameButton" type="button" class="btn btn-default btn-lg disabled" onclick="javascript:registerPlayer();" style="margin-top: 1em;">
+						Ready?
+				</button>
+			</div>
 		</div>
 		<div id="page1Dot5" class="hide">
-			<h4>Connected Players:</h4>
-			<div id="connectedPlayers"></div>
-			<h4><input id="addRando" name="addRando" type="checkbox"/> Add Rando?</h4>
-			<button type="button" id="beginButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startButtonPressed();">
-					Begin!
-			</button>
+			<div class="container" style="text-align:center;">
+				<h1>Connected Players:</h1>
+				<div id="connectedPlayers"></div>
+				<p class="lead"><input id="addRando" name="addRando" type="checkbox"/> Add Rando?</p>
+				<button type="button" id="beginButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startButtonPressed();">
+						Begin!
+				</button>
+			</div>
 		</div>
 		<div id="page2" class="hide">
 			<form>
@@ -119,5 +152,15 @@
 				Select the card you found the funniest click Vote.
 			</h3>
 		</div>
+		
+		<script>
+		    $(document).ready(function(){
+		        $(document.body).css('padding-top', $('#topnavbar').height() + 10);
+		        $(window).resize(function(){
+		            $(document.body).css('padding-top', $('#topnavbar').height() + 10);
+		        });
+		    });
+		</script>
+		
 	</body>
 </html>
