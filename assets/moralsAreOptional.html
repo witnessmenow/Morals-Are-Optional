@@ -55,7 +55,7 @@
 					Names can only contain letters and numbers.
 				</div>
 				<button id="nameButton" type="button" class="btn btn-default btn-lg disabled" onclick="javascript:registerPlayer();" style="margin-top: 1em;">
-						Ready?
+						Enter Game
 				</button>
 			</div>
 		</div>
@@ -65,7 +65,7 @@
 				<div id="connectedPlayers"></div>
 				<p class="lead"><input id="addRando" name="addRando" type="checkbox"/> Add Rando?</p>
 				<button type="button" id="beginButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startButtonPressed();">
-						Begin!
+						Start Game
 				</button>
 			</div>
 		</div>
@@ -97,7 +97,7 @@
 			</form>
 			<div class="buttonDivider">
 			<button type="button" id="whiteCardChooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:choose();">
-					Choose!
+					Play Cards
 			</button>
 			<h3 id="madeVoteWaitingForJudgement" class="hide">
 				Card submitted, waiting for other cards to be played and judgement.
@@ -116,7 +116,7 @@
 				</span>
 			</form>
 			<button type="button" id="chooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startNext();">
-					Start Next Round!
+					Next Round
 			</button>
 			<div id="scoreboard"></div>
 			<div id="winnerOfRoundDiv" class="winnerOfRoundDiv">
@@ -146,7 +146,7 @@
 					Next
 			</button>
 			<button type="button" id="startButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:castVote();">
-					Vote!
+					Choose Winner
 			</button>
 			<h3 id="JudgeScreenMessage" class="hide">
 				Select the card you found the funniest click Vote.
