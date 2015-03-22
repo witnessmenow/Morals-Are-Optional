@@ -17,7 +17,7 @@ function startButtonPressed(){
 function goToPage2(){
 	hideAllPages();
 	$("#page2").addClass("show").removeClass("hide");
-	document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+	disableButton($("#whiteCardChooseButton"));
 	document.getElementById("madeVoteWaitingForJudgement").className = "hide";
 	clearSelectedCard();
 }

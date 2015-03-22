@@ -1,6 +1,6 @@
 function removeJudgeWhiteCards()
 {
-	var parentElement = document.getElementById("judgeVoteCards");
+	var parentElement = document.getElementById("whiteCardContainer");
 	var judgesWhiteCards = document.getElementsByName("judgesWhiteCard");
 	
 	while( 0 < judgesWhiteCards.length) 
@@ -23,7 +23,7 @@ function generateJudgeWhiteCards(cards)
 	divtest.setAttribute("id","singleShowCard");
 	ptest.setAttribute("id","singleCardText");
 	divtest.appendChild(ptest);
-	document.getElementById("judgeVoteCards").appendChild(divtest);
+	document.getElementById("dummyWhiteCardContainer").appendChild(divtest);
 	for (var i = 0; i < arrayLength; i++) 
 	{
 		var id = cards[i].selectedCard.id;
@@ -56,15 +56,16 @@ function generateJudgeWhiteCards(cards)
 		
 		div.setAttribute('onclick','clicker("winningWhiteCardInput'+ id + '")');
 		
-		document.getElementById("judgeVoteCards").appendChild(div);
+		document.getElementById("whiteCardContainer").appendChild(div);
 	}
 	
 	var dummyWhiteCard = document.createElement("div");
 	dummyWhiteCard.id = "dummyWhiteCard"; 
 	dummyWhiteCard.setAttribute("name", "judgesWhiteCard");
 	dummyWhiteCard.setAttribute("class", "hide");
-	document.getElementById("judgeVoteCards").appendChild(dummyWhiteCard);
-
+	document.getElementById("dummyWhiteCardContainer").appendChild(dummyWhiteCard);
+	
+	document.getElementById("dummyWhiteCardContainer").className = "whiteCardContainer";
 }
 function resetJudgePage()
 {
@@ -73,6 +74,7 @@ function resetJudgePage()
 	document.getElementById("startButton").className = "hide";
 	document.getElementById("judgeVote").className = "show";
 	document.getElementById("JudgeScreenMessage").className = "hide";
+	document.getElementById("whiteCardContainer").className = "hide";
 }
 function next()
 {
@@ -84,7 +86,7 @@ function next()
 	{
 		if(whiteCardDivs[i].className == "hide")
 		{
-			document.getElementById("singleShowCard").className = "whiteCard noBorder";
+			document.getElementById("singleShowCard").className = "whiteCard noBorder whiteCardInline";
 			whiteCardDivs[i].className = "hide2";
 			
 			var children = whiteCardDivs[i].childNodes;
@@ -128,9 +130,13 @@ function next()
 				$("#dummyWhiteCard").remove();
 				for(var i = 0; i < whiteCardDivs.length; i++) {
 					if(whiteCardDivs[i].className == "hide2"){
-						whiteCardDivs[i].className = "whiteCard noBorder";
+						whiteCardDivs[i].className = "whiteCard noBorder whiteCardInline";
 					}
 				}
+				
+				document.getElementById("whiteCardContainer").className = "whiteCardContainer";
+				document.getElementById("dummyWhiteCardContainer").className = "hide";
+				
 				cardVotingDisabled = false;
 			}
 			else

@@ -208,6 +208,8 @@ public class GameScreenLobby implements Screen
 		creditsTable.add(new Label("Kieran Nestor", new Label.LabelStyle(smallFont, Color.WHITE)));
 		creditsTable.row();
 		creditsTable.add(new Label("Gary Cregan", new Label.LabelStyle(smallFont, Color.WHITE)));
+		creditsTable.row();
+		creditsTable.add(new Label("Paul O'Flaherty", new Label.LabelStyle(smallFont, Color.WHITE)));
 		
 		creditsTable.row();
 		creditsTable.add(new Label("Artwork", new Label.LabelStyle(smallFont, Color.GREEN))).padTop(30f);

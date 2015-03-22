@@ -70,87 +70,119 @@
 			</div>
 		</div>
 		<div id="page2" class="hide">
-			<form>
-				<span class="displayInlineBlock">
-					<div class="blackCard">
-						<p name="blackCardText" id="blackCardTextPlayer"></p>
+			<div class="container" style="text-align:center;">
+				<form>
+					<span class="displayInlineBlock" style="width:100%">
+						<div class="blackWell centredInlineBlock" style="width:60%">
+							<div name="blackCardText" id="blackCardTextPlayer"></div>
+						</div>
+						<div class="centredInlineBlock" style="width: 35%;">
+							<button type="button" id="whiteCardChooseButton" class="btn btn-success btn-lg" onclick="javascript:choose();" style="text-align: center;">
+								Choose!
+							</button>
+						</div>
+					</span>
+					<h3 id="madeVoteWaitingForJudgement" class="hide">
+						Card submitted, waiting for other cards to be played and judgement.
+					</h3>
+					<br/>
+					<div class="ui-grid-e whiteCardContainer">
+						<div id="parentWhiteCard0" class="whiteCard whiteCardInline ui-block-a" onclick="clicker('whiteCard0')">
+							<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">Waiting for next round to begin</p>
+						</div>
+						<div id="parentWhiteCard1" class="whiteCard whiteCardInline ui-block-b" onclick="clicker('whiteCard1')">
+							<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
+						</div>
+						<div id="parentWhiteCard2" class="whiteCard whiteCardInline ui-block-c" onclick="clicker('whiteCard2')">
+							<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText2">Card 1</p>
+						</div>
+						<div id="parentWhiteCard3" class="whiteCard whiteCardInline ui-block-d" onclick="clicker('whiteCard3')">
+							<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText3">Card 1</p>
+						</div>
+						<div id="parentWhiteCard4" class="whiteCard whiteCardInline ui-block-e" onclick="clicker('whiteCard4')">
+							<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
+						</div>
 					</div>
-				</span>
-				<br/>
-				<div class="ui-grid-e">
-					<div id="parentWhiteCard0" class="whiteCard ui-block-a" onclick="clicker('whiteCard0')">
-						<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">Waiting for next round to begin</p>
-					</div>
-					<div id="parentWhiteCard1" class="whiteCard ui-block-b" onclick="clicker('whiteCard1')">
-						<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
-					</div>
-					<div id="parentWhiteCard2" class="whiteCard ui-block-c" onclick="clicker('whiteCard2')">
-						<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText2">Card 1</p>
-					</div>
-					<div id="parentWhiteCard3" class="whiteCard ui-block-d" onclick="clicker('whiteCard3')">
-						<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText3">Card 1</p>
-					</div>
-					<div id="parentWhiteCard4" class="whiteCard ui-block-e" onclick="clicker('whiteCard4')">
-						<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
-					</div>
-				</div>
-			</form>
-			<div class="buttonDivider">
-			<button type="button" id="whiteCardChooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:choose();">
-					Choose!
-			</button>
-			<h3 id="madeVoteWaitingForJudgement" class="hide">
-				Card submitted, waiting for other cards to be played and judgement.
-			</h3>
+				</form>
 			</div>
 		</div>
 		<div id="endOfRoundScreen" class="hide">
-			<form>
-				<span class="displayInlineBlock">
-					<div class="blackCard" >
-						<p name="blackCardText" id="blackCardTextEndOfRound"></p>
-					</div>
-					<div class="whiteCard">
-						<input id="whiteCardEndOfRound" name="whiteCard" type="radio" value="0" /><p id="whiteCardEndOfRoundText"></p>
-					</div>
-				</span>
-			</form>
-			<button type="button" id="chooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startNext();">
-					Start Next Round!
-			</button>
-			<div id="scoreboard"></div>
-			<div id="winnerOfRoundDiv" class="winnerOfRoundDiv">
-				<p id="winnerOfRoundP" class="winnerOfRoundP">&#9733;&#9733;&#9733;  WINNER: <span id="winnerOfRoundName"></span>  &#9733;&#9733;&#9733;</p>
+			<div class="container" style="text-align:center;">
+				<form>
+					<span class="displayInlineBlock">
+						<div class="blackCard" >
+							<p name="blackCardText" id="blackCardTextEndOfRound"></p>
+						</div>
+						<div class="whiteCard">
+							<input id="whiteCardEndOfRound" name="whiteCard" type="radio" value="0" /><p id="whiteCardEndOfRoundText"></p>
+						</div>
+					</span>
+				</form>
+				<button type="button" id="chooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startNext();">
+						Start Next Round!
+				</button>
+				<div id="scoreboard"></div>
+				<div id="winnerOfRoundDiv" class="winnerOfRoundDiv">
+					<p id="winnerOfRoundP" class="winnerOfRoundP">&#9733;&#9733;&#9733;  WINNER: <span id="winnerOfRoundName"></span>  &#9733;&#9733;&#9733;</p>
+				</div>
 			</div> 
 		</div>
 		<div id="judgeWait" class="hide">
-			<span class="displayInlineBlock">
-				<div class="blackCard" >
-					<p name="blackCardText" id="blackCardTextJudgeWait"></p>
-				</div>
-			</span>
-			<br/>
-			<h3 class="bg-success">
-				Waiting for players Votes
-			</h3>
-		</div>
-		<div id="judgeVote" class="hide">
-			<form>
-				<span id="judgeVoteCards" class="displayInlineBlock">
+			<div class="container" style="text-align:center;">
+				<span class="displayInlineBlock">
 					<div class="blackCard" >
-						<p name="blackCardText"></p>
+						<p name="blackCardText" id="blackCardTextJudgeWait"></p>
 					</div>
 				</span>
-			</form>
-			<button type="button" id="judgeChooseButton" class="btn btn-success btn-lg" onclick="javascript:next();">
-					Next
-			</button>
-			<button type="button" id="startButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:castVote();">
-					Vote!
-			</button>
-			<h3 id="JudgeScreenMessage" class="hide">
-				Select the card you found the funniest click Vote.
-			</h3>
+				<br/>
+				<h3 class="bg-success">
+					Waiting for players Votes
+				</h3>
+			</div>
+		</div>
+		<div id="judgeVote" class="hide">
+			<div class="container" style="text-align:center;">
+				<form>
+					<table style="		
+    					width: 100%;
+    					table-layout: fixed;
+    					margin: 0px auto;
+						">
+						<tbody>
+							<tr>
+								<td style="width:20%;>
+									<div id="judgeVoteCards">
+										<div class="blackCard" >
+											<p style="padding-top: 5px;" name="blackCardText"></p>
+										</div>
+									</div>
+								</td>
+								
+								<td id="judgeWhiteCardTD" style="max-width:80%;text-align:left;overflow: auto;">
+									<div id="whiteCardContainer" class="hide" style="max-width:80%;text-align:left"></div>
+									<div id="dummyWhiteCardContainer" class="hide" style="max-width:80%;text-align:left">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<!--<div id="judgeVoteCards" class="displayInlineBlock" style="width:20%; float:left;">
+						<div class="blackCard" >
+							<p name="blackCardText"></p>
+						</div>
+					</div>
+					<div id="whiteCardContainer" class="hide" style="max-width:80%;text-align:left">
+					</div>-->
+				</form>
+				<button type="button" id="judgeChooseButton" class="btn btn-success btn-lg" onclick="javascript:next();">
+						Next
+				</button>
+				<button type="button" id="startButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:castVote();">
+						Vote!
+				</button>
+				<h3 id="JudgeScreenMessage" class="hide">
+					Select the card you found the funniest click Vote.
+				</h3>
+			</div>
 		</div>
 		
 		<script>

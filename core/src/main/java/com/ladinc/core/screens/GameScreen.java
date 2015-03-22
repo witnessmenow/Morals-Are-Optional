@@ -814,7 +814,7 @@ public class GameScreen implements Screen
 					obj.put("scores", arr);
 					obj.put("playerCount", this.game.players.size());
 				}
-
+				obj.put("playerName", p.name);
 				this.game.mcp.hearbeatResponses.put(p.id, obj);
 			}
 			

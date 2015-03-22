@@ -41,7 +41,7 @@ function choose() {
 	}
 
 	playCard(selectedCard);
-	document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+	disableButton($("#whiteCardChooseButton"));
 	document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
 
 	//alert(selectedCard);
@@ -65,7 +65,7 @@ function registerPlayer() {
 function validateName(){
 	var name = $("#name").val();
 	
-	name = name.replace(" ", "");
+	name = name.replace(/ /g, "");
 	
 	//First check is it empty
 	if(name === "")
@@ -99,7 +99,7 @@ function initMCP() {
 function clicker(clickString) {
 	document.getElementById(clickString).click();
 	if (clickString.indexOf("winningWhiteCardInput") > -1) {
-		document.getElementById("startButton").className = "btn btn-success btn-lg";
+		enableButton($("#startButton"));
 	}
 }
 
@@ -110,7 +110,7 @@ function whiteCardPicker(value) {
 			if (v == value) {
 				$("#parentWhiteCard" + i).addClass("redBorder").removeClass(
 						"noBorder");
-				document.getElementById("whiteCardChooseButton").className = "btn btn-success btn-lg";
+				enableButton($("#whiteCardChooseButton"));
 			} else {
 				$("#parentWhiteCard" + i).addClass("noBorder").removeClass(
 						"redBorder");
@@ -132,10 +132,10 @@ function winningWhiteCardPicker(index) {
 
 		for (var i = 0; i < whiteCardDivs.length; i++) {
 			if (whiteCardDivs[i].id == "winningWhiteCard" + index) {
-				whiteCardDivs[i].className = "whitecard redBorder";
-				document.getElementById("startButton").className = "btn btn-success btn-lg";
+				whiteCardDivs[i].className = "whitecard whiteCardInline redBorder";
+				enableButton($("#startButton"));
 			} else {
-				whiteCardDivs[i].className = "whitecard noBorder";
+				whiteCardDivs[i].className = "whitecard whiteCardInline noBorder";
 			}
 		}
 	}
