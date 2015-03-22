@@ -42,7 +42,7 @@ function choose() {
 
 	playCard(selectedCard);
 	disableButton($("#whiteCardChooseButton"));
-	document.getElementById("madeVoteWaitingForJudgement").className = "bg-success";
+	document.getElementById("madeVoteWaitingForJudgement").className = "bg-success centerText";
 
 	//alert(selectedCard);
 	//goToPage3();
@@ -108,12 +108,12 @@ function whiteCardPicker(value) {
 		for (var i = 0; i < 5; i++) {
 			var v = document.getElementById("whiteCard" + i).value;
 			if (v == value) {
-				$("#parentWhiteCard" + i).addClass("redBorder").removeClass(
+				$("#parentWhiteCard" + i).addClass("selectedCard").removeClass(
 						"noBorder");
 				enableButton($("#whiteCardChooseButton"));
 			} else {
 				$("#parentWhiteCard" + i).addClass("noBorder").removeClass(
-						"redBorder");
+						"selectedCard");
 			}
 		}
 	}
@@ -121,7 +121,7 @@ function whiteCardPicker(value) {
 
 function noBorderFunction() {
 	for (var i = 0; i < 5; i++) {
-		$("#parentWhiteCard" + i).addClass("noBorder").removeClass("redBorder");
+		$("#parentWhiteCard" + i).addClass("noBorder").removeClass("selectedCard");
 	}
 }
 
@@ -132,8 +132,9 @@ function winningWhiteCardPicker(index) {
 
 		for (var i = 0; i < whiteCardDivs.length; i++) {
 			if (whiteCardDivs[i].id == "winningWhiteCard" + index) {
-				whiteCardDivs[i].className = "whitecard whiteCardInline redBorder";
+				whiteCardDivs[i].className = "whitecard whiteCardInline selectedCard";
 				enableButton($("#startButton"));
+
 			} else {
 				whiteCardDivs[i].className = "whitecard whiteCardInline noBorder";
 			}

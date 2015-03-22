@@ -43,9 +43,7 @@ function generateJudgeWhiteCards(cards)
 		input.value = id;
 		
 		input.setAttribute('onclick','winningWhiteCardPicker("'+ id + '")');
-		
-		winningWhiteCardPicker
-		
+				
 		var para = document.createElement("p");
 		para.innerHTML = cards[i].selectedCard.text;
 		para.id = "winningWhiteCardPara" + id;
@@ -76,6 +74,7 @@ function resetJudgePage()
 	document.getElementById("JudgeScreenMessage").className = "hide";
 	document.getElementById("whiteCardContainer").className = "hide";
 }
+
 function next()
 {
 	var whiteCardDivs = document.getElementsByName("judgesWhiteCard");
@@ -123,7 +122,7 @@ function next()
 			{
 				document.getElementById("judgeChooseButton").className = "hide";
 				document.getElementById("startButton").className = "btn btn-default btn-lg disabled buttonDisable";
-				document.getElementById("JudgeScreenMessage").className = "bg-success";
+				document.getElementById("JudgeScreenMessage").className = "bg-success centerText";
 				
 				
 				$("#singleShowCard").remove();
@@ -153,8 +152,6 @@ function next()
 			//We only want to show one at a time;
 			return;
 		}
-		
 		cardVotingDisabled = false;
-	}
-	
+	}	
 }

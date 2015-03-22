@@ -55,7 +55,7 @@
 					Names can only contain letters and numbers.
 				</div>
 				<button id="nameButton" type="button" class="btn btn-default btn-lg disabled" onclick="javascript:registerPlayer();" style="margin-top: 1em;">
-						Ready?
+						Enter Game
 				</button>
 			</div>
 		</div>
@@ -65,7 +65,7 @@
 				<div id="connectedPlayers"></div>
 				<p class="lead"><input id="addRando" name="addRando" type="checkbox"/> Add Rando?</p>
 				<button type="button" id="beginButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startButtonPressed();">
-						Begin!
+						Start Game
 				</button>
 			</div>
 		</div>
@@ -103,7 +103,15 @@
 							<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
 						</div>
 					</div>
-				</form>
+				</div>
+			</form>
+			<div class="buttonDivider">
+			<button type="button" id="whiteCardChooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:choose();">
+					Play Cards
+			</button>
+			<h3 id="madeVoteWaitingForJudgement" class="hide">
+				Card submitted, waiting for other cards to be played and judgement.
+			</h3>
 			</div>
 		</div>
 		<div id="endOfRoundScreen" class="hide">
@@ -119,26 +127,23 @@
 					</span>
 				</form>
 				<button type="button" id="chooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startNext();">
-						Start Next Round!
+					Next Round
 				</button>
 				<div id="scoreboard"></div>
-				<div id="winnerOfRoundDiv" class="winnerOfRoundDiv">
-					<p id="winnerOfRoundP" class="winnerOfRoundP">&#9733;&#9733;&#9733;  WINNER: <span id="winnerOfRoundName"></span>  &#9733;&#9733;&#9733;</p>
-				</div>
-			</div> 
-		</div>
-		<div id="judgeWait" class="hide">
-			<div class="container" style="text-align:center;">
-				<span class="displayInlineBlock">
-					<div class="blackCard" >
-						<p name="blackCardText" id="blackCardTextJudgeWait"></p>
-					</div>
-				</span>
-				<br/>
-				<h3 class="bg-success">
-					Waiting for players Votes
-				</h3>
+				<div id="winnerOfRoundDiv" class="winnerOfRoundDiv bg-success">
+					<h3 id="winnerOfRoundP" class="winnerOfRoundH3 bg-success"><span class="stars">&#9733;&#9733;&#9733;</span>  WINNER: <span id="winnerOfRoundName"></span>  <span class="stars">&#9733;&#9733;&#9733;</span></h3>
+				</div> 
 			</div>
+		<div id="judgeWait" class="hide">
+			<span class="displayInlineBlock">
+				<div class="blackCard" >
+					<p name="blackCardText" id="blackCardTextJudgeWait"></p>
+				</div>
+			</span>
+			<br/>
+			<h3 class="bg-success centerText">
+				You are the judge! Wait for other players to submit their cards!
+			</h3>
 		</div>
 		<div id="judgeVote" class="hide">
 			<div class="container" style="text-align:center;">
@@ -165,13 +170,6 @@
 							</tr>
 						</tbody>
 					</table>
-					<!--<div id="judgeVoteCards" class="displayInlineBlock" style="width:20%; float:left;">
-						<div class="blackCard" >
-							<p name="blackCardText"></p>
-						</div>
-					</div>
-					<div id="whiteCardContainer" class="hide" style="max-width:80%;text-align:left">
-					</div>-->
 				</form>
 				<button type="button" id="judgeChooseButton" class="btn btn-success btn-lg" onclick="javascript:next();">
 						Next
@@ -180,7 +178,7 @@
 						Vote!
 				</button>
 				<h3 id="JudgeScreenMessage" class="hide">
-					Select the card you found the funniest click Vote.
+					Select the card you found the funniest
 				</h3>
 			</div>
 		</div>

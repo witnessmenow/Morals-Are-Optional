@@ -144,8 +144,8 @@ input[type='radio'] {
 	white-space: normal;
 }
 
-.redBorder {
-	border: 3px solid #ff0000;
+.selectedCard {
+	border: 3px solid green;
 }
 
 .noBorder {
@@ -167,25 +167,23 @@ input[type='radio'] {
 }
 
 .winnerOfRoundDiv{
-	background-color: blue;
-	border-top-color: gold;
-	border-right-color: gold;
-	border-left-color: gold;
 	top: 50%;
-	height:5%;
 	width: 100%;
 	position: fixed;
 	z-index: 1;
-	border-width: 1px;
 }
 
-.winnerOfRoundP{
+.stars{
+	color: gold;
+}
+
+.winnerOfRoundH3{
 	width: 100%;
 	text-align: center;
-	color: gold;
 	font-weight: bold;
 	margin: auto;
 }
+
 .blackWell{
 	min-height:20px;
 	padding:19px;
@@ -209,4 +207,8 @@ input[type='radio'] {
 	white-space:nowrap;
 	margin-top:2em;
 	text-align: left;
+}
+
+.centerText{
+	text-align: center;
 }
