@@ -117,14 +117,30 @@
 		<div id="endOfRoundScreen" class="hide">
 			<div class="container" style="text-align:center;">
 				<form>
-					<span class="displayInlineBlock">
-						<div class="blackCard" >
-							<p name="blackCardText" id="blackCardTextEndOfRound"></p>
-						</div>
-						<div class="whiteCard">
-							<input id="whiteCardEndOfRound" name="whiteCard" type="radio" value="0" /><p id="whiteCardEndOfRoundText"></p>
-						</div>
-					</span>
+					<table style="		
+    					table-layout: fixed;
+    					margin: 0px auto;
+						">
+						<tbody>
+							<tr>
+								<td style="width:20%;">
+									<div id="judgeVoteCards">
+										<div class="blackCard" >
+											<p class="blackCardP" name="blackCardText" id="blackCardTextEndOfRound"></p>
+										</div>
+									</div>
+								</td>
+								
+								<td id="endRoundWhiteCardTD" style="max-width:80%;text-align:left;overflow: auto;">
+									<div id="endRoundWhiteCardContainer" class="whiteCardContainer">
+										<div class="whiteCard whiteCardInline noBorder">
+											<input id="whiteCardEndOfRound" name="whiteCard" type="radio" value="0" /><p id="whiteCardEndOfRoundText"></p>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</form>
 				<button type="button" id="chooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:startNext();">
 					Next Round
@@ -161,7 +177,7 @@
 								<td style="width:20%;>
 									<div id="judgeVoteCards">
 										<div class="blackCard" >
-											<p style="padding-top: 5px;" name="blackCardText"></p>
+											<p class="blackCardP" name="blackCardText"></p>
 										</div>
 									</div>
 								</td>

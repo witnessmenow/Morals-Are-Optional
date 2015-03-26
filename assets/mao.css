@@ -212,3 +212,7 @@ input[type='radio'] {
 .centerText{
 	text-align: center;
 }
+
+.blackCardP{
+	padding-top: 5px;
+}
