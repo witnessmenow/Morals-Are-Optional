@@ -434,13 +434,13 @@ public class GameScreen implements Screen
 				{
 					image = new Image(tickSprite.getTexture());
 				}
-				else if(!entry.getValue().dealtIn)
-				{
-					image = new Image(timerSprite.getTexture());
-				}
 				else if(entry.getValue().isPaused)
 				{
 					image = new Image(pausedSprite.getTexture());
+				}
+				else if(!entry.getValue().dealtIn)
+				{
+					image = new Image(timerSprite.getTexture());
 				}
 				
 			}
@@ -722,7 +722,10 @@ public class GameScreen implements Screen
 	{
 		for(Player p : this.game.players.values())
 		{
-			p.populateHand();
+			if(!p.isPaused)
+			{
+				p.populateHand();
+			}
 		}
 	}
 	
@@ -765,55 +768,68 @@ public class GameScreen implements Screen
 			//rando doesnt need hearbeats
 			if(!p.isRando)
 			{
-				if(!p.isJudge)
+				if(p.isPaused)
 				{
-					
-					obj.put("cards", p.cardsToJsonArray());
-					
-					if(p.selectedCard != null)
-					{
-						obj.put("selectedCard", p.selectedCard.getJsonObj());
-					}
-					
-					if(!p.dealtIn)
-					{
-						obj.put("notDealtIn", "waiting");
-					}
+					obj.put("state", "paused");
+				}
+				else if(!p.dealtIn)
+				{
+					obj.put("state", "notDealt");
 				}
 				else
 				{
-					if(currentState == State.playersChooseCard)
+					if(!p.isJudge)
 					{
-						obj.put("judge", "wait");
-					}
-					else if(currentState == State.judgeChoosesAnswer)
-					{
-						if(selectedWhiteCards == null)
+						
+						obj.put("cards", p.cardsToJsonArray());
+						
+						if(p.selectedCard != null)
 						{
-							selectedWhiteCards = generateSelectedWhiteCards();
+							obj.put("selectedCard", p.selectedCard.getJsonObj());
 						}
-						obj.put("judge", "vote");
-						obj.put("selected", selectedWhiteCards);
+						
+						if(!p.dealtIn)
+						{
+							obj.put("notDealtIn", "waiting");
+						}
+					}
+					else
+					{
+						if(currentState == State.playersChooseCard)
+						{
+							obj.put("judge", "wait");
+						}
+						else if(currentState == State.judgeChoosesAnswer)
+						{
+							if(selectedWhiteCards == null)
+							{
+								selectedWhiteCards = generateSelectedWhiteCards();
+							}
+							obj.put("judge", "vote");
+							obj.put("selected", selectedWhiteCards);
+						}
+					}
+					
+					obj.put("blackCard", this.blackCard);
+					
+					if(currentState == State.endOfRound)
+					{
+						obj.put("winningCard", GameScreen.lastWiningWhiteCard.getJsonObj());
+						obj.put("winner", this.game.players.get(lastWiningId).name);
+						obj.put("score", p.score);
+						Array<JSONObject> arr = new Array<JSONObject>();
+						for (Player p2 : this.game.players.values()) {
+							JSONObject obj2 = new JSONObject();
+							obj2.put("name", p2.name);
+							obj2.put("score", p2.score);
+							arr.add(obj2);
+						}
+						obj.put("scores", arr);
+						obj.put("playerCount", this.game.players.size());
 					}
 				}
 				
-				obj.put("blackCard", this.blackCard);
-				
-				if(currentState == State.endOfRound)
-				{
-					obj.put("winningCard", GameScreen.lastWiningWhiteCard.getJsonObj());
-					obj.put("winner", this.game.players.get(lastWiningId).name);
-					obj.put("score", p.score);
-					Array<JSONObject> arr = new Array<JSONObject>();
-					for (Player p2 : this.game.players.values()) {
-						JSONObject obj2 = new JSONObject();
-						obj2.put("name", p2.name);
-						obj2.put("score", p2.score);
-						arr.add(obj2);
-					}
-					obj.put("scores", arr);
-					obj.put("playerCount", this.game.players.size());
-				}
+				obj.put("roundNumber", this.roundNumber);
 				obj.put("playerName", p.name);
 				this.game.mcp.hearbeatResponses.put(p.id, obj);
 			}

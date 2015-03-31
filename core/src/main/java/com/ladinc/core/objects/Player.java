@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 
 import com.ladinc.core.McpCah;
 import com.ladinc.core.cards.SimpleWhiteCard;
+import com.ladinc.core.screens.GameScreen;
 
 public class Player 
 {
@@ -83,13 +84,14 @@ public class Player
 				//Remove card from available
 				McpCah.AVAILABLE_WHITE_CARDS.remove(i);
 				
-				dealtIn = true;
 			}
 			else
 			{
 				OUT_OF_WHITE_CARDS = true;
 			}
 		}
+		
+		dealtIn = true;
 	}
 
 	public String getName() {
@@ -106,6 +108,22 @@ public class Player
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public void togglePauseState()
+	{
+		if(isPaused)
+		{
+			//Player will get dealt in next round.
+			isPaused = false;
+		}
+		else
+		{
+			isPaused = true;
+			dealtIn = false;
+			//We need to check do we have enough etc
+			GameScreen.CHANGES_TO_PLAYERS = true;
+		}
 	}
 
 }

@@ -129,6 +129,7 @@ public class McpCah extends Game
 		this.mcp.customLinkDirect.add(new CustomResource("jquery-1.11.1.min.js", getFileContents("jquery-1.11.1.min.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.js", getFileContents("bootstrap.min.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap.min.css", getFileContents("bootstrap.min.css")));
+		this.mcp.customLinkDirect.add(new CustomResource("bootbox.min.js", getFileContents("bootbox.min.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("bootstrap-theme.min.css", getFileContents("bootstrap-theme.min.css")));
 		this.mcp.customLinkDirect.add(new CustomResource("table.html", getFileContents("table.html")));
 		this.mcp.customLinkDirect.add(new CustomResource("heartbeatHelper.js", getFileContents("heartbeatHelper.js")));

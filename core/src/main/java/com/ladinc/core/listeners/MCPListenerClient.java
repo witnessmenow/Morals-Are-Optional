@@ -84,6 +84,10 @@ public class MCPListenerClient implements  MCPContorllersListener
 				{
 					GameScreen.startNextFlag = true;
 				}
+				else if(params.get("event").contains("pausePlayer"))
+				{
+					playerPauseEvent(params.get("id"));
+				}
 				else if(params.get("event").contains("rando"))
 				{
 					if(params.get("include").contains("true"))
@@ -98,6 +102,14 @@ public class MCPListenerClient implements  MCPContorllersListener
 			}
 		}
 		
+	}
+	
+	private void playerPauseEvent(String id)
+	{
+		if(this.game.players.containsKey(id))
+		{
+			this.game.players.get(id).togglePauseState();
+		}
 	}
 	
 	private void winnerSelected(String card)

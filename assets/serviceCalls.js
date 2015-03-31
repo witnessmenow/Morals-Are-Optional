@@ -178,3 +178,28 @@ function registerNameWithServer(name)
 	
 	xmlhttp.send();
 }
+function togglePlayerPause()
+{
+	
+	var url = "passEvent?id=" + getId()  +  "&event=pausePlayer";
+	
+	url = makeUrlSafe(url);
+	
+	var xmlhttp
+	if (window.XMLHttpRequest)
+	{
+		xmlhttp=new XMLHttpRequest();
+	}
+	
+	xmlhttp.open("GET",url,true);
+	
+	xmlhttp.onreadystatechange = function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+		{ 
+			sendHeartbeat();					
+		}
+	}
+	
+	xmlhttp.send();
+}

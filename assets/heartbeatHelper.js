@@ -35,6 +35,30 @@ function handleHeartbeat(respText)
 		//goToPage1();
 	}
 	
+	if(obj.hasOwnProperty('state'))
+	{
+		if(obj.state === "paused")
+		{
+			if(!checkIsPageHidden("pausedPage"))
+			{
+				goToPausedPage();
+				handledPlayerName = false;
+			}
+			
+			//If paused no need to do anything else
+			return;
+		}
+		else if(obj.state === "notDealt")
+		{
+			var notDealtMessage = "You will be dealt in the next round."
+		
+			if(!checkIsPageHidden("messagePage") && getMessagePageMessage() != notDealtMessage)
+			{
+				goToMessagePage(notDealtMessage);
+			}
+		}
+	}
+	
 	if(obj.hasOwnProperty('numberOfPlayers'))
 	{
 		if(document.getElementById("page1Dot5").className == "hide")

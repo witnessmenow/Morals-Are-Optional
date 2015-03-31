@@ -40,7 +40,7 @@
 		            <li><a href="#">Maybe</a></li>
 		            <li><a href="#">Maybe not</a></li>
 		            <li class="divider"></li>
-		            <li><a href="#">Maybe fuck yourself</a></li>
+		            <li><a href="#" title="Quit Game" onclick="unregisterPlayerClicked();return false;">Quit Game</a></li>
 		          </ul>
 		        </li>
 	          </ul>
@@ -103,15 +103,7 @@
 							<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
 						</div>
 					</div>
-				</div>
-			</form>
-			<div class="buttonDivider">
-			<button type="button" id="whiteCardChooseButton" class="btn btn-default btn-lg disabled buttonDisable" onclick="javascript:choose();">
-					Play Cards
-			</button>
-			<h3 id="madeVoteWaitingForJudgement" class="hide">
-				Card submitted, waiting for other cards to be played and judgement.
-			</h3>
+				</form>
 			</div>
 		</div>
 		<div id="endOfRoundScreen" class="hide">
@@ -201,7 +193,26 @@
 				</h3>
 			</div>
 		</div>
+		<div id="pausedPage" class="hide">
+			<div class="container" style="text-align:center;">
+				<h3 class="show">
+					You are currently paused, click to rejoin the game.
+				</h3>
+				<button id="reJoinButton" type="button" class="btn btn-success btn-lg " onclick="javascript:togglePlayerPause();" style="margin-top: 1em;">
+						Rejoin Game
+				</button>
+			</div>
+		</div>
+		<div id="messagePage" class="hide">
+			<div class="container" style="text-align:center;">
+				<h3 class="show" id="messagePageMessage">
+					
+				</h3>
+			</div>
+		</div>
 		
+		
+		<script src="bootbox.min.js"></script>
 		<script>
 		    $(document).ready(function(){
 		        $(document.body).css('padding-top', $('#topnavbar').height() + 10);

@@ -17,9 +17,7 @@ public class CustomInputListener extends InputListener
     
     public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
     {
-    	player.isPaused = !player.isPaused;
-    	
-    	GameScreen.CHANGES_TO_PLAYERS = true;
+    	player.togglePauseState();
     	
         return true;
     }

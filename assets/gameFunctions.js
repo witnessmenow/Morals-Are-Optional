@@ -141,3 +141,14 @@ function winningWhiteCardPicker(index) {
 		}
 	}
 }
+
+function unregisterPlayerClicked()
+{
+	bootbox.confirm("Are you sure you want to quit? (You can join back later)", function(result) 
+	{
+  		if(result)
+  		{
+  			togglePlayerPause();
+  		}
+}); 
+}

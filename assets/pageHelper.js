@@ -38,6 +38,18 @@ function goToEndOfRoundScreen(){
 		document.getElementById("chooseButton").className = "btn btn-success btn-lg";
 	},2000);
 }
+function goToPausedPage()
+{
+	hideAllPages();
+	hideRightNavBar();
+	document.getElementById("pausedPage").className = "show";
+}
+function goToMessagePage(message)
+{
+	hideAllPages();
+	document.getElementById("messagePageMessage").innerHTML = message;
+	document.getElementById("messagePage").className = "show";
+}
 function hideAllPages(){
 	document.getElementById("page1").className = "hide";
 	document.getElementById("page1Dot5").className = "hide";
@@ -45,8 +57,28 @@ function hideAllPages(){
 	document.getElementById("judgeVote").className = "hide";
 	document.getElementById("judgeWait").className = "hide";
 	document.getElementById("endOfRoundScreen").className = "hide";
+	document.getElementById("pausedPage").className = "hide";
+	document.getElementById("messagePage").className = "hide";
 }
-
+function checkIsPageHidden(pageId)
+{
+	if(document.getElementById(pageId).className == "hide")
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+function hideRightNavBar()
+{
+	$("#navBarRight").prop("class" , "hide");
+}
+function getMessagePageMessage()
+{
+	return document.getElementById("messagePageMessage").innerHTML;
+}
 function disableButton(buttonJqueryObj)
 {
 	buttonJqueryObj.prop("class" , "btn btn-default btn-lg disabled");
