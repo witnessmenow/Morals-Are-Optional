@@ -142,6 +142,14 @@ function winningWhiteCardPicker(index) {
 	}
 }
 
+function troubleshootMode(){
+	if(location.href.indexOf("?") > 0){
+		location.replace(location.href + "&debug=true");
+	} else {
+		location.replace(location.href + "?debug=true");
+	}
+}
+
 function unregisterPlayerClicked()
 {
 	bootbox.confirm("Are you sure you want to quit? (You can join back later)", function(result) 
