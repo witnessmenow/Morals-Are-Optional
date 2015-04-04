@@ -9,10 +9,14 @@ function goToPage1Dot5(){
 	document.getElementById("page1Dot5").className = "show";
 }
 function startButtonPressed(){
-	if(document.getElementById("addRando").checked){
-		registerRandoWithServer();
-	}
-	sendStartToServer();
+	bootbox.confirm("Are you sure you want to start? (All players might not have joined yet!)", function(result) {
+		if(result){
+			if(document.getElementById("addRando").checked){
+				registerRandoWithServer();
+			}
+			sendStartToServer();
+		}
+	});
 }
 function goToPage2(){
 	hideAllPages();
