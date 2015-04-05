@@ -203,26 +203,22 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-6 col-sm-4 col-md-2">
-					<div class="blackCard">
-						<p class="blackCardP" name="blackCardText"></p>
-					</div>
+					<span class="judgeScroll">
+						<div class="blackCard">
+							<p class="blackCardP" name="blackCardText"></p>
+						</div>
+						<div class="spacer"></div>
+						<button type="button" id="judgeChooseButton"
+							class="btn btn-success btn-lg" onclick="javascript:next();">
+							Next</button>
+						<button type="button" id="startButton"
+							class="btn btn-default btn-lg disabled buttonDisable"
+							onclick="javascript:castVote();">Vote!</button>
+					</span>
 				</div>
 				<div class="col-xs-6 col-sm-8 col-md-10">
 					<div id="whiteCardContainer" class="hide"></div>
 					<div id="dummyWhiteCardContainer" class="hide"></div>
-				</div>
-			</div>
-			<div class="spacer"></div>
-			<div class="row">
-				<div class="col-xs-12">
-					<button type="button" id="judgeChooseButton"
-						class="btn btn-success btn-lg" onclick="javascript:next();">
-						Next</button>
-				</div>
-				<div class="col-xs-12">
-					<button type="button" id="startButton"
-						class="btn btn-default btn-lg disabled buttonDisable"
-						onclick="javascript:castVote();">Vote!</button>
 				</div>
 			</div>
 
@@ -255,6 +251,7 @@
 	        $(window).resize(function(){
 	            $(document.body).css('padding-top', $('#topnavbar').height() + 10);
 	        });
+	        $(window).scroll(function(){$(".judgeScroll").animate({top:$(this).scrollTop()},0,"fast");});
 	    });
 		</script>
 		

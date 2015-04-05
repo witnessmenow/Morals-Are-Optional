@@ -218,3 +218,7 @@ input[type='radio'] {
 .blackCardP{
 	padding-top: 5px;
 }
+
+.judgeScroll{
+	position: relative;
+}

@@ -14,14 +14,14 @@ function startButtonPressed(){
 	  +" Rando is a random player which will submit a card each round.",
 	  buttons: {
 	  	danger: {
-	      label: "No",
+	      label: "Cancel",
 	      className: "btn-danger",
 	      callback: function() {
 	        //Do Nothing
 	      }
 	    },
 	    main: {
-	      label: "Start game with Rando",
+	      label: "Start with Rando",
 	      className: "btn-primary",
 	      callback: function() {
 			registerRandoWithServer();
@@ -29,7 +29,7 @@ function startButtonPressed(){
 	      }
 	    },
 	    success: {
-	      label: "Start Game",
+	      label: "Start",
 	      className: "btn-success",
 	      callback: function() {
 			sendStartToServer();
