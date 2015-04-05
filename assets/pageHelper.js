@@ -9,13 +9,33 @@ function goToPage1Dot5(){
 	document.getElementById("page1Dot5").className = "show";
 }
 function startButtonPressed(){
-	bootbox.confirm("Are you sure you want to start? (All players might not have joined yet!)", function(result) {
-		if(result){
-			if(document.getElementById("addRando").checked){
-				registerRandoWithServer();
-			}
+	bootbox.dialog({
+	  message: "Are you sure you want to start? (All players might not have joined yet!)<br/><br/>"
+	  +" Rando is a random player which will submit a card each round.",
+	  buttons: {
+	  	danger: {
+	      label: "No",
+	      className: "btn-danger",
+	      callback: function() {
+	        //Do Nothing
+	      }
+	    },
+	    main: {
+	      label: "Start game with Rando",
+	      className: "btn-primary",
+	      callback: function() {
+			registerRandoWithServer();
 			sendStartToServer();
-		}
+	      }
+	    },
+	    success: {
+	      label: "Start Game",
+	      className: "btn-success",
+	      callback: function() {
+			sendStartToServer();
+	      }
+	    }
+	  }
 	});
 }
 function goToPage2(){

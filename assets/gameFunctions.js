@@ -1,5 +1,5 @@
 var nextToShow = 0;
-var numPlayers = 3
+var numPlayers = 3;
 
 var currentBlackCardText = "";
 var cardSelectionDisabled = false;
