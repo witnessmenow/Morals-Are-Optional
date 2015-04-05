@@ -22,6 +22,9 @@ body {
 	pointer-events: all;
 }
 
+.spacer{
+	margin-top: 2em;
+}
 .button {
 	border-top: 1px solid #96d1f8;
 	background: #65a9d7;
@@ -121,7 +124,6 @@ body {
 	-webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
 	box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
 	margin-top: 10px;
-	margin-left: 10px;
 }
 
 .blackCard p {

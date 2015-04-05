@@ -63,7 +63,7 @@ function generateJudgeWhiteCards(cards)
 	dummyWhiteCard.setAttribute("class", "hide");
 	document.getElementById("dummyWhiteCardContainer").appendChild(dummyWhiteCard);
 	
-	document.getElementById("dummyWhiteCardContainer").className = "whiteCardContainer";
+	document.getElementById("dummyWhiteCardContainer").className = "";
 }
 function resetJudgePage()
 {
@@ -133,9 +133,8 @@ function next()
 					}
 				}
 				
-				document.getElementById("whiteCardContainer").className = "whiteCardContainer";
-				document.getElementById("dummyWhiteCardContainer").className = "hide";
-				
+				document.getElementById("whiteCardContainer").className = "";
+
 				cardVotingDisabled = false;
 			}
 			else

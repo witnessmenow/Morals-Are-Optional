@@ -136,6 +136,7 @@ public class McpCah extends Game
 		this.mcp.customLinkDirect.add(new CustomResource("judge.js", getFileContents("judge.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("pageHelper.js", getFileContents("pageHelper.js")));
 		this.mcp.customLinkDirect.add(new CustomResource("serviceCalls.js", getFileContents("serviceCalls.js")));
+		this.mcp.customLinkDirect.add(new CustomResource("normalize.css", getFileContents("normalize.css")));
 		this.mcp.customLinkDirect.add(new CustomResource("mao.css", getFileContents("mao.css")));
 		this.mcp.customLinkDirect.add(new CustomResource("gameFunctions.js", getFileContents("gameFunctions.js")));
 		
