@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<link rel="stylesheet" href="normalize.css">
 		<link rel="stylesheet" href="bootstrap.min.css">
 		<link rel="stylesheet" href="bootstrap-theme.min.css">
 		<script src="jquery-1.11.1.min.js"></script>
@@ -18,6 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="mao.css"></link>
 		
 		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 	</head>
 	<body onLoad="initMCP();">
 	
@@ -72,10 +74,10 @@
 		<div id="page2" class="hide">
 			<div class="container">
 				<div class="row">
-						<div class="col-md-7">
+						<div class="col-xs-7">
 							<div name="blackCardText" class="blackWell" id="blackCardTextPlayer"></div>
 						</div>
-						<div class="col-md-5">
+						<div class="col-xs-5">
 							<button type="button" id="whiteCardChooseButton" class="btn btn-success btn-lg" onclick="javascript:choose();" style="text-align: center;">
 								Choose!
 							</button>
@@ -86,21 +88,26 @@
 					</h3>
 					<div class="spacer"></div>
 					<div class="row">
-						<div class="col-md-12">
-						<div id="parentWhiteCard0" class="whiteCard whiteCardInline ui-block-a" onclick="clicker('whiteCard0')">
-							<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">Waiting for next round to begin</p>
-						</div>
-						<div id="parentWhiteCard1" class="whiteCard whiteCardInline ui-block-b" onclick="clicker('whiteCard1')">
-							<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
-						</div>
-						<div id="parentWhiteCard2" class="whiteCard whiteCardInline ui-block-c" onclick="clicker('whiteCard2')">
-							<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText2">Card 1</p>
-						</div>
-						<div id="parentWhiteCard3" class="whiteCard whiteCardInline ui-block-d" onclick="clicker('whiteCard3')">
-							<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText3">Card 1</p>
-						</div>
-						<div id="parentWhiteCard4" class="whiteCard whiteCardInline ui-block-e" onclick="clicker('whiteCard4')">
-							<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
+						<div class="col-xs-12">
+							<div id="parentWhiteCard0" class="whiteCard whiteCardInline" onclick="clicker('whiteCard0')">
+								<input id="whiteCard0" name="whiteCard" type="radio" value="0" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText0">Waiting for next round to begin</p>
+							</div>
+						
+							<div id="parentWhiteCard1" class="whiteCard whiteCardInline" onclick="clicker('whiteCard1')">
+								<input id="whiteCard1" name="whiteCard" type="radio" value="1" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText1">Card 1</p>
+							</div>
+						
+							<div id="parentWhiteCard2" class="whiteCard whiteCardInline" onclick="clicker('whiteCard2')">
+								<input id="whiteCard2" name="whiteCard" type="radio" value="2" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText2">Card 1</p>
+							</div>
+						
+							<div id="parentWhiteCard3" class="whiteCard whiteCardInline" onclick="clicker('whiteCard3')">
+								<input id="whiteCard3" name="whiteCard" type="radio" value="3" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText3">Card 1</p>
+							</div>
+
+							<div id="parentWhiteCard4" class="whiteCard whiteCardInline" onclick="clicker('whiteCard4')">
+								<input id="whiteCard4" name="whiteCard" type="radio" value="4" onclick="whiteCardPicker(this.value)"/><p id="whiteCardText4">Card 1</p>
+							</div>
 						</div>
 						</div>
 					</div>
@@ -114,13 +121,13 @@
 		<div id="endOfRoundScreen" class="hide">
 			<div class="container">
 			<div class="row">
-				<div class="col-md-2">
+				<div class="col-xs-6 col-sm-2">
 					<div class="blackCard">
 						<p class="blackCardP" name="blackCardText"
 							id="blackCardTextEndOfRound"></p>
 					</div>
 				</div>
-				<div class="col-md-10">
+				<div class="col-xs-6 col-sm-10">
 					<div id="endRoundWhiteCardContainer">
 						<div class="whiteCard whiteCardInline noBorder">
 							<input id="whiteCardEndOfRound" name="whiteCard" type="radio"
@@ -132,7 +139,7 @@
 			</div>
 			<div class="spacer"></div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-xs-12">
 
 					<button type="button" id="chooseButton"
 						class="btn btn-default btn-lg disabled buttonDisable"
@@ -161,24 +168,24 @@
 		<div id="judgeVote" class="hide">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-2">
+				<div class="col-xs-6 col-sm-2">
 					<div class="blackCard">
 						<p class="blackCardP" name="blackCardText"></p>
 					</div>
 				</div>
-				<div class="col-md-10">
+				<div class="col-xs-6 col-sm-10">
 					<div id="whiteCardContainer" class="hide"></div>
 					<div id="dummyWhiteCardContainer" class="hide"></div>
 				</div>
 			</div>
 			<div class="spacer"></div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-xs-12">
 					<button type="button" id="judgeChooseButton"
 						class="btn btn-success btn-lg" onclick="javascript:next();">
 						Next</button>
 				</div>
-				<div class="col-md-12">
+				<div class="col-xs-12">
 					<button type="button" id="startButton"
 						class="btn btn-default btn-lg disabled buttonDisable"
 						onclick="javascript:castVote();">Vote!</button>
