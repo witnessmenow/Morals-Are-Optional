@@ -109,7 +109,7 @@
 				</button>
 			</div>
 		</div>
-		<div id="page2" class="hide">
+		<div id="playerCardSelect" class="hide">
 			<div class="container">
 				<div class="row">
 						<div class="col-xs-7">
@@ -190,7 +190,7 @@
 			<div class="container" style="text-align:center;">
 				<span class="displayInlineBlock">
 					<div class="blackCard" >
-						<p name="blackCardText" id="blackCardTextJudgeWait"></p>
+						<p class="blackCardP" name="blackCardText" id="blackCardTextJudgeWait" style="text-align:left"></p>
 					</div>
 				</span>
 				<br/>
@@ -200,30 +200,31 @@
 			</div>
 		</div>
 		<div id="judgeVote" class="hide">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-6 col-sm-4 col-md-2">
-					<span class="judgeScroll">
-						<div class="blackCard">
-							<p class="blackCardP" name="blackCardText"></p>
-						</div>
-						<div class="spacer"></div>
-						<button type="button" id="judgeChooseButton"
-							class="btn btn-success btn-lg" onclick="javascript:next();">
-							Next</button>
-						<button type="button" id="startButton"
-							class="btn btn-default btn-lg disabled buttonDisable"
-							onclick="javascript:castVote();">Vote!</button>
-					</span>
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-6 col-sm-4 col-md-2">
+						<span class="judgeScroll">
+							<div class="blackCard">
+								<p class="blackCardP" name="blackCardText"></p>
+							</div>
+							<div class="spacer"></div>
+							<button type="button" id="judgeChooseButton"
+								class="btn btn-success btn-lg" onclick="javascript:next();">
+								Next</button>
+							<button type="button" id="startButton"
+								class="btn btn-default btn-lg disabled buttonDisable"
+								onclick="javascript:castVote();">Vote!</button>
+						</span>
+					</div>
+					<div class="col-xs-6 col-sm-8 col-md-10">
+						<div id="whiteCardContainer" class="hide"></div>
+						<div id="dummyWhiteCardContainer" class="hide"></div>
+					</div>
 				</div>
-				<div class="col-xs-6 col-sm-8 col-md-10">
-					<div id="whiteCardContainer" class="hide"></div>
-					<div id="dummyWhiteCardContainer" class="hide"></div>
-				</div>
+	
+				<h3 id="JudgeScreenMessage" class="hide">Select the card you
+					found the funniest</h3>
 			</div>
-
-			<h3 id="JudgeScreenMessage" class="hide">Select the card you
-				found the funniest</h3>
 		</div>
 		<div id="pausedPage" class="hide">
 			<div class="container" style="text-align:center;">

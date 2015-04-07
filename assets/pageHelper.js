@@ -10,8 +10,8 @@ function goToPage1Dot5(){
 }
 function startButtonPressed(){
 	bootbox.dialog({
-	  message: "Are you sure you want to start? (All players might not have joined yet!)<br/><br/>"
-	  +" Rando is a random player which will submit a card each round.",
+	  message: "Ready to start the game? (Additional Players can join after a game starts)<br/><br/>"
+	  +" \"Rando\" is a player that will submit a random card each round.",
 	  buttons: {
 	  	danger: {
 	      label: "Cancel",
@@ -38,9 +38,9 @@ function startButtonPressed(){
 	  }
 	});
 }
-function goToPage2(){
+function goToPlayerCardSelect(){
 	hideAllPages();
-	$("#page2").addClass("show").removeClass("hide");
+	$("#playerCardSelect").addClass("show").removeClass("hide");
 	disableButton($("#whiteCardChooseButton"));
 	document.getElementById("madeVoteWaitingForJudgement").className = "hide";
 	clearSelectedCard();
@@ -77,7 +77,7 @@ function goToMessagePage(message)
 function hideAllPages(){
 	document.getElementById("page1").className = "hide";
 	document.getElementById("page1Dot5").className = "hide";
-	$("#page2").addClass("hide").removeClass("show");
+	$("#playerCardSelect").addClass("hide").removeClass("show");
 	document.getElementById("judgeVote").className = "hide";
 	document.getElementById("judgeWait").className = "hide";
 	document.getElementById("endOfRoundScreen").className = "hide";

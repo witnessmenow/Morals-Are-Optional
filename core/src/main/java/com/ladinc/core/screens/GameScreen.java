@@ -785,19 +785,19 @@ public class GameScreen implements Screen
 						
 						if(p.selectedCard != null)
 						{
+							obj.put("state", "cardSubmittedPlayer");
 							obj.put("selectedCard", p.selectedCard.getJsonObj());
 						}
-						
-						if(!p.dealtIn)
+						else
 						{
-							obj.put("notDealtIn", "waiting");
+							obj.put("state", "waitingForCardPlayer");
 						}
 					}
 					else
 					{
 						if(currentState == State.playersChooseCard)
 						{
-							obj.put("judge", "wait");
+							obj.put("state", "waitingForSubmissionsJudge");
 						}
 						else if(currentState == State.judgeChoosesAnswer)
 						{
@@ -805,7 +805,7 @@ public class GameScreen implements Screen
 							{
 								selectedWhiteCards = generateSelectedWhiteCards();
 							}
-							obj.put("judge", "vote");
+							obj.put("state", "waitingForVoteJudge");
 							obj.put("selected", selectedWhiteCards);
 						}
 					}
@@ -826,6 +826,8 @@ public class GameScreen implements Screen
 						}
 						obj.put("scores", arr);
 						obj.put("playerCount", this.game.players.size());
+					
+						obj.put("state", "endOfRound");
 					}
 				}
 				

@@ -42,7 +42,7 @@ function choose() {
 
 	playCard(selectedCard);
 	disableButton($("#whiteCardChooseButton"));
-	document.getElementById("madeVoteWaitingForJudgement").className = "bg-success centerText";
+	//document.getElementById("madeVoteWaitingForJudgement").className = "bg-success centerText";
 
 	//alert(selectedCard);
 	//goToPage3();

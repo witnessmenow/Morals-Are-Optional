@@ -37,7 +37,74 @@ function handleHeartbeat(respText)
 	
 	if(obj.hasOwnProperty('state'))
 	{
-		if(obj.state === "paused")
+	
+		// Waiting for card submission from player - Move to playerCardSelect
+		if(obj.state === "waitingForCardPlayer")
+		{
+			if (document.getElementById("playerCardSelect").className != "show")
+			{
+				//fix border
+				noBorderFunction();
+				goToPlayerCardSelect();
+			}
+			
+			if(cardSelectionDisabled)
+			{
+				clearSelectedCard();
+			}
+			
+			
+			// Text of cards is getting re populate every heartbeat,
+			// this is not needed, and a bit wastful
+			// TODO: visit this.
+			
+			var arrayLength = obj.cards.length;
+			for (var i = 0; i < arrayLength; i++) 
+			{
+				if (document.getElementById("whiteCardText" + i).innerHTML != obj.cards[i].text)
+				{
+					document.getElementById("whiteCardText" + i).innerHTML = obj.cards[i].text;
+				}
+				
+				if (document.getElementById("whiteCard" + i).value != obj.cards[i].id)
+				{
+					document.getElementById("whiteCard" + i).value = obj.cards[i].id;
+				}
+			}
+		}
+		// Card is submitted by player
+		else if(obj.state === "cardSubmittedPlayer")
+		{
+			var cardSubmittedMessage = "You have submitted your card.";
+		
+			if(!checkIsPageHidden("messagePage") || getMessagePageMessage() != cardSubmittedMessage)
+			{
+				goToMessagePage(cardSubmittedMessage);
+			}
+		}
+		else if(obj.state === "waitingForSubmissionsJudge")
+		{
+			if (document.getElementById("judgeWait").className != "show")
+			{
+				goToJudgeWait();
+			}
+		}
+		else if(obj.state === "waitingForVoteJudge")
+		{
+			if (document.getElementById("judgeVote").className != "show")
+			{
+				goToJudgeVote();
+				if(obj.hasOwnProperty('selected'))
+				{
+					generateJudgeWhiteCards(obj.selected);	
+				}
+			}
+		}
+		else if(obj.state === "endOfRound")
+		{
+			handleEndOfRoundHeartbeat(obj);
+		}
+		else if(obj.state === "paused")
 		{
 			if(!checkIsPageHidden("pausedPage"))
 			{
@@ -50,9 +117,9 @@ function handleHeartbeat(respText)
 		}
 		else if(obj.state === "notDealt")
 		{
-			var notDealtMessage = "You will be dealt in the next round."
+			var notDealtMessage = "You will be dealt in the next round.";
 		
-			if(!checkIsPageHidden("messagePage") && getMessagePageMessage() != notDealtMessage)
+			if(!checkIsPageHidden("messagePage") || getMessagePageMessage() != notDealtMessage)
 			{
 				goToMessagePage(notDealtMessage);
 			}
@@ -89,111 +156,6 @@ function handleHeartbeat(respText)
 		}
 	}
 	
-	
-	if(obj.hasOwnProperty('winningCard'))
-	{
-		if (document.getElementById("endOfRoundScreen").className != "show")
-		{
-			goToEndOfRoundScreen();
-			if(obj.hasOwnProperty('scores')){
-				document.getElementById("scoreboard").innerHTML = "";
-				for(var i in obj.scores){
-					var divHolder = document.createElement("h1");
-					divHolder.id = "scoreHolder" + i;
-					
-					var para = document.createElement("small");
-					para.id = obj.scores[i].name + "Score";
-					if(obj.hasOwnProperty('winner') && obj.winner == obj.scores[i].name){
-						para.innerHTML = "<span class=\"stars\">&#9733;</span>"+obj.scores[i].name + ": " + obj.scores[i].score;
-						para.style = "font-weight:bold";
-						showWinnerBanner(obj.scores[i].name);
-					}else{
-						para.innerHTML = obj.scores[i].name + ": " + obj.scores[i].score;
-					}
-					
-					divHolder.appendChild(para);
-					document.getElementById("scoreboard").appendChild(divHolder);
-				}
-			}
-		}
-
-		if(document.getElementById("whiteCardEndOfRoundText").innerHTML != obj.winningCard.text)
-		{
-			document.getElementById("whiteCardEndOfRoundText").innerHTML = obj.winningCard.text;
-		}
-	}
-	else
-	{
-		if(obj.hasOwnProperty('cards'))
-		{
-			if (document.getElementById("page2").className != "show")
-			{
-				//fix border
-				noBorderFunction();
-				goToPage2();
-			}
-			
-			var arrayLength = obj.cards.length;
-			for (var i = 0; i < arrayLength; i++) 
-			{
-				if (document.getElementById("whiteCardText" + i).innerHTML != obj.cards[i].text)
-				{
-					document.getElementById("whiteCardText" + i).innerHTML = obj.cards[i].text;
-				}
-				
-				if (document.getElementById("whiteCard" + i).value != obj.cards[i].id)
-				{
-					document.getElementById("whiteCard" + i).value = obj.cards[i].id;
-				}
-			}
-		}
-		
-		if(obj.hasOwnProperty('selectedCard'))
-		{
-			if(!cardSelectionDisabled)
-			{
-				disableCardSelection();
-				if(document.getElementById("madeVoteWaitingForJudgement").className != "show")
-				{
-					document.getElementById("whiteCardChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
-					document.getElementById("madeVoteWaitingForJudgement").className = "bg-success centerText";
-				}
-			}
-		}
-		else
-		{
-			//If we dont have a card selected the cardSelection should be enabled
-			if(cardSelectionDisabled)
-			{
-				clearSelectedCard();
-			}
-		}
-		
-		if(obj.hasOwnProperty('judge'))
-		{
-			if(obj.judge == "wait")
-			{
-				if (document.getElementById("judgeWait").className != "show")
-				{
-					goToJudgeWait();
-				}
-			}
-			
-			if(obj.judge == "vote")
-			{
-				if (document.getElementById("judgeVote").className != "show")
-				{
-					goToJudgeVote();
-					if(obj.hasOwnProperty('selected'))
-					{
-						generateJudgeWhiteCards(obj.selected);	
-					}
-				}
-			}
-
-		}
-	}
-	
 	if(obj.hasOwnProperty('blackCard'))
 	{
 		if(currentBlackCardText != obj.blackCard)
@@ -219,6 +181,38 @@ function handleHeartbeat(respText)
 			$("#navBarRight").prop("class" , "nav navbar-nav navbar-right");
 			$("#navDropDownText").text(obj.playerName);
 		}
+	}
+}
+function handleEndOfRoundHeartbeat(obj)
+{
+	if (document.getElementById("endOfRoundScreen").className != "show")
+	{
+		goToEndOfRoundScreen();
+		if(obj.hasOwnProperty('scores')){
+			document.getElementById("scoreboard").innerHTML = "";
+			for(var i in obj.scores){
+				var divHolder = document.createElement("h1");
+				divHolder.id = "scoreHolder" + i;
+				
+				var para = document.createElement("small");
+				para.id = obj.scores[i].name + "Score";
+				if(obj.hasOwnProperty('winner') && obj.winner == obj.scores[i].name){
+					para.innerHTML = "<span class=\"stars\">&#9733;</span>"+obj.scores[i].name + ": " + obj.scores[i].score;
+					para.style = "font-weight:bold";
+					showWinnerBanner(obj.scores[i].name);
+				}else{
+					para.innerHTML = obj.scores[i].name + ": " + obj.scores[i].score;
+				}
+				
+				divHolder.appendChild(para);
+				document.getElementById("scoreboard").appendChild(divHolder);
+			}
+		}
+	}
+
+	if(document.getElementById("whiteCardEndOfRoundText").innerHTML != obj.winningCard.text)
+	{
+		document.getElementById("whiteCardEndOfRoundText").innerHTML = obj.winningCard.text;
 	}
 }
 function showWinnerBanner(winnerName){

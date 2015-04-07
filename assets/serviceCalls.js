@@ -25,7 +25,7 @@ function playCard(cardText)
 	{
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) 
 		{ 
-		
+			sendHeartbeat();
 		}
 	}
 	
