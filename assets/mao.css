@@ -226,3 +226,26 @@ input[type='radio'] {
 .judgeScroll{
 	position: relative;
 }
+
+@media screen and (max-width: 360px){
+	.whiteCard {
+		position: relative;
+		margin-right: 10px;
+		width: 130px;
+		height: 220px;
+		border-radius: 10px;
+		background: #fff;
+		-webkit-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+		box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+		margin-top: 10px;
+		margin-left: 10px;
+	}
+	
+	.whiteCard p, .blackCard p {
+		width: 115px;
+		word-wrap: break-word;
+		margin-top: 5px;
+		margin-left: 5px;
+		white-space: normal;
+	}
+}
