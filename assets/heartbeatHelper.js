@@ -166,7 +166,7 @@ function handleHeartbeat(respText)
 			
 			var arrayLength = blackCards.length;
 			for (var i = 0; i < arrayLength; i++) {
-				blackCards[i].innerHTML = currentBlackCardText;
+				blackCards[i].innerHTML = "<p>" + currentBlackCardText + "</p>";
 			}
 			
 		}

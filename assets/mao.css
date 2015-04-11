@@ -6,6 +6,10 @@ body {
 	color: #ffffff;
 }
 
+.btn-sizer{
+	width: 150px;
+}
+
 .hide, .hide2 {
 	display: none;
 }
