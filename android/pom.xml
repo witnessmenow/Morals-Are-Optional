@@ -173,10 +173,10 @@
 									<includes>
 										<include>target/*.apk</include>
 									</includes>
-									<keystore>${keystore.path}</keystore>
-									<storepass>${keystore.password}</storepass>
-									<keypass>${key.password}</keypass>
-									<alias>${keystore.alias}</alias>
+									<keystore>${sign.keystore}</keystore>
+									<storepass>${sign.storepass}</storepass>
+									<keypass>${sign.keypass}</keypass>
+									<alias>${sign.alias}</alias>
 									<arguments>
 										<argument>-sigalg</argument>
 										<argument>MD5withRSA</argument>

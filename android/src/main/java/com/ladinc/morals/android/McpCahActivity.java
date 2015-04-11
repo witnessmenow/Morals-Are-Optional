@@ -1,4 +1,4 @@
-package com.ladinc.android;
+package com.ladinc.morals.android;
 
 import com.ladinc.core.McpCah;
 
