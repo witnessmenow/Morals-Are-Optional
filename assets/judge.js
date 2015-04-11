@@ -67,7 +67,7 @@ function generateJudgeWhiteCards(cards)
 }
 function resetJudgePage()
 {
-	document.getElementById("judgeChooseButton").className = "btn btn-success btn-lg";
+	document.getElementById("judgeChooseButton").className = "btn btn-success btn-sizer btn-lg";
 	document.getElementById("judgeChooseButton").innerHTML = "Reveal Next";
 	document.getElementById("startButton").className = "hide";
 	document.getElementById("judgeVote").className = "show";
@@ -121,7 +121,7 @@ function next()
 			if(i == whiteCardDivs.length - 1)
 			{
 				document.getElementById("judgeChooseButton").className = "hide";
-				document.getElementById("startButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				document.getElementById("startButton").className = "btn btn-default btn-lg btn-sizer disabled buttonDisable";
 				document.getElementById("JudgeScreenMessage").className = "bg-success centerText";
 				
 				
@@ -141,10 +141,10 @@ function next()
 			{
 				//not the dummy card, so we want to disable the reveal button for 2 seconds
 				
-				document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+				document.getElementById("judgeChooseButton").className = "btn btn-default btn-lg disabled btn-sizer buttonDisable";
 				
 				setTimeout(function(){
-					document.getElementById("judgeChooseButton").className = "btn btn-success btn-lg";
+					document.getElementById("judgeChooseButton").className = "btn btn-success btn-sizer btn-lg";
 					},2000);
 			}
 			

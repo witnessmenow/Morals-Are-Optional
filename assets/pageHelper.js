@@ -57,9 +57,9 @@ function goToEndOfRoundScreen(){
 	hideAllPages();
 	document.getElementById("endOfRoundScreen").className = "show";
 	
-	document.getElementById("chooseButton").className = "btn btn-default btn-lg disabled buttonDisable";
+	document.getElementById("chooseButton").className = "btn btn-default btn-lg btn-sizer disabled buttonDisable";
 	setTimeout(function(){
-		document.getElementById("chooseButton").className = "btn btn-success btn-lg";
+		document.getElementById("chooseButton").className = "btn btn-success btn-sizer btn-lg btn-sizer";
 	},2000);
 }
 function goToPausedPage()
@@ -105,10 +105,10 @@ function getMessagePageMessage()
 }
 function disableButton(buttonJqueryObj)
 {
-	buttonJqueryObj.prop("class" , "btn btn-default btn-lg disabled");
+	buttonJqueryObj.prop("class" , "btn btn-default btn-lg btn-sizer disabled");
 }
 
 function enableButton(buttonJqueryObj)
 {
-	buttonJqueryObj.prop("class" , "btn btn-success btn-lg");
+	buttonJqueryObj.prop("class" , "btn btn-success btn-lg btn-sizer");
 }
