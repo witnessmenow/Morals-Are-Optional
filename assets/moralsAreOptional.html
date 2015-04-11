@@ -91,13 +91,15 @@
 		<div id="page1">
 			<div class="container" style="text-align:center;">
 				<h1>Enter Your Name:</h1>
-				<input id="name" type="text" class="form-control" onkeyup="javascript:validateName();" name="name" style="margin-bottom: 1.25em;"/>
-				<div id="nameErrorMessage" class="hide">
-					Names can only contain letters and numbers.
-				</div>
-				<button id="nameButton" type="button" class="btn btn-default btn-lg disabled" onclick="javascript:registerPlayer();" style="margin-top: 1em;">
-						Enter Game
-				</button>
+				<form action="javascript:registerPlayer();">
+					<input id="name" type="text" class="form-control" onkeyup="javascript:validateName();" name="name" style="margin-bottom: 1.25em;"/>
+					<div id="nameErrorMessage" class="hide">
+						Names can only contain letters and numbers.
+					</div>
+					<button id="nameButton" type="submit" class="btn btn-default btn-lg disabled" onclick="javascript:registerPlayer();" style="margin-top: 1em;">
+							Enter Game
+					</button>
+				</form>
 			</div>
 		</div>
 		<div id="page1Dot5" class="hide">
@@ -179,12 +181,13 @@
 						class="btn btn-default btn-lg disabled buttonDisable"
 						onclick="javascript:startNext();">Next Round</button>
 				</div>
-			</div>
+			</div> 
 			<div id="scoreboard"></div>
 				<div id="winnerOfRoundDiv" class="winnerOfRoundDiv bg-success">
 					<h3 id="winnerOfRoundP" class="winnerOfRoundH3 bg-success"><span class="stars">&#9733;&#9733;&#9733;</span>  WINNER: <span id="winnerOfRoundName"></span>  <span class="stars">&#9733;&#9733;&#9733;</span></h3>
 				</div> 
 			</div>
+			 
 		</div>
 		<div id="judgeWait" class="hide">
 			<div class="container" style="text-align:center;">
