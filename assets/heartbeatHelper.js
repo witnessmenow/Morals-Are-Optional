@@ -199,7 +199,8 @@ function handleEndOfRoundHeartbeat(obj)
 				if(obj.hasOwnProperty('winner') && obj.winner == obj.scores[i].name){
 					para.innerHTML = "<span class=\"stars\">&#9733;</span>"+obj.scores[i].name + ": " + obj.scores[i].score;
 					para.style = "font-weight:bold";
-					showWinnerBanner(obj.scores[i].name);
+					//removing for initial release
+					//showWinnerBanner(obj.scores[i].name);
 				}else{
 					para.innerHTML = obj.scores[i].name + ": " + obj.scores[i].score;
 				}
