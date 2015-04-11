@@ -135,12 +135,6 @@ public class GameScreen implements Screen
 		plusSprite = new Sprite(new Texture(Gdx.files.internal("icons/plus.png")));
 		plusSprite.setColor(Color.WHITE);
 		
-		blackCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
-		blackCardSprite.setColor(Color.BLACK);
-		
-		whiteCardSprite = new Sprite(new Texture(Gdx.files.internal("blankCard.png")));
-		whiteCardSprite.setColor(Color.WHITE);
-		
 		largeblackCardSprite = new Sprite(new Texture(Gdx.files.internal("LargeBlackBlankCard.png")));
 		largeWhiteCardSprite = new Sprite(new Texture(Gdx.files.internal("LargeBlankCard.png")));
 		//largeblackCardSprite.setColor(Color.WHITE);
