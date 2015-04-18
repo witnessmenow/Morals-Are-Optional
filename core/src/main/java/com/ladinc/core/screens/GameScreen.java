@@ -38,6 +38,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ladinc.core.McpCah;
 import com.ladinc.core.cards.Card;
 import com.ladinc.core.cards.SimpleWhiteCard;
+import com.ladinc.core.controllers.IControls;
 import com.ladinc.core.listeners.CustomInputListener;
 import com.ladinc.core.objects.Player;
 
@@ -254,6 +255,8 @@ public class GameScreen implements Screen
 		spriteBatch.end();
 	    stage.draw();
 	    
+	    handleControllerInput(delta);
+	    
 		//drawSprites();
 		
 		if(Gdx.input.isKeyPressed(Input.Keys.N))
@@ -279,6 +282,95 @@ public class GameScreen implements Screen
 		
 	}
 	
+	
+	
+	private float coolDownTime = 0.3f;
+	private int selectionIndex = -1;
+	
+	private void handleControllerInput(float delta)
+	{
+		IControls controller = this.game.gcm.commonController;
+		
+		if(controller != null)
+		{
+			if(!controller.isCoolDownActive(delta))
+			{
+				
+				if(controller.getLeftFaceButtonStatus())
+				{
+					playerEditMode = !playerEditMode;
+					if(playerEditMode)
+					{
+						selectionIndex = 0;
+					}
+					else
+					{
+						selectionIndex = -1;
+					}
+					controller.setCoolDown(coolDownTime);
+				}
+				
+				int yMovement = controller.getMenuYDireciton();
+				if(yMovement != 0)
+				{
+					selectionIndex = selectionIndex - yMovement;
+					if(selectionIndex < 0)
+					{
+						selectionIndex = this.game.players.size() - 1;
+					}
+					else if(selectionIndex >= this.game.players.size())
+					{
+						selectionIndex = 0;
+					}
+					
+					controller.setCoolDown(coolDownTime);
+				}
+				
+				if(controller.getConfirmStatus())
+				{
+					Gdx.app.debug(
+							"handleControllerInput",
+							"getConfirmStatus");
+					
+					if((selectionIndex != -1) && playerEditMode)
+					{
+						Gdx.app.debug(
+								"handleControllerInput",
+								"processing getConfirmStatus");
+						
+						try
+						{
+							int i = 0;
+							
+							for(Map.Entry<String, Player> entry : this.game.players.entrySet())
+							{	
+								if(selectionIndex == i)
+								{
+									
+									Gdx.app.debug(
+											"handleControllerInput",
+											"got a match");
+									
+									
+									entry.getValue().togglePauseState();
+									break;
+								}
+								
+								i++;
+							}
+						}
+						catch (Exception e)
+						{
+							
+						}
+						
+						controller.setCoolDown(coolDownTime);
+					}
+				}
+			}
+		}
+	}
+	
 	private Table createMainTable()
 	{
 		Table mainTable = new Table();
@@ -288,7 +380,7 @@ public class GameScreen implements Screen
 		//mainTable.setWidth(screenWidth);
 		mainTable.add().align(Align.center | Align.top).padTop(50f).padBottom(70f);
 		mainTable.add(new Label("Round " + roundNumber, new Label.LabelStyle(font, Color.ORANGE))).align(Align.center | Align.top).padTop(50f).padBottom(70f);
-		mainTable.add(new Label("New players: " + this.game.ipAddr, new Label.LabelStyle(smallFont, Color.YELLOW))).align(Align.right | Align.bottom).padRight(100f).padTop(50f).padBottom(70f);
+		mainTable.add(new Label("New players: " + this.game.gcm.mcpConnectionAddress, new Label.LabelStyle(smallFont, Color.YELLOW))).align(Align.right | Align.bottom).padRight(100f).padTop(50f).padBottom(70f);
 		mainTable.row();
 		mainTable.add(createCardTable()).padBottom(60f).colspan(2).width(Value.percentWidth(0.7f, mainTable)).expandY().align(Align.top);
 		mainTable.add(createConnectedPlayersTable()).align(Align.top | Align.left).expandX();
@@ -406,11 +498,16 @@ public class GameScreen implements Screen
 			{
 				if(!entry.getValue().isPaused)
 				{
-					image = new Image(deleteSprite.getTexture());
+					image = new Image(deleteSprite.getTexture());;
 				}
 				else
 				{
 					image = new Image(plusSprite.getTexture());
+				}
+				
+				if(selectionIndex == i-1)
+				{
+					image.setColor(Color.RED);
 				}
 				
 				image.setBounds(image.getX(), image.getY(), image.getWidth(), image.getHeight());
@@ -482,6 +579,11 @@ public class GameScreen implements Screen
         else
         {
         	text = "Remove Player";
+        }
+        
+        if(this.game.gcm.useOptionButtonText)
+        {
+        	text = text + " " + this.game.gcm.leftFaceButtonText;
         }
         
         TextButton button = new TextButton(text, style);
@@ -754,7 +856,7 @@ public class GameScreen implements Screen
 	{
 		Gdx.app.debug("GameScreen", "populateHearbeats");
 		
-		this.game.mcp.hearbeatResponses.clear();
+		this.game.gcm.mcp.hearbeatResponses.clear();
 		for(Player p : this.game.players.values())
 		{
 			JSONObject obj = new JSONObject();
@@ -827,7 +929,7 @@ public class GameScreen implements Screen
 				
 				obj.put("roundNumber", this.roundNumber);
 				obj.put("playerName", p.name);
-				this.game.mcp.hearbeatResponses.put(p.id, obj);
+				this.game.gcm.mcp.hearbeatResponses.put(p.id, obj);
 			}
 			
 		}
@@ -885,7 +987,7 @@ public class GameScreen implements Screen
 		obj.put("scores", arr);
 		obj.put("playerCount", this.game.players.size());
 		
-		this.game.mcp.hearbeatResponses.put("table", obj);
+		this.game.gcm.mcp.hearbeatResponses.put("table", obj);
 	}
 	
 	private JSONArray selectedWhiteCards = null;

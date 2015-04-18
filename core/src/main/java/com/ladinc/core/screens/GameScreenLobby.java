@@ -32,6 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ladinc.core.McpCah;
+import com.ladinc.core.controllers.IControls;
 import com.ladinc.core.objects.Player;
 
 public class GameScreenLobby implements Screen
@@ -169,6 +170,8 @@ public class GameScreenLobby implements Screen
 		spriteBatch.end();
 	    stage.draw();
 	    
+	    handleControllerInput(delta);
+	    
 		sendPlayerHeartbeats();
 		
 		if(this.game.startGame)
@@ -186,6 +189,37 @@ public class GameScreenLobby implements Screen
 			}
 		}
 		
+	}
+	
+	private float coolDownTime = 0.5f;
+	
+	private void handleControllerInput(float delta)
+	{
+		IControls controller = this.game.gcm.commonController;
+		
+		if(controller != null)
+		{
+			if(!controller.isCoolDownActive(delta))
+			{
+				if(controller.getBackStatus())
+				{
+					displayCredits = false;
+					controller.setCoolDown(coolDownTime);
+				}
+				
+				if(controller.getTopFaceButtonStatus())
+				{
+					game.gcm.toggleMCPAddressType();
+					controller.setCoolDown(coolDownTime);
+				}
+				
+				if(controller.getLeftFaceButtonStatus())
+				{
+					this.displayCredits = true;
+					controller.setCoolDown(coolDownTime);
+				}
+			}
+		}
 	}
 	
 	private TextButton closeCreditsButton = null;
@@ -238,6 +272,11 @@ public class GameScreenLobby implements Screen
 	        style.fontColor = Color.GRAY;
 	        
 	        String buttonText = "Close";
+	        
+	        if(this.game.gcm.useOptionButtonText)
+	        {
+	        	buttonText = buttonText + " " + this.game.gcm.backButtonText;
+	        }
 	
 	        closeCreditsButton = new TextButton(buttonText, style);
 			
@@ -321,6 +360,11 @@ public class GameScreenLobby implements Screen
 	        style.fontColor = Color.GRAY;
 	        
 	        String buttonText = "Credits";
+	        
+	        if(this.game.gcm.useOptionButtonText)
+	        {
+	        	buttonText = buttonText + " " + this.game.gcm.leftFaceButtonText;
+	        }
 	
 	        creditsButton = new TextButton(buttonText, style);
 		
@@ -361,7 +405,7 @@ public class GameScreenLobby implements Screen
 		titleTable = new Table();
 		titleTable.add(new Label("Morals Are Optional", new Label.LabelStyle(boldTitleFont, Color.WHITE)));
 		titleTable.row();
-		titleTable.add(new Label("A digital rip-off of a popular card game!", new Label.LabelStyle(smallFont, Color.WHITE)));
+		titleTable.add(new Label("A digital clone of a hilarious party game", new Label.LabelStyle(smallFont, Color.WHITE)));
 		
 		return titleTable;
 	}
@@ -404,13 +448,21 @@ public class GameScreenLobby implements Screen
 		stepTwo.add(step2Message).width(700f);
 		stepTwo.row();
 		
-		stepTwo.add(new Label(this.game.ipAddr, new Label.LabelStyle(titleFont, Color.YELLOW)));
+		stepTwo.add(new Label(this.game.gcm.mcpConnectionAddress, new Label.LabelStyle(titleFont, Color.YELLOW)));
 		
-		if(this.game.usingMCPRocks)
+		if(this.game.gcm.usingMCPRocks)
 		{
 			stepTwo.row();
 		
-			Label step2Warning = new Label("Tip: Click here to reveal the IP address", new Label.LabelStyle(smallFont, Color.WHITE));
+			Label step2Warning;
+			if(this.game.gcm.useOptionButtonText)
+			{
+				step2Warning = new Label("Tip: Press " + this.game.gcm.topFaceButtonText + " to reveal the IP address", new Label.LabelStyle(smallFont, Color.WHITE));
+			}
+			else
+			{
+				step2Warning = new Label("Tip: Click here to reveal the IP address", new Label.LabelStyle(smallFont, Color.WHITE));
+			}
 			step2Warning.setWrap(true);
 			step2Warning.setAlignment(Align.center | Align.top);
 			stepTwo.add(step2Warning).width(600f);
@@ -422,7 +474,7 @@ public class GameScreenLobby implements Screen
 		{
 		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) 
 		    {
-		        game.toggleMCPAddressType();
+		        game.gcm.toggleMCPAddressType();
 		        return true;
 		    }
 		});
@@ -484,7 +536,7 @@ public class GameScreenLobby implements Screen
 			
 			obj.put("playerName", p.name);
 			
-			this.game.mcp.hearbeatResponses.put(p.id,obj);
+			this.game.gcm.mcp.hearbeatResponses.put(p.id,obj);
 		}
 		
 		sendTableHeartbeats();
@@ -505,9 +557,9 @@ public class GameScreenLobby implements Screen
 		obj.put("scores", arr);
 		obj.put("playerCount", this.game.players.size());
 		
-		obj.put("address", this.game.ipAddr);
+		obj.put("address", this.game.gcm.mcpConnectionAddress);
 		
-		this.game.mcp.hearbeatResponses.put("table",obj);
+		this.game.gcm.mcp.hearbeatResponses.put("table",obj);
 	}
 
 	@Override

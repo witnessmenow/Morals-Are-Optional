@@ -1,9 +1,9 @@
 {
 "masterCards" : [
-	{"id":1,"cardType":"A","text":"Flying \\\"sex\\\" snakes.","numAnswers":0,"expansion": "Base"},
-	    {"id":5,"cardType":"A","text":"%Getting so angry that you pop a boner.","numAnswers":0,"expansion": "Base"},
-    {"id":6,"cardType":"A","text":"%Tasteful sideboob.","numAnswers":0,"expansion": "Base"},
-    {"id":7,"cardType":"A","text":"%Praying the gay away.","numAnswers":0,"expansion": "Base"},
+	{"id":1,"cardType":"A","text":"A dumb Cards Against Humanity clone","numAnswers":0,"expansion": "Base"},
+	{"id":5,"cardType":"A","text":"A dumb Cards Against Humanity clone","numAnswers":0,"expansion": "Base"},
+    {"id":6,"cardType":"A","text":"A dumb Cards Against Humanity clone","numAnswers":0,"expansion": "Base"},
+    {"id":7,"cardType":"A","text":"A dumb Cards Against Humanity clone","numAnswers":0,"expansion": "Base"},
     {"id":8,"cardType":"A","text":"%Two midgets shitting into a bucket.","numAnswers":0,"expansion": "Base"},
     {"id":9,"cardType":"A","text":"%MechaHitler.","numAnswers":0,"expansion": "Base"},
     {"id":10,"cardType":"A","text":"%Being a motherfucking sorcerer.","numAnswers":0,"expansion": "Base"},
@@ -21,7 +21,7 @@
     {"id":22,"cardType":"A","text":"%Same-sex ice dancing.","numAnswers":0,"expansion": "Base"},
     {"id":23,"cardType":"A","text":"%Glenn Beck catching his scrotum on a curtain hook.","numAnswers":0,"expansion": "Base"},
     {"id":2,"cardType":"A","text":"%Michelle Obama's arms.","numAnswers":0,"expansion": "Base"},
-	{"id":2838,"cardType":"Q","text":"Don\'t forget! Beginning this week, Casual Friday will officially become &#8220;_ Friday.&#8221;","numAnswers":1,"expansion":"CAHe5"}
+	{"id":2838,"cardType":"Q","text":"Morals Are Optional? Isn't that just _?","numAnswers":1,"expansion":"CAHe5"}
 	  
 ]
 }
