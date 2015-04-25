@@ -68,3 +68,4 @@ $RECYCLE.BIN/
 *.msp
 
 android/res/raw/key.der
+android/src/main/java/com/ladinc/morals/android/Secret.java

@@ -120,7 +120,7 @@ public class GameControllerManager
 				
 				if (isRunningOnOuyaSupported)
 				{
-					Gdx.app.error("ControllerManager",
+					Gdx.app.debug("ControllerManager",
 							"Added Listener for Ouya Controller");
 					
 					OuyaListener ouyaListener = new OuyaListener();

@@ -48,13 +48,10 @@ public class McpCahActivity extends AndroidApplication {
 	        developerInfo.putString(OuyaFacade.OUYA_DEVELOPER_ID, Secret.getDeveloperID());
 	        developerInfo.putByteArray(OuyaFacade.OUYA_DEVELOPER_PUBLIC_KEY, applicationKey);
 			
-			//Gdx.app.error("mOuyaFacade","getting instance");
 			GameControllerManager.M_OUYA_FACADE = OuyaFacade.getInstance();
 			GameControllerManager.M_OUYA_FACADE.init(context, developerInfo);
 			OuyaController.init(context);
-			Log.e("onCreate", "OuyaFacade after init");
-			
-			//Gdx.app.error("mOuyaFacade","instance got");
+			Log.d("onCreate", "OuyaFacade after init");
 			
 			initialize(new McpCah(), config);
 	}
