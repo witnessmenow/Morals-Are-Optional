@@ -12,6 +12,15 @@
 	<packaging>apk</packaging>
 	<name>McpCah Android</name>
 
+	<repositories>
+
+		<repository>
+			<id>ouyaRepo</id>
+			<name>Ouya Repo</name>
+			<url>http://maven.ouya.tv/</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<keystore.path>game.keystore</keystore.path>
 		<keystore.alias>game</keystore.alias>
@@ -58,6 +67,13 @@
 			<artifactId>gdx-controllers-android</artifactId>
 			<version>${gdx.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>ouya</groupId>
+			<artifactId>ouya-sdk</artifactId>
+			<version>LATEST</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

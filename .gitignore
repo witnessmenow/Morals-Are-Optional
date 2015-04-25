@@ -67,3 +67,4 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+android/res/raw/key.der

@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import org.json.simple.parser.ParseException;
 
+import tv.ouya.console.api.OuyaController;
+import tv.ouya.console.api.OuyaFacade;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.controllers.Controllers;
@@ -34,6 +37,9 @@ public class GameControllerManager
 	
 	public IControls commonController;
 	
+	public static OuyaFacade M_OUYA_FACADE = null;
+	private boolean isRunningOnOuyaSupported = false;
+	
 	public GameControllerManager(McpCah g)
 	{
 		setUpMCP(g);
@@ -43,11 +49,28 @@ public class GameControllerManager
 	
 	private void setUpButtonText()
 	{
-		if(Ouya.isRunningOnOuya())
+		if(isRunningOnOuyaSupported)
 		{
-			topFaceButtonText = "(Y)";
-			leftFaceButtonText = "(U)";
-			backButtonText = "(A)";
+			String buttonName = "Y";
+			OuyaController.ButtonData buttonData = OuyaController.getButtonData(OuyaController.BUTTON_Y);
+		    if (buttonData != null && buttonData.buttonName != null) {
+		        buttonName = buttonData.buttonName;
+		    }
+			topFaceButtonText = "("+ buttonName +")";
+			
+			buttonName = "U";
+			buttonData = OuyaController.getButtonData(OuyaController.BUTTON_U);
+		    if (buttonData != null && buttonData.buttonName != null) {
+		        buttonName = buttonData.buttonName;
+		    }
+			leftFaceButtonText = "("+ buttonName +")";
+			
+			buttonName = "A";
+			buttonData = OuyaController.getButtonData(OuyaController.BUTTON_A);
+		    if (buttonData != null && buttonData.buttonName != null) {
+		        buttonName = buttonData.buttonName;
+		    }
+			backButtonText = "("+ buttonName +")";
 			
 			useOptionButtonText = true;
 		}
@@ -80,11 +103,24 @@ public class GameControllerManager
 				
 				break;
 			case Android:
+				
 				Gdx.app.debug("ControllerManager",
 						"addControllerToList - Android");
-				if (Ouya.runningOnOuya)
+				
+				try
 				{
-					Gdx.app.debug("ControllerManager",
+					isRunningOnOuyaSupported = M_OUYA_FACADE.isRunningOnOUYASupportedHardware();
+				}
+				catch (Exception e)
+				{
+					
+				}
+				
+				
+				
+				if (isRunningOnOuyaSupported)
+				{
+					Gdx.app.error("ControllerManager",
 							"Added Listener for Ouya Controller");
 					
 					OuyaListener ouyaListener = new OuyaListener();

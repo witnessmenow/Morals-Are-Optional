@@ -18,6 +18,12 @@
 			<name>In Project Repo</name>
 			<url>file://${project.basedir}/localJars</url>
 		</repository>
+		
+		<repository>
+			<id>ouyaRepo</id>
+			<name>Ouya Repo</name>
+			<url>http://maven.ouya.tv/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -34,6 +40,12 @@
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx-controllers</artifactId>
 			<version>${gdx.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>ouya</groupId>
+			<artifactId>ouya-sdk</artifactId>
+			<version>LATEST</version>
 		</dependency>
 
 		<dependency>
